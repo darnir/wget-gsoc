@@ -1,0 +1,22 @@
+Detailed explanations on the working of each commit.
+
+This file will remain only on the working branch of the development and will not be copied
+into the release commits.
+
+The CommitLog file will follow the same conventions as the GNU ChangeLog files.
+
+2013-06-03  Darshit Shah  <darnir@gmail.com>
+
+        * HTTPServer.py: (newfile)
+	Adds a new basic HTTP Server.
+	This commit introduces a new HTTP Server that serves on port 1111 and
+	2222 through two threads. This will allow atleast two tests to run
+	simultaneously.
+	The HTTP Server serves local files from the root directory.
+	Currently, this Server supports only the HTTP GET Request and returns
+	only a 200 OK Status or a 404 Not Found.
+	Initial support for POST Requests is being implemented.
+	* README: (newfile)
+	Adds a README file for basic documentation about the test suite.
+	* CommitLog: (newfile)
+	This File

@@ -1,0 +1,6 @@
+This document describes the working of the GNU Wget Test Suite.
+
+Requirements:
+================================================================
+
+1. Python 3.3
