@@ -5,6 +5,15 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-04  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py: Comment out Threading Code. We do not need multiple
+	servers as yet.
+	Edit the server port to a sane vale of 8090.
+	Return the correct Content-Length header in a GET Response.
+	Make the server serve from the current directory instead.
+	Edit the 404 Response message to "Not Found"
+
 2013-06-03  Darshit Shah  <darnir@gmail.com>
 
         * HTTPServer.py: (newfile)
