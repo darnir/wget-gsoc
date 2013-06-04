@@ -7,6 +7,14 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-04  Darshit Shah  <darnir@gmail.com>
 
+	* TestProto: (newfile)
+	A Prototype file that shows how the test cases should be defined.
+	Ideally, this file should be copied and edited to write new test
+	cases.
+	This file will be edited and enchanced as and when required.
+
+2013-06-04  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py: Comment out Threading Code. We do not need multiple
 	servers as yet.
 	Edit the server port to a sane vale of 8090.

@@ -1,0 +1,15 @@
+<WgetTest>
+
+<InputFile>
+    <html>
+        <head>
+        </head>
+        <body>
+            This is a Prototype File.
+        </body>
+    </html>
+</InputFile>
+
+<ExpectedResults>
+<ReturnCode>0</ReturnCode>
+</ExpectedResults>
