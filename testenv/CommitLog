@@ -7,6 +7,15 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-04  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py: Convert previous functions to private and create a
+	public Caller method. This brings the Server more in-line with it's
+	final working.
+	* runTests.py: (newfile)
+	Currently it simply initializes a new HTTPServer. If multiple servers
+	need to be spawned, this may be the right place to do it.
+
+2013-06-04  Darshit Shah  <darnir@gmail.com>
+
 	* TestProto: (newfile)
 	A Prototype file that shows how the test cases should be defined.
 	Ideally, this file should be copied and edited to write new test
@@ -24,7 +33,7 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-03  Darshit Shah  <darnir@gmail.com>
 
-        * HTTPServer.py: (newfile)
+	* HTTPServer.py: (newfile)
 	Adds a new basic HTTP Server.
 	This commit introduces a new HTTP Server that serves on port 1111 and
 	2222 through two threads. This will allow atleast two tests to run
