@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-05  Darshit Shah  <darnir@gmail.com>
 
+	* runTests.py: Add Responsibilities that this file must handle as a
+	comment. No new feature / functionality.
+
+2013-06-05  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py: Add new classes, StoppableHTTPRequestHandler and
 	StoppableHTTPServer that extend the standard classes. These classes
 	provide a new method, QUIT which is used to exit the running server.

@@ -17,5 +17,11 @@ server_process.start()
 # This sleep statement will be removed later as automation is added
 sleep (10)
 
-stop_server()
+#Replacement Code. Responsibilities.
+# Parse the Test Case File
+# Send the Required Files to the Server.
+# Create the command line to execute
+# Read the return code
+# Decide on Pass or Fail of Test.
 
+stop_server()
