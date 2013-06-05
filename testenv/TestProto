@@ -1,15 +1,19 @@
-<WgetTest>
+<WgetTest name="Prototype File">
 
-<InputFile>
-    <html>
-        <head>
-        </head>
-        <body>
-            This is a Prototype File.
-        </body>
-    </html>
-</InputFile>
+    <InputFile>
+        <![CDATA[
+            <html>
+            <head>
+            </head>
+            <body>
+                This is a Prototype File.
+            </body>
+            </html>
+        ]]>
+    </InputFile>
 
-<ExpectedResults>
-<ReturnCode>0</ReturnCode>
-</ExpectedResults>
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+    </ExpectedResults>
+
+</WgetTest>

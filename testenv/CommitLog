@@ -5,6 +5,14 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-06  Darshit Shah  <darnir@gmail.com>
+
+	* TestProto: Minor Changes. Most importantly surround HTML syntax in
+	CDATA to prevent them from being read as XML Tags. This is required
+	since the TestProto file is read as a valid XML Document.
+	* IMPORTANT *: The TestProto file must always be maintained as a valid
+	XML File, since the parsing engine expects it to be so.
+
 2013-06-05  Darshit Shah  <darnir@gmail.com>
 
 	* runTests.py: Add Responsibilities that this file must handle as a
