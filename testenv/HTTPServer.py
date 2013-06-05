@@ -6,7 +6,26 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 
-class __Handler(BaseHTTPRequestHandler):
+## Custom Class Definitions. These extend the standard classes
+# so as to add support for stopping them programmatically.
+
+class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
+
+    def do_QUIT (self):
+        self.send_response(200)
+        self.end_headers()
+        self.server.stop = True
+
+class StoppableHTTPServer (HTTPServer):
+
+    def serve_forever (self):
+        self.stop = False
+        while not self.stop:
+            self.handle_request()
+
+## End Custom Class Declarations
+
+class __Handler(StoppableHTTPRequestHandler):
 
     # The do_* methods define how each of the HTTP Request Methods are handled by this server.
 
@@ -32,7 +51,7 @@ class __Handler(BaseHTTPRequestHandler):
 #    pass
 
 def __serve_on_port(port):
-    server = HTTPServer(("localhost", port), __Handler)
+    server = StoppableHTTPServer(("localhost", port), __Handler)
     server.serve_forever()
 
 # The public interface to this Module. Please do not change interface unless absolutely required.

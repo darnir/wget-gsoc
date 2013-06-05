@@ -5,6 +5,18 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-05  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py: Add new classes, StoppableHTTPRequestHandler and
+	StoppableHTTPServer that extend the standard classes. These classes
+	provide a new method, QUIT which is used to exit the running server.
+	* runTests.py (stop_server): Define new function that sends a HTTP
+	QUIT Request to the Server to exit it.
+	* runTests.py: Spawn the Server in a new process and return control to
+	the parent.
+	The Server currently runs for only 10 seconds. This will be removed as
+	automation to run TestFiles is added later.
+
 2013-06-04  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py: Convert previous functions to private and create a
