@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-06  Darshit Shah  <darnir@gmail.com>
 
+	* TestProto: Add New element, Options. This element defines the list
+	of command line arguments to be passed to Wget on invokation.
+
+2013-06-06  Darshit Shah  <darnir@gmail.com>
+
 	* runTest.py: Generate path to local build of Wget.
 
 2013-06-06  Darshit Shah  <darnir@gmail.com>

@@ -12,6 +12,8 @@
         ]]>
     </InputFile>
 
+    <Options>-d</Options>
+
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
     </ExpectedResults>
