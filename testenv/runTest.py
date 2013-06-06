@@ -7,6 +7,7 @@ import sys
 import os
 from multiprocessing import Process
 from time import sleep
+from sys import exit
 
 def stop_server ():
     """send QUIT request to http server running on localhost:<port>"""
@@ -24,15 +25,16 @@ absp = os.path.abspath(dirn)
 WgetPath = absp + "/../src/wget"
 
 for TestCase in sys.argv[1:]:
-    TestTree = ET.parse(TestCase)
-    Root = TestTree.getroot()
-    inputFile = []
-    for filen in Root.findall('InputFile'):
-        inputFile.append(filen.text)
-    start_server(inputFile)
-
-
-## TODO: Add checks to ensure the files mentioned in the command line arguments actually exist on disk.
+    if os.path.isfile(TestCase):
+        TestTree = ET.parse(TestCase)
+        Root = TestTree.getroot()
+        inputFile = []
+        for filen in Root.findall('InputFile'):
+            inputFile.append(filen.text)
+        start_server(inputFile)
+    else:
+       print ("The Test Case File: " + TestCase + " does not exist.")
+       exit(1)
 
 #Replacement Code. Responsibilities.
 # Parse the Test Case File

@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-06  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Add a check to ensure that the Filename passed to the
+	script actually exists. Else, exit.
+
+2013-06-06  Darshit Shah  <darnir@gmail.com>
+
 	* TestProto: Add an attribute name to InputFile.
 	Add a second File to demonstrate how multiple input files can work.
 	* runTest.py: Remove hard-coded link to Root[0]. Instead read parse
