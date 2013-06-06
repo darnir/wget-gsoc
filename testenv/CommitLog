@@ -7,6 +7,13 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-06  Darshit Shah  <darnir@gmail.com>
 
+	* TestProto: Add an attribute name to InputFile.
+	Add a second File to demonstrate how multiple input files can work.
+	* runTest.py: Remove hard-coded link to Root[0]. Instead read parse
+	tree and find all input Files.
+
+2013-06-06  Darshit Shah  <darnir@gmail.com>
+
 	* TestProto: Add New element, Options. This element defines the list
 	of command line arguments to be passed to Wget on invokation.
 

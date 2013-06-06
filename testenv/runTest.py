@@ -26,13 +26,13 @@ WgetPath = absp + "/../src/wget"
 for TestCase in sys.argv[1:]:
     TestTree = ET.parse(TestCase)
     Root = TestTree.getroot()
-    inputFile = Root[0].text
+    inputFile = []
+    for filen in Root.findall('InputFile'):
+        inputFile.append(filen.text)
     start_server(inputFile)
 
 
 ## TODO: Add checks to ensure the files mentioned in the command line arguments actually exist on disk.
-## TODO: Currently the Element InputFile is Hardcoded to root[0]. This should however be dynamic
-#  through root.findall(). Implement this when implementing support for multiple input files.
 
 #Replacement Code. Responsibilities.
 # Parse the Test Case File

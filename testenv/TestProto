@@ -1,12 +1,24 @@
 <WgetTest name="Prototype File">
 
-    <InputFile>
+    <InputFile name="File1.html">
         <![CDATA[
             <html>
             <head>
             </head>
             <body>
                 This is a Prototype File.
+            </body>
+            </html>
+        ]]>
+    </InputFile>
+
+    <InputFile name="File2.html">
+        <![CDATA[
+            <html>
+            <head>
+            </head>
+            <body>
+                2nd Test File
             </body>
             </html>
         ]]>
