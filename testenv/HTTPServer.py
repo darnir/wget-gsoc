@@ -55,7 +55,7 @@ def __serve_on_port(port):
     server.serve_forever()
 
 # The public interface to this Module. Please do not change interface unless absolutely required.
-def initServer():
+def initServer(inputFile):
     __serve_on_port(8090)
 
 #Thread(target=serve_on_port, args=[1111]).start()
