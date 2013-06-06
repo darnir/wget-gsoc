@@ -4,6 +4,7 @@ import HTTPServer
 import http.client
 import xml.etree.ElementTree as ET
 import sys
+import os
 from multiprocessing import Process
 from time import sleep
 
@@ -16,6 +17,11 @@ def stop_server ():
 def start_server (inputFile):
     server_process = Process(target=HTTPServer.initServer, args=(inputFile, ))
     server_process.start()
+
+# Build the path to local build of Wget
+dirn = os.path.dirname(sys.argv[0])
+absp = os.path.abspath(dirn)
+WgetPath = absp + "/../src/wget"
 
 for TestCase in sys.argv[1:]:
     TestTree = ET.parse(TestCase)

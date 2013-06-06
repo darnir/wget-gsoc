@@ -7,6 +7,10 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-06  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Generate path to local build of Wget.
+
+2013-06-06  Darshit Shah  <darnir@gmail.com>
+
 	* runTest.py: Improve automation. Read file name from command line and
 	use that as a Test Case. Some requirements are marked as TODO in
 	comments.
