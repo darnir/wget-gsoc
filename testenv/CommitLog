@@ -5,6 +5,17 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-07  Darshit Shah  <darnir@gmail.com>
+
+	* runTest.py: Build the command line that is to be executed in a List.
+	Build the list of URLs also and append to the commandline list.
+	Pass the last to a sys.call() function and execute Wget.
+	* TestProto: Rename Options to Option, to correctly reflect that it
+	can take only one Option between each Element.
+	Add 2 more options to demostrate how sending multiple options works.
+	** Maybe, an interactive script should be written to generate Test
+	Files? **
+
 2013-06-06  Darshit Shah  <darnir@gmail.com>
 
 	* runTest.py: Add a check to ensure that the Filename passed to the

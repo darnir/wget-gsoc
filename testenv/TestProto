@@ -24,7 +24,9 @@
         ]]>
     </InputFile>
 
-    <Options>-d</Options>
+    <Option>-d</Option>
+    <Option>-OFile.txt</Option>
+    <Option>-c</Option>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
