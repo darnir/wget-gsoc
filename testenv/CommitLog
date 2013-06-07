@@ -7,6 +7,18 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-07  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Read the Expected Return Code, the actual Return Code
+	and compare to identify whether the Test was successful or not. We
+	must also test the files being returned for a complete test. However,
+	this is to be implemented next.
+	Edit the Exit Code when the script fails due to non-existing file to
+	24. This is done so as not to interfere with the standard return codes
+	of Wget. The number was chosen arbitrarily.
+	Make the script exit with the return code that Wget returns. This will
+	be used later when a runAll module is implemented.
+
+2013-06-07  Darshit Shah  <darnir@gmail.com>
+
 	* runTest.py: Build the command line that is to be executed in a List.
 	Build the list of URLs also and append to the commandline list.
 	Pass the last to a sys.call() function and execute Wget.

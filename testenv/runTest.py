@@ -32,23 +32,32 @@ for TestCase in sys.argv[1:]:
         inputFile = []
         params = []
         params.append(WgetPath)
+        retCode = 0
 
         for comm in Root.findall('Option'):
            params.append(comm.text)
         for filen in Root.findall('InputFile'):
             inputFile.append(filen.text)
             params.append("localhost:8090/" + filen.get('name'))
+        resultsNode = Root.find('ExpectedResults')
+        expectedRet = int(resultsNode.find('ReturnCode').text)
 
         start_server(inputFile)
 
         # Required to so that Wget is not invoked before the Server is initialized
         sleep(2)
         retCode = call(params)
+
         print(retCode)
+        print(expectedRet)
+        if retCode == expectedRet:
+            print("Test Passed")
+        else:
+            print ("Test Failed")
 
     else:
        print ("The Test Case File: " + TestCase + " does not exist.")
-       exit(1)
+       exit(24)
 
 # XXX: Check if maybe we can fire the server through the subprocess module and reduce a module dependancy on multiprocessing.
 # XXX: Maybe the server should be spawned through subprocess with an open pipe. The server can then inform
@@ -62,3 +71,4 @@ for TestCase in sys.argv[1:]:
 # Decide on Pass or Fail of Test. (TODO)
 
 stop_server()
+exit(retCode)
