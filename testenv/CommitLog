@@ -5,6 +5,18 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-09  Darshit Shah  <darnir@gmail.com>
+
+	* runTest.py: Instead of using a List and appending to it, construct a
+	String. While this may be the longer way around, it handles multiple
+	options in a single Element Tag rather nicely.
+	Yet, the call to sleep(2) comes back. it seems that making an early to
+	the server isn't enough, not yet. The output is pretty erratic
+	depending on the load on the machine and that is not acceptble.
+	* TestProto: Correct the usage of -O command. This was flawed earlier,
+	but this commit fixes it. Also, show how multiple commands may be
+	clubbed inside a single Option element.
+
 2013-06-08  Darshit Shah  <darnir@gmail.com>
 
 	* runTest.py: Make the call to start_server() as early as possible so

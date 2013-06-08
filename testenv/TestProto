@@ -25,8 +25,8 @@
     </InputFile>
 
     <Option>-d</Option>
-    <Option>-OFile.txt</Option>
-    <Option>-c</Option>
+    <Option>-O File.txt -c</Option>
+    <Option>-o newtry</Option>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

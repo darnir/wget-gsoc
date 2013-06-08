@@ -5,6 +5,7 @@ import http.client
 import xml.etree.ElementTree as ET
 import sys
 import os
+import shlex
 from multiprocessing import Process
 from subprocess import call
 from time import sleep
@@ -30,30 +31,34 @@ for TestCase in sys.argv[1:]:
         TestTree = ET.parse(TestCase)
         Root = TestTree.getroot()
         inputFile = []
-        params = []
+        params = WgetPath + " "
+        files = ""
         expectedFiles = []
-        params.append(WgetPath)
         retCode = 0
 
-        for comm in Root.findall('Option'):
-           params.append(comm.text)
         for filen in Root.findall('InputFile'):
             inputFile.append(filen.text)
-            params.append("localhost:8090/" + filen.get('name'))
+            files = files + "localhost:8090/" + filen.get('name') + " "
 
         # Spawn the server as early as possible. This gives time for the server
-        # to initialize before we call Wget.
+        # to initialize before we call Wget. Hopefully we can do away with sleep(2) soon.
         # This will become more prominent as larger amount of parsing and other code is implemented.
         start_server(inputFile)
 
+        for comm in Root.findall('Option'):
+           params = params + comm.text + " "
         resultsNode = Root.find('ExpectedResults')
         expectedRet = int(resultsNode.find('ReturnCode').text)
         for expFile in resultsNode.findall('File'):
             expectedFiles.append(expFile.text)
 
+        params = params + files
+        parameters = shlex.split(params)
+
         # Required to so that Wget is not invoked before the Server is initialized
-        #sleep(2)
-        retCode = call(params)
+        sleep(2)
+        print(parameters)
+        retCode = call(parameters)
 
         print(retCode)
         print(expectedRet)
