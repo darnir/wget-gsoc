@@ -40,15 +40,19 @@ for TestCase in sys.argv[1:]:
         for filen in Root.findall('InputFile'):
             inputFile.append(filen.text)
             params.append("localhost:8090/" + filen.get('name'))
-        resultsNode = Root.find('ExpectedResults')
-        expectedRet = int(resultsNode.find('ReturnCode').text)
-        for expFile in resultsNode.finall('File'):
-            expectedFiles.append(expFile.text)
 
+        # Spawn the server as early as possible. This gives time for the server
+        # to initialize before we call Wget.
+        # This will become more prominent as larger amount of parsing and other code is implemented.
         start_server(inputFile)
 
+        resultsNode = Root.find('ExpectedResults')
+        expectedRet = int(resultsNode.find('ReturnCode').text)
+        for expFile in resultsNode.findall('File'):
+            expectedFiles.append(expFile.text)
+
         # Required to so that Wget is not invoked before the Server is initialized
-        sleep(2)
+        #sleep(2)
         retCode = call(params)
 
         print(retCode)

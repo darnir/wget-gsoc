@@ -7,6 +7,12 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-08  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Make the call to start_server() as early as possible so
+	as to provide more time for the server to initialize before we make
+	the call to Wget. This eliminates the need for a sleep(2) statement.
+
+2013-06-08  Darshit Shah  <darnir@gmail.com>
+
 	* runTest.py: Read the list of expected files to be downloaded and
 	generate a list. The actual test for the files is not yet implemented
 	and will be implemented later.
