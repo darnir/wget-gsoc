@@ -30,6 +30,7 @@
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
+        <File>File1.html</File>
     </ExpectedResults>
 
 </WgetTest>

@@ -31,6 +31,7 @@ for TestCase in sys.argv[1:]:
         Root = TestTree.getroot()
         inputFile = []
         params = []
+        expectedFiles = []
         params.append(WgetPath)
         retCode = 0
 
@@ -41,6 +42,8 @@ for TestCase in sys.argv[1:]:
             params.append("localhost:8090/" + filen.get('name'))
         resultsNode = Root.find('ExpectedResults')
         expectedRet = int(resultsNode.find('ReturnCode').text)
+        for expFile in resultsNode.finall('File'):
+            expectedFiles.append(expFile.text)
 
         start_server(inputFile)
 

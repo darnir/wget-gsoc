@@ -5,6 +5,15 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-08  Darshit Shah  <darnir@gmail.com>
+
+	* runTest.py: Read the list of expected files to be downloaded and
+	generate a list. The actual test for the files is not yet implemented
+	and will be implemented later.
+	* TestProto: Add a new element, File. This elemenent defines the names
+	of the files that are expected to be downloaded by Wget. Only one file
+	per element.
+
 2013-06-07  Darshit Shah  <darnir@gmail.com>
 
 	* runTest.py: Read the Expected Return Code, the actual Return Code
