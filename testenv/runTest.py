@@ -10,6 +10,7 @@ from multiprocessing import Process
 from subprocess import call
 from time import sleep
 from sys import exit
+from ColourTerm import printer
 
 def stop_server ():
     """send QUIT request to http server running on localhost:<port>"""
@@ -67,9 +68,10 @@ for TestCase in sys.argv[1:]:
         print(retCode)
         print(expectedRet)
         if retCode == expectedRet:
-            print("Test Passed")
+            printer("GREEN","Test Passed.")
         else:
-            print ("Test Failed")
+            printer ("RED","Test Failed.")
+            printer ("RED","Expected Code: " + str(expectedRet) + ". Return Code: " + str(retCode) + ".")
 
     else:
        print ("The Test Case File: " + TestCase + " does not exist.")

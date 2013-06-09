@@ -5,6 +5,17 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-10  Darshit Shah  <darnir@gmail.com>
+
+	* ColourTerm.py: (newfile)
+	A new module that handles colourizing the terminal output. Written
+	from scratch. This module currently supports only *nix platforms.
+	Support for Windows coloured output will be added later when required.
+	I will also probably override the logger class one day to colourize
+	it's output from the HTTPServer.
+	* runTest.py: Use the new printer() function to print coloured putput
+	to screen.
+
 2013-06-09  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (do_GET): Make the server respond with a file from the
