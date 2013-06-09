@@ -32,17 +32,16 @@ class __Handler(StoppableHTTPRequestHandler):
     # The do_* methods define how each of the HTTP Request Methods are handled by this server.
 
     def do_GET(self):
-        rootdir = '.'
-        filepath = rootdir + self.path
-        try:
-            f = open(filepath)
+        filepath = self.path[1:]
+        print("filepath: " + filepath)
+        if filepath in fileSys:
+            content = fileSys.get(filepath)
             self.send_response(200)
             self.send_header("Content-Type", "text/plain")
-            self.send_header("Content-Length", os.path.getsize(filepath))
-#           self.send_header("Location", "main.html")
+            self.send_header("Content-Length", len(content))
             self.end_headers()
-            self.wfile.write(bytes(f.read(), 'utf-8'))
-        except IOError as ae:
+            self.wfile.write(content.encode('utf-8'))
+        else:
             self.send_error(404, 'Not Found')
     def do_POST(self):
         self.send_response(200)
@@ -58,6 +57,7 @@ def __serve_on_port(port):
 
 # The public interface to this Module. Please do not change interface unless absolutely required.
 def initServer(inputFile):
+    global fileSys
     fileSys = inputFile
     __serve_on_port(8090)
 

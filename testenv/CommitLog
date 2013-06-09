@@ -7,6 +7,19 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-09  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (do_GET): Make the server respond with a file from the
+	fileSys dict instead of serving from the current directory. This
+	completes a major part of the Test Server. Only part remaining is
+	checking whether test was successful.
+	* HTTPServer.py (initServer): Add statement to make fileSys a global
+	variable.
+	* runTest.py: Remove a debugging print statement.
+	* TestProto: (tiny change)
+	Modify options to something more sane for testing output.
+	Add a missing expected File.
+
+2013-06-09  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py: Define fileSys as a Global variable storing a Dict.
 	* runTest.py: Switch from using a list to store input file contents to
 	a dictionary. This allows us to store filename:content as a key:value

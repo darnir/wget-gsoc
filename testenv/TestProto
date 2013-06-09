@@ -24,13 +24,13 @@
         ]]>
     </InputFile>
 
-    <Option>-d</Option>
-    <Option>-O File.txt -c</Option>
-    <Option>-o newtry</Option>
+    <Option>-d -c</Option>
+    <Option>-v</Option>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
         <File>File1.html</File>
+        <File>File2.html</File>
     </ExpectedResults>
 
 </WgetTest>

@@ -62,7 +62,6 @@ for TestCase in sys.argv[1:]:
 
         # Required to so that Wget is not invoked before the Server is initialized
         sleep(2)
-        print(parameters)
         retCode = call(parameters)
 
         print(retCode)
