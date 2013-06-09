@@ -6,6 +6,8 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 
+fileSys = dict()
+
 ## Custom Class Definitions. These extend the standard classes
 # so as to add support for stopping them programmatically.
 
@@ -56,6 +58,7 @@ def __serve_on_port(port):
 
 # The public interface to this Module. Please do not change interface unless absolutely required.
 def initServer(inputFile):
+    fileSys = inputFile
     __serve_on_port(8090)
 
 #Thread(target=serve_on_port, args=[1111]).start()

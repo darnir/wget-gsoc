@@ -26,24 +26,29 @@ dirn = os.path.dirname(sys.argv[0])
 absp = os.path.abspath(dirn)
 WgetPath = absp + "/../src/wget"
 
+# Check for each TestCase file supplied in the arguments.
+# It is however preferable to run multiple tests through an external module
+# that aggregates the results better.
 for TestCase in sys.argv[1:]:
     if os.path.isfile(TestCase):
         TestTree = ET.parse(TestCase)
         Root = TestTree.getroot()
-        inputFile = []
         params = WgetPath + " "
         files = ""
         expectedFiles = []
         retCode = 0
+        # Initialize inputFiles as a dictionary.
+        # Filename:content pairs.
+        inputFiles = dict()
 
         for filen in Root.findall('InputFile'):
-            inputFile.append(filen.text)
+            inputFiles[filen.get('name')] = filen.text
             files = files + "localhost:8090/" + filen.get('name') + " "
 
         # Spawn the server as early as possible. This gives time for the server
         # to initialize before we call Wget. Hopefully we can do away with sleep(2) soon.
         # This will become more prominent as larger amount of parsing and other code is implemented.
-        start_server(inputFile)
+        start_server(inputFiles)
 
         for comm in Root.findall('Option'):
            params = params + comm.text + " "
