@@ -7,6 +7,10 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-10  Darshit Shah  <darnir@gmail.com>
 
+	* ColourTerm.py: Make a call to print() directly if not on Linux.
+
+2013-06-10  Darshit Shah  <darnir@gmail.com>
+
 	* TestProto: Edit the format of the InputFile Element. This make for
 	bad-formatting but is required to eliminate the extra newlines that
 	appear otherwise. I do not wish to touch the InputFile and

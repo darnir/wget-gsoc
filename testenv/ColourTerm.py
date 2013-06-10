@@ -12,3 +12,5 @@ T_COLORS = {
 def printer(color,string):
     if platform.system() == 'Linux':
         print(T_COLORS.get(color) + string + T_COLORS.get('ENDC'))
+    else:
+        print(string)
