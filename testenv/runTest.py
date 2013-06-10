@@ -78,10 +78,12 @@ for TestCase in sys.argv[1:]:
                 FileContent = FileHandler.read()
                 if (inputFiles.get(File_d) != FileContent):
                     FileHandler.close()
+                    os.remove(File_d)
                     printer ("RED","Test Failed.")
                     printer ("RED","Contents of " + File_d + " do not match")
                     exit(25)
                 FileHandler.close()
+                os.remove(File_d)
         except IOError as ae:
             printer("RED","Test Failed.")
             printer("RED", str(ae))

@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-10  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Delete the downloaded files from disk after test is
+	over.
+
+2013-06-10  Darshit Shah  <darnir@gmail.com>
+
 	* ColourTerm.py: Make a call to print() directly if not on Linux.
 
 2013-06-10  Darshit Shah  <darnir@gmail.com>
