@@ -64,29 +64,36 @@ for TestCase in sys.argv[1:]:
         # Required to so that Wget is not invoked before the Server is initialized
         sleep(2)
         retCode = call(parameters)
+        stop_server()
 
-        print(retCode)
-        print(expectedRet)
-        if retCode == expectedRet:
-            printer("GREEN","Test Passed.")
-        else:
+        if retCode != expectedRet:
             printer ("RED","Test Failed.")
             printer ("RED","Expected Code: " + str(expectedRet) + ". Return Code: " + str(retCode) + ".")
+            exit(retCode)
+
+        try:
+            FileHandler = ""
+            for File_d in expectedFiles:
+                FileHandler = open(File_d, "r")
+                FileContent = FileHandler.read()
+                if (inputFiles.get(File_d) != FileContent):
+                    FileHandler.close()
+                    printer ("RED","Test Failed.")
+                    printer ("RED","Contents of " + File_d + " do not match")
+                    exit(25)
+                FileHandler.close()
+        except IOError as ae:
+            printer("RED","Test Failed.")
+            printer("RED", str(ae))
+            exit(26)
+
+        # If script reaches here, then all Validity tests have passed. The Test was successful.
+        printer ("GREEN","Test Passed")
 
     else:
        print ("The Test Case File: " + TestCase + " does not exist.")
        exit(24)
 
-# XXX: Check if maybe we can fire the server through the subprocess module and reduce a module dependancy on multiprocessing.
-# XXX: Maybe the server should be spawned through subprocess with an open pipe. The server can then inform
-#      thr parent script upon initialization. Hence removing the use hard sleep(2) statement.
+# TODO: The expected downloaded file names may not match the input file names. (-O option).
 
-#Replacement Code. Responsibilities.
-# Parse the Test Case File. (In-Progress)
-# Send the Required Files to the Server. (Done)
-# Create the command line to execute. (Done)
-# Read the return code. (Done)
-# Decide on Pass or Fail of Test. (TODO)
-
-stop_server()
-exit(retCode)
+exit(0)

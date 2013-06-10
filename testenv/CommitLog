@@ -7,6 +7,18 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-10  Darshit Shah  <darnir@gmail.com>
 
+	* TestProto: Edit the format of the InputFile Element. This make for
+	bad-formatting but is required to eliminate the extra newlines that
+	appear otherwise. I do not wish to touch the InputFile and
+	programmatically remove those newlines.
+	* runTest.py: Stop the server immediately after making the call to
+	Wget. This also fixes a bug wherein multiple server instances would be
+	created if multiple TestFiles are given at invokation.
+	Add more checks to determine if test was successful. Check if Expected
+	downloaded files exist and their contents match.
+
+2013-06-10  Darshit Shah  <darnir@gmail.com>
+
 	* ColourTerm.py: (newfile)
 	A new module that handles colourizing the terminal output. Written
 	from scratch. This module currently supports only *nix platforms.
