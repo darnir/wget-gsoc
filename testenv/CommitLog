@@ -7,6 +7,18 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-11  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py: Remove trailing whitespace.
+	* runTest.py: Split function definitions to a separate file. Add
+	support for checking if Wget downloaded any extra files during the
+	test.
+	* TestEnv.py: (newfile)
+	Move start_server() and stop_server() functions from runTest module.
+	Define init_test_env() to Parse the XML File and return the Root
+	Node. Also create new directory for test files to be stored and
+	navigate to the said location.
+
+2013-06-11  Darshit Shah  <darnir@gmail.com>
+
 	* ColourTerm.py: Remove trailing whitespaces
 	* CommitLog: Same
 

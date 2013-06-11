@@ -1,26 +1,13 @@
 #!/usr/bin/env python
 
-import HTTPServer
-import http.client
-import xml.etree.ElementTree as ET
 import sys
 import os
 import shlex
-from multiprocessing import Process
 from subprocess import call
 from time import sleep
 from sys import exit
 from ColourTerm import printer
-
-def stop_server ():
-    """send QUIT request to http server running on localhost:<port>"""
-    conn = http.client.HTTPConnection("localhost:8090")
-    conn.request("QUIT", "/")
-    conn.getresponse()
-
-def start_server (inputFile):
-    server_process = Process(target=HTTPServer.initServer, args=(inputFile, ))
-    server_process.start()
+from TestEnv import *
 
 # Build the path to local build of Wget
 dirn = os.path.dirname(sys.argv[0])
@@ -32,8 +19,7 @@ WgetPath = absp + "/../src/wget"
 # that aggregates the results better.
 for TestCase in sys.argv[1:]:
     if os.path.isfile(TestCase):
-        TestTree = ET.parse(TestCase)
-        Root = TestTree.getroot()
+        Root = init_test_env(TestCase)
         params = WgetPath + " "
         files = ""
         expectedFiles = []
@@ -69,7 +55,7 @@ for TestCase in sys.argv[1:]:
         if retCode != expectedRet:
             printer ("RED","Test Failed.")
             printer ("RED","Expected Code: " + str(expectedRet) + ". Return Code: " + str(retCode) + ".")
-            exit(retCode)
+            exit_test(retCode)
 
         try:
             FileHandler = ""
@@ -79,15 +65,19 @@ for TestCase in sys.argv[1:]:
                 if (inputFiles.get(File_d) != FileContent):
                     FileHandler.close()
                     os.remove(File_d)
-                    printer ("RED","Test Failed.")
                     printer ("RED","Contents of " + File_d + " do not match")
-                    exit(25)
+                    exit_test(25)
                 FileHandler.close()
                 os.remove(File_d)
         except IOError as ae:
-            printer("RED","Test Failed.")
             printer("RED", str(ae))
-            exit(26)
+            exit_test(26)
+
+        for parent, dirs, files in os.walk(dirn+"/"+testdir):
+            if files:
+                printer ("RED", "Extra files downloaded by Wget.")
+                printer ("RED", str(files).strip('[]'))
+                exit_test(27)
 
         # If script reaches here, then all Validity tests have passed. The Test was successful.
         printer ("GREEN","Test Passed")
@@ -98,4 +88,4 @@ for TestCase in sys.argv[1:]:
 
 # TODO: The expected downloaded file names may not match the input file names. (-O option).
 
-exit(0)
+exit_test(0)
