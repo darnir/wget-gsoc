@@ -7,6 +7,16 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-12  Darshit Shah  <darnir@gmail.com>
 
+	* TestProto: Add attribute, orig to specify original name of an
+	expected file. This is used when Wget changes the name of the file
+	when downloading. E.g.: The -O switch. If the attribute is skipped,
+	the same name as the expected name is used.
+	* runTest.py: Changed expectedFiles to a dict(). It now stores the
+	name of the expected file and the corresponding Orginal File name with
+	which to compare the file contents.
+
+2013-06-12  Darshit Shah  <darnir@gmail.com>
+
 	* TestProto: Add attribute, download to InputFile. Every file on the
 	server should not be explicitly downloaded by Wget. The download
 	attribute must be explicitly set to "True" to download the file. Else

@@ -22,7 +22,7 @@ for TestCase in sys.argv[1:]:
         Root = init_test_env(TestCase)
         params = WgetPath + " "
         files = ""
-        expectedFiles = []
+        expectedFiles = dict()
         retCode = 0
         # Initialize inputFiles as a dictionary.
         # Filename:content pairs.
@@ -43,7 +43,8 @@ for TestCase in sys.argv[1:]:
         resultsNode = Root.find('ExpectedResults')
         expectedRet = int(resultsNode.find('ReturnCode').text)
         for expFile in resultsNode.findall('File'):
-            expectedFiles.append(expFile.text)
+            origName = expFile.get('orig') if expFile.get('orig') else expFile.text
+            expectedFiles[expFile.text] = origName
 
         params = params + files
         parameters = shlex.split(params)
@@ -63,7 +64,7 @@ for TestCase in sys.argv[1:]:
             for File_d in expectedFiles:
                 FileHandler = open(File_d, "r")
                 FileContent = FileHandler.read()
-                if (inputFiles.get(File_d) != FileContent):
+                if (inputFiles.get(expectedFiles[File_d]) != FileContent):
                     FileHandler.close()
                     os.remove(File_d)
                     printer ("RED","Contents of " + File_d + " do not match")
@@ -86,7 +87,5 @@ for TestCase in sys.argv[1:]:
     else:
        print ("The Test Case File: " + TestCase + " does not exist.")
        exit(24)
-
-# TODO: The expected downloaded file names may not match the input file names. (-O option).
 
 exit_test(0)

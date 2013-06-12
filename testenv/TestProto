@@ -17,11 +17,11 @@ This is a Prototype File.
 </html>]]></InputFile>
 
     <Option>-d -c</Option>
-    <Option>-v</Option>
+    <Option>-v -O TestFile.html</Option>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
-        <File>File1.html</File>
+        <File orig="File1.html">TestFile.html</File>
     </ExpectedResults>
 
 </WgetTest>
