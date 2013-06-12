@@ -30,7 +30,8 @@ for TestCase in sys.argv[1:]:
 
         for filen in Root.findall('InputFile'):
             inputFiles[filen.get('name')] = filen.text
-            files = files + "localhost:8090/" + filen.get('name') + " "
+            if filen.get('download') == 'True':
+                files = files + "localhost:8090/" + filen.get('name') + " "
 
         # Spawn the server as early as possible. This gives time for the server
         # to initialize before we call Wget. Hopefully we can do away with sleep(2) soon.

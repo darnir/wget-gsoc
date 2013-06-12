@@ -5,6 +5,15 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-12  Darshit Shah  <darnir@gmail.com>
+
+	* TestProto: Add attribute, download to InputFile. Every file on the
+	server should not be explicitly downloaded by Wget. The download
+	attribute must be explicitly set to "True" to download the file. Else
+	it will be ignored.
+	* runTest.py: Add only those URLs which are explicitly marked for
+	download.
+
 2013-06-11  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py: Remove trailing whitespace.

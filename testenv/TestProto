@@ -1,6 +1,6 @@
 <WgetTest name="Prototype File">
 
-    <InputFile name="File1.html"><![CDATA[<html>
+    <InputFile name="File1.html" download="True"><![CDATA[<html>
 <head>
 </head>
 <body>
@@ -22,7 +22,6 @@ This is a Prototype File.
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
         <File>File1.html</File>
-        <File>File2.html</File>
     </ExpectedResults>
 
 </WgetTest>
