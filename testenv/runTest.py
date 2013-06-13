@@ -2,7 +2,7 @@
 
 import xml
 import sys
-from shlex import split
+import shlex
 from os.path import isfile
 from subprocess import call
 from time import sleep

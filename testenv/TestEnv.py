@@ -2,6 +2,8 @@ import HTTPServer
 import http.client
 import os
 import shutil
+import difflib
+import sys
 from ColourTerm import printer
 from xml.etree.ElementTree import parse
 from multiprocessing import Process
@@ -85,8 +87,12 @@ class Test:
                 raise TestFailed()
             FileContent = FileHandler.read()
             if self.file_list.get(expected_files[filename]) != FileContent:
-                FileHandler.close()
                 printer("RED", "Contents of " + filename + " do not match")
+                for line in difflib.unified_diff(self.file_list.get(expected_files[filename]),
+                                                FileContent, fromfile="Original", tofile="Actual"):
+                    sys.stdout.write(line)
+                print("")
+                FileHandler.close()
                 self._test_cleanup()
                 raise TestFailed()
             FileHandler.close()

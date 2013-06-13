@@ -7,6 +7,12 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-13  Darshit Shah  <darnir@gmail.com>
 
+	* TestEnv.py(test_downloaded_files): Print a diff on content mismatch
+	* runTest.py: Change import statement. Using the full name helps in
+	creating more manageable code.
+
+2013-06-13  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py: Define a new class Test. Objects of this class are used
 	to handle each TestCase file separately. This class combines code from
 	the runTest module and certain functions originally a part of this
