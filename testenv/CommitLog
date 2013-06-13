@@ -5,6 +5,11 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-13  Darshit Shah  <darnir@gmail.com>
+
+	* TestEnv.py: Handle an exception in the case that the files from the
+	previous run of the test did were not cleaned up.
+
 2013-06-12  Darshit Shah  <darnir@gmail.com>
 
 	* TestProto: Add attribute, orig to specify original name of an

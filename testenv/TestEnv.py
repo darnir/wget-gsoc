@@ -23,7 +23,11 @@ def init_test_env (test):
     Root = TestTree.getroot()
     global testdir
     testdir = test+"-test"
-    os.mkdir(testdir)
+    try:
+        os.mkdir(testdir)
+    except FileExistsError as ae:
+        shutil.rmtree(testdir)
+        os.mkdir(testdir)
     os.chdir(testdir)
     return Root
 
