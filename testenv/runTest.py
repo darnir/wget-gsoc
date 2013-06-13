@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+import xml
 import sys
-import os
-import shlex
+from shlex import split
+from os.path import isfile
 from subprocess import call
 from time import sleep
 from sys import exit
@@ -18,35 +19,18 @@ WgetPath = absp + "/../src/wget"
 # It is however preferable to run multiple tests through an external module
 # that aggregates the results better.
 for TestCase in sys.argv[1:]:
-    if os.path.isfile(TestCase):
-        Root = init_test_env(TestCase)
-        params = WgetPath + " "
-        files = ""
-        expectedFiles = dict()
-        retCode = 0
-        # Initialize inputFiles as a dictionary.
-        # Filename:content pairs.
-        inputFiles = dict()
+    if isfile(TestCase):
+        try:
+            TestObj = Test(TestCase)
+        except xml.etree.ElementTree.ParseError:
+            printer ("RED", "Parse error in Test Case file.")
+            continue
 
-        for filen in Root.findall('InputFile'):
-            inputFiles[filen.get('name')] = filen.text
-            if filen.get('download') == 'True':
-                files = files + "localhost:8090/" + filen.get('name') + " "
+        inputFiles = TestObj.gen_file_list()
 
-        # Spawn the server as early as possible. This gives time for the server
-        # to initialize before we call Wget. Hopefully we can do away with sleep(2) soon.
-        # This will become more prominent as larger amount of parsing and other code is implemented.
         start_server(inputFiles)
 
-        for comm in Root.findall('Option'):
-           params = params + comm.text + " "
-        resultsNode = Root.find('ExpectedResults')
-        expectedRet = int(resultsNode.find('ReturnCode').text)
-        for expFile in resultsNode.findall('File'):
-            origName = expFile.get('orig') if expFile.get('orig') else expFile.text
-            expectedFiles[expFile.text] = origName
-
-        params = params + files
+        params = TestObj.get_cmd_line(WgetPath)
         parameters = shlex.split(params)
 
         # Required to so that Wget is not invoked before the Server is initialized
@@ -54,38 +38,14 @@ for TestCase in sys.argv[1:]:
         retCode = call(parameters)
         stop_server()
 
-        if retCode != expectedRet:
-            printer ("RED","Test Failed.")
-            printer ("RED","Expected Code: " + str(expectedRet) + ". Return Code: " + str(retCode) + ".")
-            exit_test(retCode)
-
         try:
-            FileHandler = ""
-            for File_d in expectedFiles:
-                FileHandler = open(File_d, "r")
-                FileContent = FileHandler.read()
-                if (inputFiles.get(expectedFiles[File_d]) != FileContent):
-                    FileHandler.close()
-                    os.remove(File_d)
-                    printer ("RED","Contents of " + File_d + " do not match")
-                    exit_test(25)
-                FileHandler.close()
-                os.remove(File_d)
-        except IOError as ae:
-            printer("RED", str(ae))
-            exit_test(26)
-
-        for parent, dirs, files in os.walk(dirn+"/"+testdir):
-            if files:
-                printer ("RED", "Extra files downloaded by Wget.")
-                printer ("RED", str(files).strip('[]'))
-                exit_test(27)
-
-        # If script reaches here, then all Validity tests have passed. The Test was successful.
-        printer ("GREEN","Test Passed")
+            TestObj.test_return_code(retCode)
+            TestObj.test_downloaded_files()
+        except TestFailed:
+            printer ("RED", "Test Failed")
+        else:
+            printer ("GREEN", "Test Passed")
+            TestObj.endTest()
 
     else:
        print ("The Test Case File: " + TestCase + " does not exist.")
-       exit(24)
-
-exit_test(0)

@@ -7,8 +7,23 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-13  Darshit Shah  <darnir@gmail.com>
 
+	* TestEnv.py: Define a new class Test. Objects of this class are used
+	to handle each TestCase file separately. This class combines code from
+	the runTest module and certain functions originally a part of this
+	module. The use of a class here helps in improving modularity and
+	keeping the code cleaner. It is also now very easily possible to
+	extend the tests in special cases.
+	* TestProto: Change semantics, the download attribute *MUST* be
+	explicitly set to False to prevent the file from being downloaded
+	explicitly.
+	* runTest.py: Reduce dependencies. Remove code that will parse the XML
+	file and run the checks for Test passing. This code is now merged into
+	the Test Class.
+
+2013-06-13  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py: Handle an exception in the case that the files from the
-	previous run of the test did were not cleaned up.
+	previous run of the test were not cleaned up.
 
 2013-06-12  Darshit Shah  <darnir@gmail.com>
 
