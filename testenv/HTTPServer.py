@@ -13,6 +13,7 @@ fileSys = dict()
 
 class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
 
+    protocol_version = 'HTTP/1.1'
     def do_QUIT (self):
         self.send_response(200)
         self.end_headers()

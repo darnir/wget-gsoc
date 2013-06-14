@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-13  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py(StoppableHTTPRequestHandler): Support HTTP/1.1
+	protocol.
+
+2013-06-13  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py(test_downloaded_files): Print a diff on content mismatch
 	* runTest.py: Change import statement. Using the full name helps in
 	creating more manageable code.
