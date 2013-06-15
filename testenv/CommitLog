@@ -5,6 +5,14 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-15  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (send_head): Create a common function for processing
+	the response headers to HEAD and GET requests.
+	(do_GET): Remove response header processing code. This is shifted to
+	send_head.
+	(do_HEAD): Handle HEAD requests
+
 2013-06-13  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py(StoppableHTTPRequestHandler): Support HTTP/1.1

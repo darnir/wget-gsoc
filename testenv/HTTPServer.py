@@ -32,22 +32,34 @@ class __Handler(StoppableHTTPRequestHandler):
 
     # The do_* methods define how each of the HTTP Request Methods are handled by this server.
 
+    def do_HEAD(self):
+        self.send_head()
+
     def do_GET(self):
-        filepath = self.path[1:]
-        print("filepath: " + filepath)
-        if filepath in fileSys:
-            content = fileSys.get(filepath)
-            self.send_response(200)
-            self.send_header("Content-Type", "text/plain")
-            self.send_header("Content-Length", len(content))
-            self.end_headers()
+        content = self.send_head()
+        if content:
             self.wfile.write(content.encode('utf-8'))
-        else:
-            self.send_error(404, 'Not Found')
+
     def do_POST(self):
         self.send_response(200)
         self.send_header("Content-type", "text/plain")
         self.end_headers()
+
+    def send_head(self):
+        """ Common code for GET and HEAD Commands.
+        This method is overriden to use the fileSys dict.
+        """
+        path = self.path[1:]
+        if path in fileSys:
+            content = fileSys.get(path)
+            self.send_response(200)
+            self.send_header("Content-type", "text/plain")
+            self.send_header("Content-Length", len(content))
+            self.end_headers()
+            return content
+        else:
+            self.send_error(404, "Not Found")
+            return None
 
 #class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
 #    pass
