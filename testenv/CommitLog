@@ -5,6 +5,15 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-16  Darshit Shah  <darnir@gmail.com>
+
+	* TestEnv.py (__init__): Handle xml.etree.ElementTree.ParseError in
+	file and raise TestFailed Exception. This is done to hide the
+	implementation details from the runTest module.
+	* runTest.py: Handle the TestFailed exception instead of the
+	implementaation specific ParseError. Remove the dependency on xml
+	module.
+
 2013-06-15  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (send_head): Create a common function for processing

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import xml
 import sys
 import shlex
 from os.path import isfile
@@ -22,7 +21,7 @@ for TestCase in sys.argv[1:]:
     if isfile(TestCase):
         try:
             TestObj = Test(TestCase)
-        except xml.etree.ElementTree.ParseError:
+        except TestFailed:
             printer ("RED", "Parse error in Test Case file.")
             continue
 

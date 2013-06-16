@@ -5,7 +5,7 @@ import shutil
 import difflib
 import sys
 from ColourTerm import printer
-from xml.etree.ElementTree import parse
+from xml.etree.ElementTree import parse, ParseError
 from multiprocessing import Process
 
 testdir = ""
@@ -26,8 +26,11 @@ class TestFailed(Exception):
 class Test:
     TestFailed = TestFailed
     def __init__(self, TestFile):
-        TestTree2 = parse(TestFile)
-        self.Root = TestTree2.getroot()
+        try:
+            TestTree = parse(TestFile)
+        except ParseError as ae:
+            raise TestFailed()
+        self.Root = TestTree.getroot()
         self.testDir = TestFile + "-test"
         self.resultsNode = self.Root.find('ExpectedResults')
         try:
