@@ -7,6 +7,14 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-17  Darshit Shah  <darnir@gmail.com>
 
+	* Test-O: (newfile)
+	Test Case for use of -O command with Wget
+	* Test-stdouterr: (newfile)
+	Test Case for when disk runs out of space preventing Wget from
+	writing to disk.
+
+2013-06-17  Darshit Shah  <darnir@gmail.com>
+
 	* Makefile.am: (newfile)
 	Create a basic Makefile.am to use the Test Harness provided by
 	automake.

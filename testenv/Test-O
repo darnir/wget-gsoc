@@ -1,0 +1,12 @@
+<WgetTest name="Test -O Option">
+
+    <InputFile name="Sparta">This is Spartaa!</InputFile>
+
+    <Option>-O Persia</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File orig="Sparta">Persia</File>
+    </ExpectedResults>
+
+</WgetTest>

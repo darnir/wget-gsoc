@@ -1,0 +1,17 @@
+<WgetTest name="Test Disk Full">
+
+    <InputFile name="File1.html"><![CDATA[<html>
+<head>
+</head>
+<body>
+This bowl is full!
+</body>
+</html>]]></InputFile>
+
+    <Option>-O /dev/full</Option>
+
+    <ExpectedResults>
+        <ReturnCode>3</ReturnCode>
+    </ExpectedResults>
+
+</WgetTest>
