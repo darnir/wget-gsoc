@@ -25,17 +25,17 @@ for TestCase in sys.argv[1:]:
             printer ("RED", "Parse error in Test Case file.")
             continue
 
-        inputFiles = TestObj.gen_file_list()
+        TestObj.start_server()
 
-        start_server(inputFiles)
-
+        TestObj.gen_file_list()
+        TestObj.spawn_server()
         params = TestObj.get_cmd_line(WgetPath)
         parameters = shlex.split(params)
 
         # Required to so that Wget is not invoked before the Server is initialized
         sleep(2)
         retCode = call(parameters)
-        stop_server()
+        TestObj.stop_server()
 
         try:
             TestObj.test_return_code(retCode)

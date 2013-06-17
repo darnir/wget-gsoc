@@ -6,19 +6,9 @@ import difflib
 import sys
 from ColourTerm import printer
 from xml.etree.ElementTree import parse, ParseError
-from multiprocessing import Process
 
 testdir = ""
 
-def start_server (inputFile):
-    server_process = Process(target=HTTPServer.initServer, args=(inputFile, ))
-    server_process.start()
-
-# Send a HTTP QUIT Request to stop the Server
-def stop_server ():
-    conn = http.client.HTTPConnection("localhost:8090")
-    conn.request("QUIT", "/")
-    conn.getresponse()
 
 class TestFailed(Exception):
     pass
@@ -39,6 +29,23 @@ class Test:
             shutil.rmtree(self.testDir)
             os.mkdir(self.testDir)
         os.chdir(self.testDir)
+
+    def start_server (self):
+        global server
+        server = HTTPServer.create_server()
+        port = server.server_address[1]
+        global domain
+        domain = "localhost:" + str(port) + "/"
+
+    def spawn_server (self):
+        HTTPServer.spawn_server(server)
+
+    """ Send a HTTP QUIT Request to stop the Server """
+    def stop_server (self):
+        conn = http.client.HTTPConnection(domain.strip('/'))
+        conn.request("QUIT", "/")
+        conn.getresponse()
+
     def gen_file_list(self):
         self.download_list = ""
         self.file_list = dict()
@@ -46,8 +53,8 @@ class Test:
             self.file_list[file_element.get('name')] = file_element.text
             if file_element.get('download') == 'False':
                 continue
-            self.download_list = self.download_list + "localhost:8090/" + file_element.get('name') + " "
-        return self.file_list
+            self.download_list = self.download_list + domain + file_element.get('name') + " "
+        HTTPServer.mk_file_sys(self.file_list)
     def get_cmd_line(self, WgetPath):
         cmd_line = WgetPath + " "
         for parameter in self.Root.findall('Option'):

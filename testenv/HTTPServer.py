@@ -2,7 +2,7 @@
 
 #from threading import Thread
 #from socketserver import ThreadingMixIn
-
+from multiprocessing import Process
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 
@@ -64,14 +64,15 @@ class __Handler(StoppableHTTPRequestHandler):
 #class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
 #    pass
 
-def __serve_on_port(port):
-    server = StoppableHTTPServer(("localhost", port), __Handler)
-    server.serve_forever()
+def create_server ():
+    server = StoppableHTTPServer (("localhost", 0), __Handler)
+    return server
 
-# The public interface to this Module. Please do not change interface unless absolutely required.
-def initServer(inputFile):
+def spawn_server (server):
+    server_process = Process (target=server.serve_forever)
+    server_process.start()
+
+def mk_file_sys (inputFile):
     global fileSys
     fileSys = inputFile
-    __serve_on_port(8090)
-
 #Thread(target=serve_on_port, args=[1111]).start()
