@@ -7,6 +7,14 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-18  Darshit Shah  <darnir@gmail.com>
 
+	* ColourTerm.py: Fix indentation to 3 spaces. Follow GNU Coding Style
+	better.
+	* HTTPServer.py: Same
+	* TestEnv.py: Same
+	* runTest.py: Same
+
+2013-06-18  Darshit Shah  <darnir@gmail.com>
+
 	* runTest.py: Change shebang line to python3
 	* HTTPServer.py: Remove shebang line. Change chmod mask to 644. This
 	file will not be executed directly.

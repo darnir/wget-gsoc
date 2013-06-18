@@ -10,41 +10,43 @@ from ColourTerm import printer
 from TestEnv import *
 
 # Build the path to local build of Wget
-dirn = os.path.dirname(sys.argv[0])
-absp = os.path.abspath(dirn)
+dirn = os.path.dirname (sys.argv[0])
+absp = os.path.abspath (dirn)
 WgetPath = absp + "/../src/wget"
 
 # Check for each TestCase file supplied in the arguments.
 # It is however preferable to run multiple tests through an external module
 # that aggregates the results better.
 for TestCase in sys.argv[1:]:
-    if isfile(TestCase):
-        try:
-            TestObj = Test(TestCase)
-        except TestFailed:
-            printer ("RED", "Parse error in Test Case file.")
-            continue
+   if isfile (TestCase):
+      try:
+         TestObj = Test (TestCase)
+      except TestFailed:
+         printer ("RED", "Parse error in Test Case file.")
+         continue
 
-        TestObj.start_server()
+      TestObj.start_server ()
 
-        TestObj.gen_file_list()
-        TestObj.spawn_server()
-        params = TestObj.get_cmd_line(WgetPath)
-        parameters = shlex.split(params)
+      TestObj.gen_file_list ()
+      TestObj.spawn_server ()
+      params = TestObj.get_cmd_line (WgetPath)
+      parameters = shlex.split (params)
 
-        # Required to so that Wget is not invoked before the Server is initialized
-        sleep(2)
-        retCode = call(parameters)
-        TestObj.stop_server()
+      # Required to so that Wget is not invoked before the Server is initialized
+      sleep (2)
+      retCode = call (parameters)
+      TestObj.stop_server ()
 
-        try:
-            TestObj.test_return_code(retCode)
-            TestObj.test_downloaded_files()
-        except TestFailed:
-            printer ("RED", "Test Failed")
-        else:
-            printer ("GREEN", "Test Passed")
-            TestObj.endTest()
+      try:
+         TestObj.test_return_code (retCode)
+         TestObj.test_downloaded_files ()
+      except TestFailed:
+         printer ("RED", "Test Failed")
+      else:
+         printer ("GREEN", "Test Passed")
+         TestObj.endTest ()
 
-    else:
-       print ("The Test Case File: " + TestCase + " does not exist.")
+   else:
+      print ("The Test Case File: " + TestCase + " does not exist.")
+
+# vim: set ts=8 sw=3 tw=0 et :
