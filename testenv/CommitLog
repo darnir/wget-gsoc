@@ -7,6 +7,12 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-18  Darshit Shah  <darnir@gmail.com>
 
+	* Makefile.am: Add Test-redirect to list of tests
+	* Test-redirect: Add a test to ensure Wget handles server redirects
+	correctly.
+
+2013-06-18  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (set_server_rules): Accept various information for
 	configuring the server.
 	(send_redirection): Handle sending redirect requests
