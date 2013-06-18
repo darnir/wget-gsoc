@@ -7,6 +7,14 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-18  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Change shebang line to python3
+	* HTTPServer.py: Remove shebang line. Change chmod mask to 644. This
+	file will not be executed directly.
+	* ColourTerm.py: Change chmod mask to 644. This file will not be
+	executed directly.
+
+2013-06-18  Darshit Shah  <darnir@gmail.com>
+
 	* Makefile.am: Set evironment variable MAKE_CHECK to identify that the
 	tests are being run through make check.
 	* ColourTerm.py (printer): If MAKE_CHECK is set, we do not want to

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 #from threading import Thread
 #from socketserver import ThreadingMixIn
 from multiprocessing import Process
