@@ -39,16 +39,29 @@ class __Handler (StoppableHTTPRequestHandler):
          self.wfile.write (content.encode ('utf-8'))
 
    def do_POST (self):
-      self.send_response (200)
-      self.send_header ("Content-type", "text/plain")
-      self.end_headers ()
+      path = self.path[1:]
+      if path in redir_list:
+         self.send_redirection (redir_list.get (path))
+      else:
+         self.send_response (200)
+         self.send_header ("Content-type", "text/plain")
+         self.end_headers ()
+
+   def send_redirection (self, dest):
+      location = dest[0]
+      response_code = dest[1]
+      self.send_response (int (response_code))
+      self.send_header ("Location", location)
+      self.end_headers()
 
    def send_head (self):
       """ Common code for GET and HEAD Commands.
       This method is overriden to use the fileSys dict.
       """
       path = self.path[1:]
-      if path in fileSys:
+      if path in redir_list:
+         self.send_redirection (redir_list.get (path))
+      elif path in fileSys:
          content = fileSys.get (path)
          self.send_response (200)
          self.send_header ("Content-type", "text/plain")
@@ -73,6 +86,11 @@ def spawn_server (server):
 def mk_file_sys (inputFile):
    global fileSys
    fileSys = inputFile
+
+def set_server_rules (redirections = None):
+   global redir_list
+   redir_list = redirections
+
 #Thread(target=serve_on_port, args=[1111]).start()
 
-# vim: set ts=8 sw=3 tw=0 et :
+# vim: set ts=8 sts=3 sw=3 tw=0 et :

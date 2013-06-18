@@ -7,6 +7,16 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-18  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (set_server_rules): Accept various information for
+	configuring the server.
+	(send_redirection): Handle sending redirect requests
+	(send_HEAD): Test if redirection is necessary and act appropriately
+	(send_POST): Samie
+	* TestEnv.py (parse_special): Parse special requests from the Test
+	File. Currently it only supports reading Redirection requests
+
+2013-06-18  Darshit Shah  <darnir@gmail.com>
+
 	* runTest.py: Exit driver module with highest exit status.
 	  0  Successful
 	 77  Skipped Test

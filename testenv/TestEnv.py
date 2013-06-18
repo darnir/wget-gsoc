@@ -60,6 +60,14 @@ class Test:
                            file_element.get ('name') + " "
       HTTPServer.mk_file_sys (self.file_list)
 
+   def parse_special (self):
+      # Handle redirection Requests
+      redirection_list = dict()
+      for redirect in self.Root.findall ('Redirection'):
+         redir_tuple = [redirect.get ('to'), redirect.text]
+         redirection_list[redirect.get ('from')] = redir_tuple
+      HTTPServer.set_server_rules (redirections = redirection_list)
+
    def get_cmd_line (self, WgetPath):
       cmd_line = WgetPath + " "
       for parameter in self.Root.findall('Option'):
@@ -121,4 +129,4 @@ class Test:
          os.remove (filename)
       self._test_extra_files ()
 
-# vim: set ts=8 sw=3 tw=0 et :
+# vim: set ts=8 sw=3 sts=3 tw=0 et :
