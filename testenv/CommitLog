@@ -7,6 +7,15 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-18  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Exit driver module with highest exit status.
+	  0  Successful
+	 77  Skipped Test
+	 99  Hard Error (Error in Test Suite, not Wget)
+	100  Test Failed
+	These exit numbers are teken from the automake documentation.
+
+2013-06-18  Darshit Shah  <darnir@gmail.com>
+
 	* ColourTerm.py: Fix indentation to 3 spaces. Follow GNU Coding Style
 	better.
 	* HTTPServer.py: Same
