@@ -1,0 +1,26 @@
+<WgetTest name="Prototype File">
+
+    <InputFile name="File1.html" download="False"><![CDATA[<html>
+<head>
+</head>
+<body>
+This is a Prototype File.
+</body>
+</html>]]></InputFile>
+
+    <InputFile name="File2.html"><![CDATA[<html>
+<head>
+</head>
+<body>
+2nd Test File
+</body>
+</html>]]></InputFile>
+
+    <Option>-d -c</Option>
+    <Option>-v --method=HEAD</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+    </ExpectedResults>
+
+</WgetTest>

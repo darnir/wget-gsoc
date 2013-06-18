@@ -5,6 +5,13 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-19  Darshit Shah  <darnir@gmail.com>
+
+	* Makefile.am: Add Test-Head to list of tests. This could only be done
+	after merging the latest commit in master.
+	* Test-Head: Add a test to ensure Wget sends a HEAD request correctly
+	with --method=head
+
 2013-06-18  Darshit Shah  <darnir@gmail.com>
 
 	* Makefile.am: Add Test-redirect to list of tests
