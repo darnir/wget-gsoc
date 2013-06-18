@@ -5,6 +5,14 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-18  Darshit Shah  <darnir@gmail.com>
+
+	* Makefile.am: Set evironment variable MAKE_CHECK to identify that the
+	tests are being run through make check.
+	* ColourTerm.py (printer): If MAKE_CHECK is set, we do not want to
+	print ANSI Escape sequences since the output will be redirected to a
+	log file not a terminal.
+
 2013-06-17  Darshit Shah  <darnir@gmail.com>
 
 	* Test-O: (newfile)

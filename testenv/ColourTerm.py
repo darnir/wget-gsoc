@@ -1,4 +1,5 @@
 import platform
+from os import getenv
 
 T_COLORS = {
     'PURPLE': '\033[95m',
@@ -11,6 +12,10 @@ T_COLORS = {
 
 def printer(color,string):
     if platform.system() == 'Linux':
-        print(T_COLORS.get(color) + string + T_COLORS.get('ENDC'))
+        if getenv("MAKE_CHECK", "False") == "True":
+            print(string)
+        else:
+            print(T_COLORS.get(color) + string + T_COLORS.get('ENDC'))
+
     else:
         print(string)
