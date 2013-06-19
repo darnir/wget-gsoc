@@ -77,7 +77,8 @@ class Test:
 
    def _test_cleanup (self):
       os.chdir("..")
-      shutil.rmtree(self.testDir)
+      if os.getenv ("NO_CLEANUP") is None:
+         shutil.rmtree(self.testDir)
 
    def endTest (self):
       self._test_cleanup()
