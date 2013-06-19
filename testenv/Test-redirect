@@ -19,7 +19,7 @@ This is a Prototype File.
     <Option>-d -c</Option>
     <Option>-v</Option>
 
-    <Redirection from="File2.html" to="File1.html">301</Redirection>
+    <Special from="File2.html" to="File1.html" code="301">Redirect</Special>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

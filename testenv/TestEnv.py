@@ -63,9 +63,10 @@ class Test:
    def parse_special (self):
       # Handle redirection Requests
       redirection_list = dict()
-      for redirect in self.Root.findall ('Redirection'):
-         redir_tuple = [redirect.get ('to'), redirect.text]
-         redirection_list[redirect.get ('from')] = redir_tuple
+      for special_comm in self.Root.findall ('Special'):
+         if special_comm.text == "Redirect":
+            redir_tuple = [special_comm.get ('to'), special_comm.get ("code")]
+            redirection_list[special_comm.get ('from')] = redir_tuple
       HTTPServer.set_server_rules (redirections = redirection_list)
 
    def get_cmd_line (self, WgetPath):

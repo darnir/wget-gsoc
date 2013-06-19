@@ -5,6 +5,12 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-21  Darshit Shah  <darnir@gmail.com>
+
+	* Test-redirect: Edit redirection semantics. Bring it under Special
+	Commands.
+	* TestEnv.py (parse_special): Reflect change in semantics in parser
+
 2013-06-20  Darshit Shah  <darnir@gmail.com>
 
 	* TestEnv.py (_test_cleaup): Do not delete test files if NO_CLEANUP
