@@ -5,6 +5,12 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-20  Darshit Shah  <darnir@gmail.com>
+
+	* TestEnv.py (_test_extra_files): Function deleted
+	(test_downloaded_files): Function run optimized. Cleaner code. Merged
+	function of _test_extra_files() too.
+
 2013-06-19  Darshit Shah  <darnir@gmail.com>
 
 	* Makefile.am: Add Test-Head to list of tests. This could only be done
