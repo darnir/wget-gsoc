@@ -5,6 +5,11 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-23  Darshit Shah  <darnir@gmail.com>
+
+	* Makefile.am: Add AUTOMAKE_OPTION parallel-tests to ensure the
+	parallel test harness is used on Automake v1.12
+
 2013-06-22  Darshit Shah  <darnir@gmail.com>
 
 	* README: Add Automake >= 1.13 as a requirement. This is because the
