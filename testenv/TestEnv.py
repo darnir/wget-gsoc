@@ -67,6 +67,11 @@ class Test:
          if special_comm.text == "Redirect":
             redir_tuple = [special_comm.get ('to'), special_comm.get ("code")]
             redirection_list[special_comm.get ('from')] = redir_tuple
+         if special_comm.text == "Continue":
+            filename = special_comm.get ('file')
+            file_handle = open(filename, "w")
+            offset = int (special_comm.get ('bytes'))
+            file_handle.write(self.file_list[filename][:offset])
       HTTPServer.set_server_rules (redirections = redirection_list)
 
    def get_cmd_line (self, WgetPath):

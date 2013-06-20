@@ -5,6 +5,28 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-22  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (InvalidRangeHeader): Define new exception that is
+	raised during processing of the Range Header
+	(parse_range_header): Parse the Range Header. Returns None if the
+	Range header does not exist, else will return the starting offset.
+	This function can only parse the "bytes %d-" style headers which Wget
+	sends. Support for other valid header formats is not implemented.
+	(do_GET): send_HEAD method now returns two objects. Accept the offset
+	bytes from which to start serving the file.
+	(send_HEAD): Accept the output of parse_range_header() and send the
+	appropriate headers back.
+	* TestEnv.py (parse_special): Support new special command, Continue.
+	It reads the offset bytes from the Test file and creates a new file by
+	the name specified in the while with the same number of bytes.
+	Currently, this function does not support the use of -O and -c
+	together since it does not lookup the original file name from the list
+	when reading the file content.
+	* Test-c-partial: (newfile)
+	Test file to check if Wget handles partially completed files
+	correctly.
+
 2013-06-21  Darshit Shah  <darnir@gmail.com>
 
 	* Test-redirect: Edit redirection semantics. Bring it under Special
