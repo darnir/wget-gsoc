@@ -5,10 +5,9 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 import re
 
-fileSys = dict()
-
 ## Custom Class Definitions. These extend the standard classes
 # so as to add support for stopping them programmatically.
+
 
 class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
 
@@ -19,6 +18,12 @@ class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
       self.server.stop = True
 
 class StoppableHTTPServer (HTTPServer):
+
+   def server_vars (self, redirects, content_disp):
+      global redir_list
+      redir_list = redirects
+      global content_name
+      content_name = content_disp
 
    def serve_forever (self):
       self.stop = False
@@ -107,6 +112,8 @@ class __Handler (StoppableHTTPRequestHandler):
             content_length -= self.range_begin
          self.send_header ("Content-type", "text/plain")
          self.send_header ("Content-Length", content_length)
+         if content_name != None:
+            self.send_header ("Content-Disposition", 'Attachment; filename=%s' %(content_name))
          self.end_headers ()
          return (content, self.range_begin)
       else:
@@ -128,9 +135,13 @@ def mk_file_sys (inputFile):
    global fileSys
    fileSys = inputFile
 
-def set_server_rules (redirections = None):
-   global redir_list
-   redir_list = redirections
+def set_server_rules (redirections = None, content_disposition = None):
+   #server_vars (redirections)
+   #global redir_list
+   #redir_list = dict()
+   #if redirections is not None:
+   #   redir_list = redirections
+   pass
 
 #Thread(target=serve_on_port, args=[1111]).start()
 

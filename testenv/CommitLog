@@ -7,6 +7,15 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-23  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py: Define new function server_vars () that does the job
+	of the set_server_rules funtion earlier.
+	(set_server_rules): Comment out all the actions. Kept around for
+	safekeeping currently.
+	(send_HEAD): Send Content-Disposition header if required.
+	* TestEnv.py (parse_special): Support Content-Disposition headers.
+
+2013-06-23  Darshit Shah  <darnir@gmail.com>
+
 	* Makefile.am: Add AUTOMAKE_OPTION parallel-tests to ensure the
 	parallel test harness is used on Automake v1.12
 

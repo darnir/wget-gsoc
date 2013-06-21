@@ -63,16 +63,21 @@ class Test:
    def parse_special (self):
       # Handle redirection Requests
       redirection_list = dict()
+      content_name = ""
+
       for special_comm in self.Root.findall ('Special'):
          if special_comm.text == "Redirect":
             redir_tuple = [special_comm.get ('to'), special_comm.get ("code")]
             redirection_list[special_comm.get ('from')] = redir_tuple
-         if special_comm.text == "Continue":
+         elif special_comm.text == "Continue":
             filename = special_comm.get ('file')
             file_handle = open(filename, "w")
             offset = int (special_comm.get ('bytes'))
             file_handle.write(self.file_list[filename][:offset])
-      HTTPServer.set_server_rules (redirections = redirection_list)
+         elif special_comm.text == "Content Disposition":
+            content_name = special_comm.get ('name')
+      # HTTPServer.set_server_rules (redirections = redirection_list)
+      server.server_vars(redirection_list, content_name)
 
    def get_cmd_line (self, WgetPath):
       cmd_line = WgetPath + " "

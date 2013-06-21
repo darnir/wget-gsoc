@@ -1,0 +1,20 @@
+<WgetTest name="Prototype File">
+
+    <InputFile name="File2.html"><![CDATA[<html>
+<head>
+</head>
+<body>
+2nd Test File
+</body>
+</html>]]></InputFile>
+
+    <Option>-d -c</Option>
+    <Option>-v --content-disposition</Option>
+
+    <Special name="b.exe">Content Disposition</Special>
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File orig="File2.html">treial</File>
+    </ExpectedResults>
+
+</WgetTest>
