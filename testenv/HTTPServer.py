@@ -19,11 +19,9 @@ class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
 
 class StoppableHTTPServer (HTTPServer):
 
-   def server_vars (self, redirects, content_disp):
-      global redir_list
-      redir_list = redirects
-      global content_name
-      content_name = content_disp
+   def server_conf (self, conf_dict):
+      global server_configs
+      server_configs = conf_dict
 
    def serve_forever (self):
       self.stop = False
@@ -71,22 +69,35 @@ class __Handler (StoppableHTTPRequestHandler):
          self.send_header ("Content-type", "text/plain")
          self.end_headers ()
 
-   def send_redirection (self, dest):
-      location = dest[0]
-      response_code = dest[1]
-      self.send_response (int (response_code))
-      self.send_header ("Location", location)
-      self.end_headers()
+   def handle_redirects (self, path):
+      if "Redirect" in server_configs:
+         redir_list = server_configs.get ('Redirect')
+         for obj in redir_list:
+            if path == obj.from_uri:
+               self.send_response (int (obj.stat_code))
+               self.send_header ("Location", obj.to_uri)
+               self.end_headers()
+               return True
+      else:
+         return False
+
+   def send_content_disposition_header (self, path):
+      if "ContentDisp" in server_configs:
+         contentdisp = server_configs.get ('ContentDisp')
+         for obj in contentdisp:
+            if path == obj.cd_url:
+               self.send_header ("Content-Disposition", 'Attachment; filename=%s' %(obj.cd_name))
 
    def send_head (self):
       """ Common code for GET and HEAD Commands.
       This method is overriden to use the fileSys dict.
       """
       path = self.path[1:]
-      if path in redir_list:
-         self.send_redirection (redir_list.get (path))
+
+      if self.handle_redirects (path) is True:
          return (None, None)
-      elif path in fileSys:
+
+      if path in fileSys:
          content = fileSys.get (path)
          content_length = len (content)
          try:
@@ -112,8 +123,7 @@ class __Handler (StoppableHTTPRequestHandler):
             content_length -= self.range_begin
          self.send_header ("Content-type", "text/plain")
          self.send_header ("Content-Length", content_length)
-         if content_name != None:
-            self.send_header ("Content-Disposition", 'Attachment; filename=%s' %(content_name))
+         self.send_content_disposition_header (path)
          self.end_headers ()
          return (content, self.range_begin)
       else:
@@ -134,14 +144,6 @@ def spawn_server (server):
 def mk_file_sys (inputFile):
    global fileSys
    fileSys = inputFile
-
-def set_server_rules (redirections = None, content_disposition = None):
-   #server_vars (redirections)
-   #global redir_list
-   #redir_list = dict()
-   #if redirections is not None:
-   #   redir_list = redirections
-   pass
 
 #Thread(target=serve_on_port, args=[1111]).start()
 

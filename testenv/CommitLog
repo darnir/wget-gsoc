@@ -5,6 +5,29 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-22  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (server_vars): Remove function
+	(server_conf): Get the configuration dict. and store as a global
+	variable.
+	(send_redirection): Remove function
+	(handle_redirects): Accept the path of the file and check whether a
+	redirect rule exists. If so, send the redirection headers and return
+	True. Else, return False.
+	(send_content_disposition_header): Check of a rule exists for sendign
+	content-disposition headers. If so, send the relevent header
+	(send_head): Reduce processing. Assign that load to the respective
+	methods.
+	(set_server_rules): Remove function
+	* Test-Content-Disposition: Add attribute "file" to identify filename to
+	which to apply the header.
+	* TestEnv.py (parse_special): Rework function to be more pythonic and
+	readable. Create a list of similar Special Rules and store them in a
+	dictionary. Send this dictionary to HTTPServer.server_conf()
+	(Class Redirect): Stores attributes of Redirection Requests
+	(Class Content_Disp): Stores attributes of Content-Disposition Headers
+	to send.
+
 2013-06-23  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py: Define new function server_vars () that does the job

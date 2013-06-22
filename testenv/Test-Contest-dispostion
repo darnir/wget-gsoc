@@ -11,7 +11,7 @@
     <Option>-d -c</Option>
     <Option>-v --content-disposition</Option>
 
-    <Special name="b.exe">Content Disposition</Special>
+    <Special file="File2.html" name="treial">Content Disposition</Special>
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
         <File orig="File2.html">treial</File>

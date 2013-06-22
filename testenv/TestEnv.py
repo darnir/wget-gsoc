@@ -5,6 +5,7 @@ import shutil
 import sys
 from ColourTerm import printer
 from difflib import unified_diff
+from collections import defaultdict
 from xml.etree.ElementTree import parse, ParseError
 
 testdir = ""
@@ -60,24 +61,35 @@ class Test:
                            file_element.get ('name') + " "
       HTTPServer.mk_file_sys (self.file_list)
 
-   def parse_special (self):
-      # Handle redirection Requests
-      redirection_list = dict()
-      content_name = ""
+   class Redirect:
+      def __init__ (self, redir_from, redir_to, redir_code):
+         self.from_uri = redir_from
+         self.to_uri = redir_to
+         self.stat_code = redir_code
 
+   class Content_Disp:
+      def __init__ (self, url, name):
+         self.cd_url = url
+         self.cd_name = name
+
+   def parse_special (self):
+      special_conf = defaultdict(list)
       for special_comm in self.Root.findall ('Special'):
          if special_comm.text == "Redirect":
-            redir_tuple = [special_comm.get ('to'), special_comm.get ("code")]
-            redirection_list[special_comm.get ('from')] = redir_tuple
+            rfrom = special_comm.get ('from')
+            rto = special_comm.get ('to')
+            rcode = special_comm.get ('code')
+            special_conf['Redirect'].append (self.Redirect(rfrom, rto, rcode))
          elif special_comm.text == "Continue":
             filename = special_comm.get ('file')
-            file_handle = open(filename, "w")
+            file_handle = open (filename, "w")
             offset = int (special_comm.get ('bytes'))
-            file_handle.write(self.file_list[filename][:offset])
+            file_handle.write (self.file_list[filename][:offset])
          elif special_comm.text == "Content Disposition":
-            content_name = special_comm.get ('name')
-      # HTTPServer.set_server_rules (redirections = redirection_list)
-      server.server_vars(redirection_list, content_name)
+            cfile = special_comm.get ('file')
+            cname = special_comm.get ('name')
+            special_conf['ContentDisp'].append (self.Content_Disp(cfile, cname))
+      server.server_conf (special_conf)
 
    def get_cmd_line (self, WgetPath):
       cmd_line = WgetPath + " "
