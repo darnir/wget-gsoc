@@ -5,6 +5,12 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-23  Darshit Shah  <darnir@gmail.com>
+
+	* runTest.py: Parse errors in Test Case files now result in a skipped
+	test (77) rather than a Hard Error (99). Hard errors will be used for
+	Exceptions raised in the internal code, e.g. the Servers.
+
 2013-06-22  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (server_vars): Remove function
