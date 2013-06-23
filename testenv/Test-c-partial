@@ -9,7 +9,10 @@ This is a Prototype File.
 </html>]]></InputFile>
 
     <Option>-d -c</Option>
-    <Special file="File1.html" bytes="18">Continue</Special>
+    <Special command="Continue">
+        <File>File1.html</File>
+        <Bytes>18</Bytes>
+    </Special>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

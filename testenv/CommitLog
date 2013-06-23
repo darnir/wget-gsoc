@@ -7,6 +7,16 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-23  Darshit Shah  <darnir@gmail.com>
 
+	* TestEnv.py (parse_special): Change semantics of "Special" element.
+	This is done so as to create more clear and better formatted Test
+	Files.
+	* Test-Content-disposition: Edit Test Files to be compliant with the new semantics of
+	Special.
+	* Test-c-partial: Same
+	* Test-redirect: Same
+
+2013-06-23  Darshit Shah  <darnir@gmail.com>
+
 	* runTest.py: Parse errors in Test Case files now result in a skipped
 	test (77) rather than a Hard Error (99). Hard errors will be used for
 	Exceptions raised in the internal code, e.g. the Servers.

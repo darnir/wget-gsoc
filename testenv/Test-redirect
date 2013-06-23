@@ -19,8 +19,16 @@ This is a Prototype File.
     <Option>-d -c</Option>
     <Option>-v</Option>
 
-    <Special from="File2.html" to="temp" code="301">Redirect</Special>
-    <Special from="temp" to="File1.html" code="302">Redirect</Special>
+    <Special command="Redirect">
+        <From>File2.html</From>
+        <To>temp</To>
+        <Code>301</Code>
+    </Special>
+    <Special command="Redirect">
+        <From>temp</From>
+        <To>File1.html</To>
+        <Code>302</Code>
+    </Special>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

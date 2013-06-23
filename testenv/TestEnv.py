@@ -75,19 +75,27 @@ class Test:
    def parse_special (self):
       special_conf = defaultdict(list)
       for special_comm in self.Root.findall ('Special'):
-         if special_comm.text == "Redirect":
-            rfrom = special_comm.get ('from')
-            rto = special_comm.get ('to')
-            rcode = special_comm.get ('code')
-            special_conf['Redirect'].append (self.Redirect(rfrom, rto, rcode))
-         elif special_comm.text == "Continue":
-            filename = special_comm.get ('file')
+         command = special_comm.get ('command')
+         if command == "Redirect":
+            redir_from_node = special_comm.find ('From')
+            redir_from = redir_from_node.text
+            redir_to_node = special_comm.find ('To')
+            redir_to = redir_to_node.text
+            redir_code_node = special_comm.find ('Code')
+            redir_code = redir_code_node.text
+            special_conf['Redirect'].append (self.Redirect(redir_from, redir_to, redir_code))
+         elif command == "Continue":
+            filename_node = special_comm.find ('File')
+            filename = filename_node.text
             file_handle = open (filename, "w")
-            offset = int (special_comm.get ('bytes'))
+            offset_node = special_comm.find ('Bytes')
+            offset = int (offset_node.text)
             file_handle.write (self.file_list[filename][:offset])
-         elif special_comm.text == "Content Disposition":
-            cfile = special_comm.get ('file')
-            cname = special_comm.get ('name')
+         elif command  == "Content Disposition":
+            cfile_node = special_comm.find ('File')
+            cfile = cfile_node.text
+            cname_node = special_comm.find ('NameParam')
+            cname = cname_node.text
             special_conf['ContentDisp'].append (self.Content_Disp(cfile, cname))
       server.server_conf (special_conf)
 

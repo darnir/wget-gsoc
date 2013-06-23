@@ -11,7 +11,10 @@
     <Option>-d -c</Option>
     <Option>-v --content-disposition</Option>
 
-    <Special file="File2.html" name="treial">Content Disposition</Special>
+    <Special command="Content Disposition">
+        <File>File2.html</File>
+        <NameParam>treial</NameParam>
+    </Special>
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
         <File orig="File2.html">treial</File>
