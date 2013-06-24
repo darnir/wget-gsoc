@@ -7,6 +7,13 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-24  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (do_POST): If redirection required, handle it and
+	return. This saves one level of indentation. Also, add support for
+	when the requested URI does not exist. Create a new one with the
+	contents given in body-data.
+
+2013-06-24  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (do_POST): Replace old boilerplate code. In
 	Content-Length does not exist, respond with a 400 Invalid Request and
 	exit. If the URI exists on the server, take the contents of the file,

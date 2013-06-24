@@ -73,24 +73,29 @@ class __Handler (StoppableHTTPRequestHandler):
          body_data = self.rfile.read (cLength).decode ('utf-8')
 
       if self.handle_redirects (path) is True:
-         pass
+         return None
+      if path in fileSys:
+         self.send_response (200)
+         self.send_header ("Content-type", "text/plain")
+         content = fileSys.get (path)
+         content += "\n" + body_data
+         total_length = len (content)
+         self.send_header ("Content-Length", total_length)
+         self.end_headers()
+         try:
+            self.wfile.write (content.encode ('utf-8'))
+         except Exception:
+           pass
       else:
-         if path in fileSys:
-            self.send_response (200)
-            self.send_header ("Content-type", "text/plain")
-            content = fileSys.get (path)
-            content += "\n" + body_data
-            total_length = len (content)
-            self.send_header ("Content-Length", total_length)
-            self.end_headers()
-            try:
-               self.wfile.write (content.encode ('utf-8'))
-            except Exception:
-              pass
-         else:
-            self.send_response (201)
-            self.end_headers ()
-
+         self.send_response (201)
+         fileSys[path] = body_data
+         self.send_header ("Content-type", "text/plain")
+         self.send_header ("Content-length", cLength)
+         self.end_headers ()
+         try:
+            self.wfile.write (body_data.encode ('utf-8'))
+         except Exception:
+            pass
 
    def handle_redirects (self, path):
       if "Redirect" in server_configs:
