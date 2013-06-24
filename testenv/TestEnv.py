@@ -74,6 +74,7 @@ class Test:
 
    def parse_special (self):
       special_conf = defaultdict(list)
+      self.meth_files = ""
       for special_comm in self.Root.findall ('Special'):
          command = special_comm.get ('command')
          if command == "Redirect":
@@ -97,13 +98,17 @@ class Test:
             cname_node = special_comm.find ('NameParam')
             cname = cname_node.text
             special_conf['ContentDisp'].append (self.Content_Disp(cfile, cname))
+         elif command == "POST":
+            for files in special_comm.findall ('File'):
+               self.meth_files += domain + files.text + " "
       server.server_conf (special_conf)
 
    def get_cmd_line (self, WgetPath):
       cmd_line = WgetPath + " "
       for parameter in self.Root.findall('Option'):
          cmd_line += parameter.text + " "
-      cmd_line += self.download_list
+      cmd_line += self.download_list + " "
+      cmd_line += self.meth_files
       return cmd_line
 
    def _test_cleanup (self):

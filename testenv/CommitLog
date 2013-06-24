@@ -5,6 +5,25 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-24  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (do_POST): Replace old boilerplate code. In
+	Content-Length does not exist, respond with a 400 Invalid Request and
+	exit. If the URI exists on the server, take the contents of the file,
+	append the Body-data to it and return the file to the client with a
+	200 OK. Else, return a 201 Created. The code for handling File
+	creation is to be written.
+	* TestEnv.py (parse_special): Handle special command, POST.
+	(get_cmd_line): Method commands may also specify URI which are not in
+	the Filesystem, but are to be created. Add these URIs to invokation
+	list.
+	* Makefile.am (TESTS): Add Test-Post and Test-Post2.
+	(XFAIL_TESTS): Both Test-Post and Test-Post2 are expected to fail.
+	Test_Post fails since Wget does not read and save the Body content
+	sent with the response.
+	Test_Post2 fails since Wget does not send a Content-Length=0 Header
+	when the Body Data is empty.
+
 2013-06-23  Darshit Shah  <darnir@gmail.com>
 
 	* TestEnv.py (parse_special): Change semantics of "Special" element.

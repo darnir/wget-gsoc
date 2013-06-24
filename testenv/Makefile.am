@@ -6,5 +6,9 @@ TESTS = Test-stdouterr \
 	Test-redirect \
 	Test-Head \
 	Test-c-partial \
-	Test-Content-disposition
+	Test-Content-disposition \
+	Test-Post \
+	Test-Post2
+XFAIL_TESTS = Test-Post \
+	      Test-Post2
 LOG_COMPILER = ./runTest.py

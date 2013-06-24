@@ -62,12 +62,35 @@ class __Handler (StoppableHTTPRequestHandler):
 
    def do_POST (self):
       path = self.path[1:]
-      if path in redir_list:
-         self.send_redirection (redir_list.get (path))
-      else:
-         self.send_response (200)
-         self.send_header ("Content-type", "text/plain")
+
+      cLength = self.headers.get ("Content-Length")
+      if cLength is None:
+         self.send_response (400)
          self.end_headers ()
+         return None
+      else:
+         cLength = int (cLength)
+         body_data = self.rfile.read (cLength).decode ('utf-8')
+
+      if self.handle_redirects (path) is True:
+         pass
+      else:
+         if path in fileSys:
+            self.send_response (200)
+            self.send_header ("Content-type", "text/plain")
+            content = fileSys.get (path)
+            content += "\n" + body_data
+            total_length = len (content)
+            self.send_header ("Content-Length", total_length)
+            self.end_headers()
+            try:
+               self.wfile.write (content.encode ('utf-8'))
+            except Exception:
+              pass
+         else:
+            self.send_response (201)
+            self.end_headers ()
+
 
    def handle_redirects (self, path):
       if "Redirect" in server_configs:

@@ -1,0 +1,21 @@
+<WgetTest name="Test Post without body data">
+
+    <InputFile name="File2.html"><![CDATA[<html>
+<head>
+</head>
+<body>
+2nd Test File
+</body>
+</html>]]></InputFile>
+
+    <Option>-d --tries=2 --method=post</Option>
+
+    <Special command="POST">
+    </Special>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File>File2.html</File>
+    </ExpectedResults>
+
+</WgetTest>
