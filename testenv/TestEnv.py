@@ -101,6 +101,9 @@ class Test:
          elif command == "POST":
             for files in special_comm.findall ('File'):
                self.meth_files += domain + files.text + " "
+         elif command == "PUT":
+            for files in special_comm.findall ('File'):
+               self.meth_files += domain + files.text + " "
       server.server_conf (special_conf)
 
    def get_cmd_line (self, WgetPath):

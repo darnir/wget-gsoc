@@ -7,6 +7,13 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-24  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (do_PUT): Add support for PUT Command. Ensure the
+	command is idempotent by simply replacing the file if it exists with
+	the data sent by the client. Else create a new file with that data.
+	* TestEnv.py (parse_special): Same
+
+2013-06-24  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (do_POST): If redirection required, handle it and
 	return. This saves one level of indentation. Also, add support for
 	when the requested URI does not exist. Create a new one with the
