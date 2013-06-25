@@ -1,0 +1,22 @@
+<WgetTest name="Prototype File">
+
+    <InputFile name="File2.html" download="False"><![CDATA[<html>
+<head>
+</head>
+<body>
+2nd Test File
+</body>
+</html>]]></InputFile>
+
+    <Option>-d --method=put --body-data=Message=Heya</Option>
+
+    <Special command="PUT">
+        <File>newfile</File>
+    </Special>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File>newfile</File>
+    </ExpectedResults>
+
+</WgetTest>

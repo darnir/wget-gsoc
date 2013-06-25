@@ -8,7 +8,10 @@ TESTS = Test-stdouterr \
 	Test-c-partial \
 	Test-Content-disposition \
 	Test-Post \
-	Test-Post2
+	Test-Post2 \
+	Test-Post3
 XFAIL_TESTS = Test-Post \
-	      Test-Post2
+	      Test-Post2 \
+	      Test-Post3 \
+	      Test-Put
 LOG_COMPILER = ./runTest.py

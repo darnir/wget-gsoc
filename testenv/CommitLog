@@ -5,6 +5,30 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-26  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (spawn_server): Create a Multiprocessing Queue and
+	pass it to the new child process. This queue is used to retrieve the
+	updated filesystem dictionary from the Server process for validation
+	purposes in TestEnv.
+	(ret_fileSys): Called from TestEnv.stop_server() to return the fileSys
+	dictionary. The Queue.get() method is passed the attribute True, to
+	ensure that it blocks the process till something is written to the
+	Queue. This is done, since we are expecting some data to be in the
+	Queue with full surety.
+	(do_QUIT): Write the fileSys dict to the Queue.
+	(serve_forever): Generate a global Queue object that can later be used
+	by do_QUIT
+	(do_POST): Edit the filesystem data too when appending the body_data
+	to the original file. This fixes an expected failure in Test-Post
+	* TestEnv.py (stop_server): Call HTTPServer.ret_fileSys() just after
+	sending the QUIT command but before reading the response. This ensures
+	that the server process doesn't die before the data in the Queue is
+	read. This is enfirced by making the call to Queue.get() a blocking
+	call.
+	(test_expected_files): Use the modified fileSys dictionary instead of
+	the original file_list dict.
+
 2013-06-24  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (do_PUT): Add support for PUT Command. Ensure the

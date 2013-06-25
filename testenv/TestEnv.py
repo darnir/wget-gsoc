@@ -48,6 +48,7 @@ class Test:
    def stop_server (self):
       conn = http.client.HTTPConnection (domain.strip ('/'))
       conn.request ("QUIT", "/")
+      self.fileSys = HTTPServer.ret_fileSys()
       conn.getresponse ()
 
    def gen_file_list (self):
@@ -146,7 +147,7 @@ class Test:
             if filename in expected_files:
                file_handler = open (filename, "r")
                file_content = file_handler.read()
-               real_contents = self.file_list.get (expected_files[filename])
+               real_contents = self.fileSys.get (expected_files[filename])
                if real_contents != file_content:
                   printer ("RED", "Contents of " + filename + " do not match")
                   for line in unified_diff (real_contents, file_content,

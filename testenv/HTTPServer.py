@@ -1,6 +1,6 @@
 #from threading import Thread
 #from socketserver import ThreadingMixIn
-from multiprocessing import Process
+from multiprocessing import Process, Queue
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 import re
@@ -13,6 +13,7 @@ class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
 
    protocol_version = 'HTTP/1.1'
    def do_QUIT (self):
+      q.put (fileSys)
       self.send_response (200)
       self.end_headers ()
       self.server.stop = True
@@ -23,7 +24,9 @@ class StoppableHTTPServer (HTTPServer):
       global server_configs
       server_configs = conf_dict
 
-   def serve_forever (self):
+   def serve_forever (self, q):
+      global que
+      queue = q
       self.stop = False
       while not self.stop:
          self.handle_request ()
@@ -77,9 +80,10 @@ class __Handler (StoppableHTTPRequestHandler):
       if path in fileSys:
          self.send_response (200)
          self.send_header ("Content-type", "text/plain")
-         content = fileSys.get (path)
+         content = fileSys.pop (path)
          content += "\n" + body_data
          total_length = len (content)
+         fileSys[path] = content
          self.send_header ("Content-Length", total_length)
          self.end_headers()
          try:
@@ -191,12 +195,17 @@ def create_server ():
    return server
 
 def spawn_server (server):
-   server_process = Process (target=server.serve_forever)
+   global q
+   q = Queue()
+   server_process = Process (target=server.serve_forever, args=(q,))
    server_process.start ()
 
 def mk_file_sys (inputFile):
    global fileSys
    fileSys = inputFile
+
+def ret_fileSys ():
+   return (q.get (True))
 
 #Thread(target=serve_on_port, args=[1111]).start()
 
