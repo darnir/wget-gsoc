@@ -24,8 +24,8 @@ for TestCase in sys.argv[1:]:
       try:
          TestObj = Test (TestCase)
       except TestFailed:
-         printer ("RED", "Parse error in Test Case file.")
-         printer ("RED", "Test Skipped")
+         printer ("YELLOW", "Parse error in Test Case file.")
+         printer ("YELLOW", "Test Skipped")
          exit_status = 77
          continue
 
@@ -53,7 +53,7 @@ for TestCase in sys.argv[1:]:
          TestObj.endTest ()
 
    else:
-      print ("The Test Case File: " + TestCase + " does not exist.")
+      printer ("YELLOW", "The Test Case File: " + TestCase + " does not exist.")
       exit_status = 77
 
 exit (exit_status)

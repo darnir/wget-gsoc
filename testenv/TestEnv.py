@@ -24,6 +24,9 @@ class Test:
       except ParseError as ae:
          raise TestFailed ()
       self.Root = TestTree.getroot ()
+      if self.Root.tag != "WgetTest":
+         raise TestFailed ()
+      printer ("BLUE", "Running Test: " + self.Root.get ('name'))
       self.testDir = TestFile + "-test"
       self.resultsNode = self.Root.find ('ExpectedResults')
       try:

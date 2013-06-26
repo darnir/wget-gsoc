@@ -7,6 +7,14 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-26  Darshit Shah  <darnir@gmail.com>
 
+	* TestEnv.py (__init__): Test if the input file begins with a WgetTest
+	Element. This element is compulsory for identification of Test Files.
+	Also, print a line in, Blue with the name of the Test File we are
+	executing.
+	* runTest.py: Skipped tests are printed in Yellow
+
+2013-06-26  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (spawn_server): Create a Multiprocessing Queue and
 	pass it to the new child process. This queue is used to retrieve the
 	updated filesystem dictionary from the Server process for validation
