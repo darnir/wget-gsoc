@@ -76,6 +76,11 @@ class Test:
          self.cd_url = url
          self.cd_name = name
 
+   class Cust_Header:
+      def __init__ (self, header, value):
+         self.header_name = header
+         self.header_value = value
+
    def parse_special (self):
       special_conf = defaultdict(list)
       self.meth_files = ""
@@ -103,6 +108,12 @@ class Test:
             cname_node = special_comm.find ('NameParam')
             cname = cname_node.text
             special_conf['ContentDisp'].append (self.Content_Disp(cfile, cname))
+         elif command == "Header":
+            header_node = special_comm.find ('Name')
+            header = header_node.text
+            value_node = special_comm.find ('Value')
+            value = value_node.text
+            special_conf['Header'].append (self.Cust_Header(header, value))
          elif command == "POST":
             for files in special_comm.findall ('File'):
                self.meth_files += domain + files.text + " "

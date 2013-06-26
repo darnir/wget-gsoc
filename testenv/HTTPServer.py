@@ -8,14 +8,13 @@ import re
 ## Custom Class Definitions. These extend the standard classes
 # so as to add support for stopping them programmatically.
 
-
 class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
 
    protocol_version = 'HTTP/1.1'
    def do_QUIT (self):
       q.put (fileSys)
       self.send_response (200)
-      self.end_headers ()
+      self.finish_headers ()
       self.server.stop = True
 
 class StoppableHTTPServer (HTTPServer):
@@ -69,7 +68,7 @@ class __Handler (StoppableHTTPRequestHandler):
       cLength = self.headers.get ("Content-Length")
       if cLength is None:
          self.send_response (400)
-         self.end_headers ()
+         self.finish_headers ()
          return None
       else:
          cLength = int (cLength)
@@ -85,7 +84,7 @@ class __Handler (StoppableHTTPRequestHandler):
          total_length = len (content)
          fileSys[path] = content
          self.send_header ("Content-Length", total_length)
-         self.end_headers()
+         self.finish_headers ()
          try:
             self.wfile.write (content.encode ('utf-8'))
          except Exception:
@@ -95,7 +94,7 @@ class __Handler (StoppableHTTPRequestHandler):
          fileSys[path] = body_data
          self.send_header ("Content-type", "text/plain")
          self.send_header ("Content-length", cLength)
-         self.end_headers ()
+         self.finish_headers ()
          try:
             self.wfile.write (body_data.encode ('utf-8'))
          except Exception:
@@ -107,7 +106,7 @@ class __Handler (StoppableHTTPRequestHandler):
       cLength = self.headers.get ("Content-Length")
       if cLength is None:
          self.send_response (400)
-         self.end_headers ()
+         self.finish_headers ()
          return None
       else:
          cLength = int (cLength)
@@ -120,11 +119,18 @@ class __Handler (StoppableHTTPRequestHandler):
       self.send_response (201)
       self.send_header ("Content-type", "text/plain")
       self.send_header ("Content-length", cLength)
-      self.end_headers()
+      self.finish_headers()
       try:
          self.wfile.write (body_data.encode ('utf-8'))
       except Exception:
          pass
+
+   def finish_headers (self):
+      if "Header" in server_configs:
+         header_obj = server_configs.get ('Header')
+         for header in header_obj:
+            self.send_header (header.header_name, header.header_value)
+      self.end_headers ()
 
    def handle_redirects (self, path):
       if "Redirect" in server_configs:
@@ -133,7 +139,7 @@ class __Handler (StoppableHTTPRequestHandler):
             if path == obj.from_uri:
                self.send_response (int (obj.stat_code))
                self.send_header ("Location", obj.to_uri)
-               self.end_headers()
+               self.finish_headers()
                return True
       else:
          return False
@@ -164,7 +170,7 @@ class __Handler (StoppableHTTPRequestHandler):
             #self.log_error("%s", ae.err_message)
             if ae.err_message == "Range Overflow":
                self.send_response (416)
-               self.end_headers ()
+               self.finish_headers ()
                return (None, None)
             else:
                self.range_begin = None
@@ -181,7 +187,7 @@ class __Handler (StoppableHTTPRequestHandler):
          self.send_header ("Content-type", "text/plain")
          self.send_header ("Content-Length", content_length)
          self.send_content_disposition_header (path)
-         self.end_headers ()
+         self.finish_headers ()
          return (content, self.range_begin)
       else:
          self.send_error (404, "Not Found")

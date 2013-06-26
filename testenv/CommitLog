@@ -5,6 +5,20 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-27  Darshit Shah  <darnir@gmail.com>
+
+	* TestEnv.py (parse_special): Accept a new Special Element, Header.
+	This element is used to specify custom headers that will be used in
+	the responses sent by the Server.
+	* HTTPServer.py: Same. Replace all calls to end_headers () with
+	finsih_headers () which first writes all the custom headers and then
+	calls end_headers ().
+	Since Python writes these headers as a List, there is no redundancy
+	checking and Headers cannot be overriden. Also, there is a currently a
+	known bug where sending an extra Content-Length Header causes a
+	deadlock somewhere. Not all headers cause this, but the exact headers
+	causing this is yet unknown
+
 2013-06-26  Darshit Shah  <darnir@gmail.com>
 
 	* TestEnv.py (parse_special): Make the "Bytes" sub-element optional.
