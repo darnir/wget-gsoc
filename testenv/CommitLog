@@ -7,6 +7,14 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-26  Darshit Shah  <darnir@gmail.com>
 
+	* TestEnv.py (parse_special): Make the "Bytes" sub-element optional.
+	* HTTPServer.py (parse_range_header): Send a 416 Range Not Satisfiable
+	even when requested range is equal to file size. Also capitalize O in
+	Range Overflow. This prevented the Exception from being processed
+	correctly in send_HEAD().
+
+2013-06-26  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py (__init__): Test if the input file begins with a WgetTest
 	Element. This element is compulsory for identification of Test Files.
 	Also, print a line in, Blue with the name of the Test File we are

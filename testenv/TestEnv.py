@@ -94,8 +94,9 @@ class Test:
             filename = filename_node.text
             file_handle = open (filename, "w")
             offset_node = special_comm.find ('Bytes')
-            offset = int (offset_node.text)
-            file_handle.write (self.file_list[filename][:offset])
+            if offset_node is not None:
+               offset = int (offset_node.text)
+               file_handle.write (self.file_list[filename][:offset])
          elif command  == "Content Disposition":
             cfile_node = special_comm.find ('File')
             cfile = cfile_node.text

@@ -48,8 +48,8 @@ class __Handler (StoppableHTTPRequestHandler):
          raise InvalidRangeHeader ("Cannot parse header Range: %s" %(header_line))
       regex = re.match (r"^bytes=(\d*)\-$", header_line)
       range_start = int (regex.group (1))
-      if range_start > length:
-         raise InvalidRangeHeader ("Range overflow")
+      if range_start >= length:
+         raise InvalidRangeHeader ("Range Overflow")
       return range_start
 
    def do_HEAD (self):
