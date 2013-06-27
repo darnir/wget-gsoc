@@ -1,4 +1,7 @@
 <WgetTest name="Test -O Option">
+<!--
+     Ensure that Wget writes to the correct filename with -O
+-->
 
     <InputFile name="Sparta">This is Spartaa!</InputFile>
 

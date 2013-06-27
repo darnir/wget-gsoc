@@ -1,14 +1,9 @@
-<WgetTest name="Prototype File">
+<WgetTest name="Test PUT Command">
+<!--
+     Test sending a HTTP PUT Request to a non-existant URI
+-->
 
-    <InputFile name="File2.html" download="False"><![CDATA[<html>
-<head>
-</head>
-<body>
-2nd Test File
-</body>
-</html>]]></InputFile>
-
-    <Option>-d --method=put --body-data=Message=Heya</Option>
+    <Option>-d --method=put --body-data="Frodo Baggins!"</Option>
 
     <Special command="PUT">
         <File>newfile</File>

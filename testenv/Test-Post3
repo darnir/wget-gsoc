@@ -1,14 +1,11 @@
-<WgetTest name="Prototype File">
+<WgetTest name="Test POST with non-existant URI">
+<!--
+     Send a POST Request to a URI that does not exist.
+     According to RFC2616, the Requested URI SHOULD be created by the
+     server and a response sent with Status Code, 201.
+-->
 
-    <InputFile name="File2.html" download="False"><![CDATA[<html>
-<head>
-</head>
-<body>
-2nd Test File
-</body>
-</html>]]></InputFile>
-
-    <Option>-d --tries=2 --method=post --body-data=Message=Heya</Option>
+    <Option>-d --method=post --body-data="One ring to rule them all"</Option>
 
     <Special command="POST">
         <File>newfile.html</File>

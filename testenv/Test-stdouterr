@@ -1,4 +1,8 @@
 <WgetTest name="Test Disk Full">
+<!--
+     Test Wget's action when Disk is full
+     TODO: Implement a Platform option so this test is skipped on Windows
+-->
 
     <InputFile name="File1.html"><![CDATA[<html>
 <head>

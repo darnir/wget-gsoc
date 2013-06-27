@@ -1,0 +1,6 @@
+<WgetTest name="Test basic cookie functionality">
+    <InputFile name="one.txt">All happy families are alike;
+    each unhappy family is unhappy in its own way.
+    </InputFile>
+
+</WgetTest>

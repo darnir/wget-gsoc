@@ -1,6 +1,8 @@
-<WgetTest name="Test -c Partial">
+<WgetTest name="Test -c Full">
 <!--
-     Test Wget's actions with a partially downloaded file.
+     Test Wget when the requested file already exists on disk
+     and has a size greater than or equal to that on the server.
+     Wesimply set Bytes to an integer greater than the inputfile size.
 -->
 
     <InputFile name="File1.html"><![CDATA[<html>
@@ -14,7 +16,7 @@ This is a Prototype File.
     <Option>-d -c</Option>
     <Special command="Continue">
         <File>File1.html</File>
-        <Bytes>18</Bytes>
+        <Bytes>180</Bytes>
     </Special>
 
     <ExpectedResults>

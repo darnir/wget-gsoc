@@ -1,4 +1,8 @@
-<WgetTest name="Prototype File">
+<WgetTest name="Test Multiple Redirects">
+<!--
+    Test handling of multiple redirects.
+    First a 301 then a 302 is sent by the server.
+-->
 
     <InputFile name="File1.html" download="False"><![CDATA[<html>
 <head>

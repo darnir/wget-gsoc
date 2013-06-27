@@ -1,4 +1,7 @@
-<WgetTest name="Prototype File">
+<WgetTest name="Test simple POST Request">
+<!--
+     Test for a simple POST Request.
+-->
 
     <InputFile name="File2.html"><![CDATA[<html>
 <head>
@@ -8,7 +11,7 @@
 </body>
 </html>]]></InputFile>
 
-    <Option>-d --tries=2 --method=post --body-data=Message=Heya</Option>
+    <Option>-d --method=post --body-data=Message=Heya</Option>
 
     <Special command="POST">
     </Special>

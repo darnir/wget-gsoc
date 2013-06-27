@@ -1,4 +1,7 @@
-<WgetTest name="Prototype File">
+<WgetTest name="Test Content-Disposition Headers">
+<!--
+     Test if Wget reads the Content-Disposition Header correctly.
+-->
 
     <InputFile name="File2.html"><![CDATA[<html>
 <head>

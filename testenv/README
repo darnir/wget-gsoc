@@ -1,7 +1,84 @@
 This document describes the working of the GNU Wget Test Suite.
 
+Install Instructions:
+=====================================================================
+
+This Test Suite exploits the Parallel Test Harness available in
+GNU Autotools. Since it uses features from a relatively recent verion
+of Autotools, the minimum required version as been bumped up to 1.12.
+Even with Automake v1.12, one MUST run automake with the
+--add-missing switch to add the required driver files to the repo.
+This is not required as of Automake v1.13.
+
+File List:
+=====================================================================
+
+    * HTTPServer.py: This file contains a custom, programmatically
+    configurable HTTP Server for testing Wget. It runs an instance
+    of Python's http.server module.
+
+    * TestEnv.py: This file contains various functions and global
+    variables for each instance of the server that is initiated.
+    It includes functions to start and stop the server, to initialze
+    the test environment and to cleanup after a test.
+
+    * runTest.py: This file is the single entry and exit point for
+    all tests. Every test must be invoked through this script. This
+    script will parse the Test Case file, spawn the server, execute
+    the tests and analyse the results.
+
+    * TestProto: This is a prototype Test Case file. This is a valid
+    XML file. The file defines all the acceptable elements and their
+    uses. Typically, one must copy this file and edit it for writing
+    Test Cases.
+
+    * ColourTerm.py: A custom library for printing coloured output to
+    the terminal. Currently it only supports 4 colours in a *nix
+    environment.
+
+Working:
+=====================================================================
+
+A singular Test must be invoked in the following manner:
+$ ./runTest.py <Name(s) of Test File(s)>
+The script will then parse the respective files for various input
+elements. A directory with the name <Test name>-test will be created
+and the PWD will be changed to this directory. The server is then
+spawned with the required configuration elements. A call to Wget is
+then made with the command line arguments specified in the Test Case
+along with the list of URLs that it must download. The server is then
+killed and the following checks are made to verify if the test was
+successful:
+    * Return Code: The Exit code of Wget is matched against the
+    expected Exit Code as mentioned in the Test Case File. The script
+    exits with the actual Return Code if this test fails.
+    * Downloaded Files: Check whether the expected downloaded files
+    exist on disk. If this check fails, the script exits with Exit
+    Code 26.
+    * File Content: Test whether the file contents were correctly
+    downloaded by Wget and not corrupted mid-way. Upon failure the
+    script exist with Exit Code 25.
+    * Excess Files: Check to see whether any unexpected files were
+    downloaded by Wget. If there are unexpected files, the script
+    exits with Exit Code 27.
+
+Writing New Tests:
+=====================================================================
+
+The test case files are pure and valid XML files. This test suite is
+written with the objective of making it easy to write new tests.
+A Test Case file begins with WgetTest as the Root Element and all the
+other details are provided within the WgetTest Elements.
+
+See TestProto for an example of how to write Test Case files. The
+recommended method for writign new Test Case files is to copy
+TestProto and modify it to ones needs.
+
+See README.testfile for a list and detailed explanation of the
+various elements supported by this Test Suite.
+
 Requirements:
-================================================================
+=====================================================================
 
 1. Python 3.3
-2. Automake >= 1.13
+2. Automake >= 1.12

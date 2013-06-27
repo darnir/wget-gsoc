@@ -1,6 +1,7 @@
-<WgetTest name="Test -c Partial">
+<WgetTest name="Test -c None">
 <!--
-     Test Wget's actions with a partially downloaded file.
+     Test Wget with continue option when requested file is not preset
+     on disk at all.
 -->
 
     <InputFile name="File1.html"><![CDATA[<html>
@@ -14,7 +15,6 @@ This is a Prototype File.
     <Option>-d -c</Option>
     <Special command="Continue">
         <File>File1.html</File>
-        <Bytes>18</Bytes>
     </Special>
 
     <ExpectedResults>

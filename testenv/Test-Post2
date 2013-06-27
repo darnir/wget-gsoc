@@ -1,4 +1,8 @@
 <WgetTest name="Test Post without body data">
+<!--
+     Test when sending a POST Request without body-data
+     This is to ensure that Wget sends a Content-Length header in all cases
+-->
 
     <InputFile name="File2.html"><![CDATA[<html>
 <head>
@@ -8,7 +12,7 @@
 </body>
 </html>]]></InputFile>
 
-    <Option>-d --tries=2 --method=post</Option>
+    <Option>-d --method=post</Option>
 
     <Special command="POST">
     </Special>
