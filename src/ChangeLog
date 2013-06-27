@@ -1,3 +1,23 @@
+2013-06-26  Darshit Shah <darnir@gmail.com>
+
+	* http.c (gethttp): Reverse change by commit 90896 that prevented
+	downloading response body data to non-GET Request methods.
+
+2013-06-19 Ciprian Vieru <devel.php@gmail.com> (tiny change)
+
+        * html-url.c: Define TAG_TD, TAG_TH, TAG_VIDEO, TAG_AUDIO, TAG_SOURCE.
+	(tag_url_attributes, known_tags): Likewise.
+
+2013-06-22  Ángel González <keisial@gmail.com>
+
+	* init.c (cmd_string_uppercase): Rewrite function.
+
+2013-06-19  Tim Ruehsen  <tim.ruehsen@gmx.de>
+
+	* connect.c (socket_ip_address): zero out ip address structure to
+	avoid access to uninitialized values by inet_ntop().
+	* ftp.c (ftp_loop_internal): fix segfault caused by warc_tmp NULL pointer.
+
 2013-05-21  Ray Satiro  <raysatiro@yahoo.com>
 
 	* url.c (url_file_name): Use MAX_PATH in Windows.
