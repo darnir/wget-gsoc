@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-28  Darshit Shah  <darnir@gmail.com>
 
+	* Makefile.am: Certain issues have been fixed in origin/master. Hence
+	those tests are no longer XFAIL.
+
+2013-06-28  Darshit Shah  <darnir@gmail.com>
+
 	* Makefile.am: Add copyright notice. Add new Test Files.
 	* README: Add File List, Working, Writing New Test Files sections
 	Change requirement to Automake >= 1.12

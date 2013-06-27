@@ -41,8 +41,5 @@ TESTS = Test-stdouterr \
 	Test-Put \
 	Test-c-None \
 	Test-c-full
-XFAIL_TESTS = Test-Post \
-	      Test-Post2 \
-	      Test-Post3 \
-	      Test-Put
+XFAIL_TESTS = Test-Post2 \
 LOG_COMPILER = ./runTest.py
