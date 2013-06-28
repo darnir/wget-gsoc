@@ -12,7 +12,7 @@ class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
 
    protocol_version = 'HTTP/1.1'
    def do_QUIT (self):
-      q.put (fileSys)
+      queue.put (fileSys)
       self.send_response (200)
       self.finish_headers ()
       self.server.stop = True
@@ -24,7 +24,7 @@ class StoppableHTTPServer (HTTPServer):
       server_configs = conf_dict
 
    def serve_forever (self, q):
-      global que
+      global queue
       queue = q
       self.stop = False
       while not self.stop:

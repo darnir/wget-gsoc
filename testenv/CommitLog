@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-28  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (serve_forever): Correct typo.
+	(do_QUIT): Use correct Queue variable
+
+2013-06-28  Darshit Shah  <darnir@gmail.com>
+
 	* Makefile.am: Remove a trailing escape character that caused all
 	tests to fail.
 
