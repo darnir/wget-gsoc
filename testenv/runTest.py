@@ -24,9 +24,9 @@ for TestCase in sys.argv[1:]:
       try:
          TestObj = Test (TestCase)
       except TestFailed:
-         printer ("YELLOW", "Parse error in Test Case file.")
-         printer ("YELLOW", "Test Skipped")
-         exit_status = 77
+         printer ("PURPLE", "Parse error in Test Case file.")
+         printer ("PURPLE", "Hard Error in Test")
+         exit_status = 99
          continue
 
       TestObj.start_server ()
@@ -53,8 +53,8 @@ for TestCase in sys.argv[1:]:
          TestObj.endTest ()
 
    else:
-      printer ("YELLOW", "The Test Case File: " + TestCase + " does not exist.")
-      exit_status = 77
+      printer ("PURPLE", "The Test Case File: " + TestCase + " does not exist.")
+      exit_status = 99
 
 exit (exit_status)
 # vim: set ts=8 sw=3 tw=0 et :

@@ -6,6 +6,10 @@ into the release commits.
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-29  Darshit Shah  <darnir@gmail.com>
+	* runTest.py: Parse Errors and file not founds are Hard Errors. Return
+	code 99 for them.
+
+2013-06-29  Darshit Shah  <darnir@gmail.com>
 
 	* README (Working): Do not mention the exit status here.
 	(Exit Codes): State the exit status codes for runTest.
