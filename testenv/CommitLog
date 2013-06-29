@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-29  Darshit Shah  <darnir@gmail.com>
 
+	* README (Working): Do not mention the exit status here.
+	(Exit Codes): State the exit status codes for runTest.
+
+2013-06-29  Darshit Shah  <darnir@gmail.com>
+
 	* README (Environment Variable): Document the NO_CLEANUP variable.
 	(Working): Minor editing.
 
