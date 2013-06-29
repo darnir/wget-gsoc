@@ -44,11 +44,11 @@ $ ./runTest.py <Name(s) of Test File(s)>
 The script will then parse the respective files for various input
 elements. A directory with the name <Test name>-test will be created
 and the PWD will be changed to this directory. The server is then
-spawned with the required configuration elements. A call to Wget is
-then made with the command line arguments specified in the Test Case
-along with the list of URLs that it must download. The server is then
-killed and the following checks are made to verify if the test was
-successful:
+spawned with the required configuration elements. A blocking call to
+Wget is made with the command line arguments specified in the Test
+Case along with the list of URLs that it must download. The server is
+killed once Wget returns and the following checks are used to
+determine the pass/fail status of the test:
     * Return Code: The Exit code of Wget is matched against the
     expected Exit Code as mentioned in the Test Case File. The script
     exits with the actual Return Code if this test fails.
@@ -61,6 +61,12 @@ successful:
     * Excess Files: Check to see whether any unexpected files were
     downloaded by Wget. If there are unexpected files, the script
     exits with Exit Code 27.
+
+Environment Variables:
+=====================================================================
+
+* NO_CLEANUP: Do not remove the temporary files created by the test.
+  This will prevent the ${testname}-test directory from being deleted
 
 Writing New Tests:
 =====================================================================

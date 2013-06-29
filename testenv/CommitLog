@@ -5,6 +5,11 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-29  Darshit Shah  <darnir@gmail.com>
+
+	* README (Environment Variable): Document the NO_CLEANUP variable.
+	(Working): Minor editing.
+
 2013-06-28  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (serve_forever): Correct typo.
