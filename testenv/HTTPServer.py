@@ -125,11 +125,14 @@ class __Handler (StoppableHTTPRequestHandler):
       except Exception:
          pass
 
-   def finish_headers (self):
+   def send_cust_headers (self):
       if "Header" in server_configs:
          header_obj = server_configs.get ('Header')
          for header in header_obj:
             self.send_header (header.header_name, header.header_value)
+
+   def finish_headers (self):
+      self.send_cust_headers ()
       self.end_headers ()
 
    def handle_redirects (self, path):
@@ -143,13 +146,6 @@ class __Handler (StoppableHTTPRequestHandler):
                return True
       else:
          return False
-
-   def send_content_disposition_header (self, path):
-      if "ContentDisp" in server_configs:
-         contentdisp = server_configs.get ('ContentDisp')
-         for obj in contentdisp:
-            if path == obj.cd_url:
-               self.send_header ("Content-Disposition", 'Attachment; filename=%s' %(obj.cd_name))
 
    def send_head (self):
       """ Common code for GET and HEAD Commands.
@@ -186,7 +182,6 @@ class __Handler (StoppableHTTPRequestHandler):
             content_length -= self.range_begin
          self.send_header ("Content-type", "text/plain")
          self.send_header ("Content-Length", content_length)
-         self.send_content_disposition_header (path)
          self.finish_headers ()
          return (content, self.range_begin)
       else:

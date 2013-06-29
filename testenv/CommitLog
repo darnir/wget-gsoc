@@ -5,6 +5,19 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-06-30  Darshit Shah  <darnir@gmail.com>
+
+	* TestEnv.py (Content_Disp): Class deleted
+	(parse_special): Content Disposition is now an alias to set a Custom
+	Header. This allows for greater code reuse.
+	* HTTPServer.py (send_cust_headers): New method. Send custom headers
+	after reading server configs.
+	(finish_headers): Move code to send_cust_headers ().
+	(send_content_disposition_header): Remove function.
+	(send_HEAD): Do not call send_content_disposition_header() any more.
+	Content-Disposition headers will be sent when finish_headers() is
+	called.
+
 2013-06-29  Darshit Shah  <darnir@gmail.com>
 	* runTest.py: Parse Errors and file not founds are Hard Errors. Return
 	code 99 for them.

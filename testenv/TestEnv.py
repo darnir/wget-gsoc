@@ -71,11 +71,6 @@ class Test:
          self.to_uri = redir_to
          self.stat_code = redir_code
 
-   class Content_Disp:
-      def __init__ (self, url, name):
-         self.cd_url = url
-         self.cd_name = name
-
    class Cust_Header:
       def __init__ (self, header, value):
          self.header_name = header
@@ -107,7 +102,9 @@ class Test:
             cfile = cfile_node.text
             cname_node = special_comm.find ('NameParam')
             cname = cname_node.text
-            special_conf['ContentDisp'].append (self.Content_Disp(cfile, cname))
+            cheader = "Content-Disposition"
+            cvalue = "Attachment; filename=" + cname
+            special_conf['Header'].append (self.Cust_Header(cheader, cvalue))
          elif command == "Header":
             header_node = special_comm.find ('Name')
             header = header_node.text
