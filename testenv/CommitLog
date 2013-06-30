@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-30  Darshit Shah  <darnir@gmail.com>
 
+	* README: Add information on XFAIL_TEST and XPASS_TEST.
+	Change Required version of Python to 3.2
+
+2013-06-30  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py (Content_Disp): Class deleted
 	(parse_special): Content Disposition is now an alias to set a Custom
 	Header. This allows for greater code reuse.

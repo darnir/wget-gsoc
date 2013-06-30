@@ -9,6 +9,8 @@ of Autotools, the minimum required version as been bumped up to 1.12.
 Even with Automake v1.12, one MUST run automake with the
 --add-missing switch to add the required driver files to the repo.
 This is not required as of Automake v1.13.
+Run the './configure' command to generate the Makefile and then run
+'make check' to execute the Test Suite.
 
 File List:
 =====================================================================
@@ -107,8 +109,16 @@ feature skip the whole block. This is required since we have a
 single driver script which will call ALL the methods. It is the
 responsibility of the method to handle these cases.
 
+Once a new Test File is created, it must be added to the TESTS
+variable in Makefile.am. This way the Test will be executed on
+running a 'make check'.
+If a Test is expected to fail on the current master branch, then the
+Test should also be added to the XFAIL_TESTS variable. This will
+allow expected failures to pass through. If a test mentioned in the
+XFAIL_TESTS variable passes, it gets red-flagged as a XPASS.
+
 Requirements:
 =====================================================================
 
-1. Python 3.3
+1. Python   >= 3.2
 2. Automake >= 1.12
