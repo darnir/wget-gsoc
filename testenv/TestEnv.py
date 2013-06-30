@@ -76,48 +76,66 @@ class Test:
          self.header_name = header
          self.header_value = value
 
+   def set_redir (self):
+      redir_from_node = self.special_comm.find ('From')
+      redir_from = redir_from_node.text
+      redir_to_node = self.special_comm.find ('To')
+      redir_to = redir_to_node.text
+      redir_code_node = self.special_comm.find ('Code')
+      redir_code = redir_code_node.text
+      self.special_conf['Redirect'].append (self.Redirect(redir_from, redir_to, redir_code))
+
+   def set_cont (self):
+      filename_node = self.special_comm.find ('File')
+      filename = filename_node.text
+      file_handle = open (filename, "w")
+      offset_node = self.special_comm.find ('Bytes')
+      if offset_node is not None:
+         offset = int (offset_node.text)
+         file_handle.write (self.file_list[filename][:offset])
+
+   def set_cont_disp (self):
+      cfile_node = self.special_comm.find ('File')
+      cfile = cfile_node.text
+      cname_node = self.special_comm.find ('NameParam')
+      cname = cname_node.text
+      cheader = "Content-Disposition"
+      cvalue = "Attachment; filename=" + cname
+      self.special_conf['Header'].append (self.Cust_Header(cheader, cvalue))
+
+   def set_header (self):
+      header_node = self.special_comm.find ('Name')
+      header = header_node.text
+      value_node = self.special_comm.find ('Value')
+      value = value_node.text
+      self.special_conf['Header'].append (self.Cust_Header(header, value))
+
+   def set_post (self):
+      for files in self.special_comm.findall ('File'):
+         self.meth_files += domain + files.text + " "
+
+   def set_put (self):
+      for files in self.special_comm.findall ('File'):
+         self.meth_files += domain + files.text + " "
+
    def parse_server_rules (self):
-      special_conf = defaultdict(list)
+      self.special_conf = defaultdict(list)
       self.meth_files = ""
-      for special_comm in self.Root.findall ('ServerRule'):
-         command = special_comm.get ('command')
-         if command == "Redirect":
-            redir_from_node = special_comm.find ('From')
-            redir_from = redir_from_node.text
-            redir_to_node = special_comm.find ('To')
-            redir_to = redir_to_node.text
-            redir_code_node = special_comm.find ('Code')
-            redir_code = redir_code_node.text
-            special_conf['Redirect'].append (self.Redirect(redir_from, redir_to, redir_code))
-         elif command == "Continue":
-            filename_node = special_comm.find ('File')
-            filename = filename_node.text
-            file_handle = open (filename, "w")
-            offset_node = special_comm.find ('Bytes')
-            if offset_node is not None:
-               offset = int (offset_node.text)
-               file_handle.write (self.file_list[filename][:offset])
-         elif command  == "Content Disposition":
-            cfile_node = special_comm.find ('File')
-            cfile = cfile_node.text
-            cname_node = special_comm.find ('NameParam')
-            cname = cname_node.text
-            cheader = "Content-Disposition"
-            cvalue = "Attachment; filename=" + cname
-            special_conf['Header'].append (self.Cust_Header(cheader, cvalue))
-         elif command == "Header":
-            header_node = special_comm.find ('Name')
-            header = header_node.text
-            value_node = special_comm.find ('Value')
-            value = value_node.text
-            special_conf['Header'].append (self.Cust_Header(header, value))
-         elif command == "POST":
-            for files in special_comm.findall ('File'):
-               self.meth_files += domain + files.text + " "
-         elif command == "PUT":
-            for files in special_comm.findall ('File'):
-               self.meth_files += domain + files.text + " "
-      server.server_conf (special_conf)
+      commands_list = {
+         "Redirect":self.set_redir,
+         "Continue":self.set_cont,
+         "Content Disposition":self.set_cont_disp,
+         "Header":self.set_header,
+         "POST":self.set_post,
+         "PUT":self.set_put
+      }
+      for self.special_comm in self.Root.findall ('ServerRule'):
+         command = self.special_comm.get ('command')
+         try:
+            commands_list.get(command) ()
+         except TypeError as ae:
+            raise TestFailed
+      server.server_conf (self.special_conf)
 
    def get_cmd_line (self, WgetPath):
       cmd_line = WgetPath + " "

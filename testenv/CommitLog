@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-30  Darshit Shah  <darnir@gmail.com>
 
+	* TestEnv.py (parse_server_rules): Use a commands_list dict and call
+	the respective functions to handle them.
+
+2013-06-30  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py (parse_special): Renamed to parse_server_rules. Change
 	Element tag to ServerRule.
 	* runTest.py: Change method call to parse_server_rules ()
