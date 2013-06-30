@@ -23,16 +23,16 @@ This is a Prototype File.
     <Option>-d -c</Option>
     <Option>-v</Option>
 
-    <Special command="Redirect">
+    <ServerRule command="Redirect">
         <From>File2.html</From>
         <To>temp</To>
         <Code>301</Code>
-    </Special>
-    <Special command="Redirect">
+    </ServerRule>
+    <ServerRule command="Redirect">
         <From>temp</From>
         <To>File1.html</To>
         <Code>302</Code>
-    </Special>
+    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

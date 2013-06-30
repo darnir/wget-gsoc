@@ -7,9 +7,9 @@
 
     <Option>-d --method=post --body-data="One ring to rule them all"</Option>
 
-    <Special command="POST">
+    <ServerRule command="POST">
         <File>newfile.html</File>
-    </Special>
+    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

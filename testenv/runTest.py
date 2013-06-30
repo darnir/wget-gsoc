@@ -32,7 +32,7 @@ for TestCase in sys.argv[1:]:
       TestObj.start_server ()
 
       TestObj.gen_file_list ()
-      TestObj.parse_special ()
+      TestObj.parse_server_rules ()
       TestObj.spawn_server ()
       params = TestObj.get_cmd_line (WgetPath)
       parameters = shlex.split (params)

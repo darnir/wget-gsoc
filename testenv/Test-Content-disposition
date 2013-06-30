@@ -14,10 +14,10 @@
     <Option>-d -c</Option>
     <Option>-v --content-disposition</Option>
 
-    <Special command="Content Disposition">
+    <ServerRule command="Content Disposition">
         <File>File2.html</File>
         <NameParam>treial</NameParam>
-    </Special>
+    </ServerRule>
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
         <File orig="File2.html">treial</File>

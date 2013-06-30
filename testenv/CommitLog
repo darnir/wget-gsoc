@@ -7,6 +7,18 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-06-30  Darshit Shah  <darnir@gmail.com>
 
+	* TestEnv.py (parse_special): Renamed to parse_server_rules. Change
+	Element tag to ServerRule.
+	* runTest.py: Change method call to parse_server_rules ()
+	* Test-Content-Disposition: Change Element 'Special' to 'ServerRule'
+	* Test-Header: Same
+	* Test-Post{,2,3}: Same
+	* Test-Put: Same
+	* Test-c-{None,full,partial}: Same
+	* Test-redirect: Same
+
+2013-06-30  Darshit Shah  <darnir@gmail.com>
+
 	* README: Add information on XFAIL_TEST and XPASS_TEST.
 	Change Required version of Python to 3.2
 

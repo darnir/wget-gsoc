@@ -13,8 +13,8 @@
 
     <Option>-d --method=post --body-data=Message=Heya</Option>
 
-    <Special command="POST">
-    </Special>
+    <ServerRule command="POST">
+    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

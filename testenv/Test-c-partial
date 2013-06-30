@@ -12,10 +12,10 @@ This is a Prototype File.
 </html>]]></InputFile>
 
     <Option>-d -c</Option>
-    <Special command="Continue">
+    <ServerRule command="Continue">
         <File>File1.html</File>
         <Bytes>18</Bytes>
-    </Special>
+    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

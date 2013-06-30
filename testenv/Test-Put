@@ -5,9 +5,9 @@
 
     <Option>-d --method=put --body-data="Frodo Baggins!"</Option>
 
-    <Special command="PUT">
+    <ServerRule command="PUT">
         <File>newfile</File>
-    </Special>
+    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

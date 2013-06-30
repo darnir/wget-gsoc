@@ -13,10 +13,10 @@
 
     <Option>-d</Option>
 
-    <Special command="Header">
+    <ServerRule command="Header">
         <Name>Content-Length</Name>
         <Value>44</Value>
-    </Special>
+    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

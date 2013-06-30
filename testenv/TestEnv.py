@@ -76,10 +76,10 @@ class Test:
          self.header_name = header
          self.header_value = value
 
-   def parse_special (self):
+   def parse_server_rules (self):
       special_conf = defaultdict(list)
       self.meth_files = ""
-      for special_comm in self.Root.findall ('Special'):
+      for special_comm in self.Root.findall ('ServerRule'):
          command = special_comm.get ('command')
          if command == "Redirect":
             redir_from_node = special_comm.find ('From')
