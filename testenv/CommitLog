@@ -7,6 +7,10 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-01  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Place init_server () in try-except block
+
+2013-07-01  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (mk_file_sys): Delete Method. Function merged into
 	server_conf ()
 	(server_conf): Now accept filelist and set it as fileSys.

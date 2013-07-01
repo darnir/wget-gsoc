@@ -23,13 +23,12 @@ for TestCase in sys.argv[1:]:
    if os.path.isfile (TestCase):
       try:
          TestObj = Test (TestCase)
+         TestObj.init_server ()
       except TestFailed:
-         printer ("PURPLE", "Parse error in Test Case file.")
-         printer ("PURPLE", "Hard Error in Test")
+         printer ("PURPLE", "Error encountered when parsing Test File")
          exit_status = 99
          continue
 
-      TestObj.init_server ()
       params = TestObj.get_cmd_line (WgetPath)
       parameters = shlex.split (params)
 
