@@ -5,6 +5,35 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-01  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (mk_file_sys): Delete Method. Function merged into
+	server_conf ()
+	(server_conf): Now accept filelist and set it as fileSys.
+	* TestEnv.py (start_server): Method deleted. Function merged into
+	init_server ()
+	(spawn_server): Same.
+	(init_server): Start the server, generate the filelist and
+	server_rules and send them to the server. Then spawn the server.
+	The domain name is now read from server_address instead of hard-coding
+	it as 'localhost'. domain is now an object variable instead of global
+	variable and server is only a local variable.
+	(stop_server): Reference the object variable domain
+	(gen_file_list): Use shorthand operator to make code more readable. We
+	do not set the filesystem from here anymore. This will be sent to the
+	server through init_server ()
+	(set_post): Reference to object variable domain
+	(set_put): Same
+	(parse_server_rules): Se do not set the server_rules from here. This
+	is now done my init_server ()
+	* runTest.py: Import module os.path into namespace.
+	Use os.path.join to correctly construct the path on all operating
+	systems.
+	Remove references to start_server (), gen_file_list (),
+	parse_server_rules () and spawn_server (). These are now replaced by a
+	single call to init_server ().
+
+
 2013-06-30  Darshit Shah  <darnir@gmail.com>
 
 	* TestEnv.py (parse_server_rules): Use a commands_list dict and call

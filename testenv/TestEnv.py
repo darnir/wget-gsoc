@@ -36,20 +36,19 @@ class Test:
          os.mkdir (self.testDir)
       os.chdir (self.testDir)
 
-   """ Create an insatnce of the Server. """
-   def start_server (self):
-      global server
+   def init_server (self):
       server = HTTPServer.create_server ()
       port = server.server_address[1]
-      global domain
-      domain = "localhost:" + str (port) + "/"
-
-   def spawn_server (self):
+      domain_name = server.server_address[0]
+      self.domain = domain_name + ":" + str (port) + "/"
+      self.gen_file_list ()
+      self.parse_server_rules ()
+      server.server_conf (self.file_list, self.special_conf)
       HTTPServer.spawn_server (server)
 
    """ Send a HTTP QUIT Request to stop the Server """
    def stop_server (self):
-      conn = http.client.HTTPConnection (domain.strip ('/'))
+      conn = http.client.HTTPConnection (self.domain.strip ('/'))
       conn.request ("QUIT", "/")
       self.fileSys = HTTPServer.ret_fileSys()
       conn.getresponse ()
@@ -61,9 +60,7 @@ class Test:
          self.file_list[file_element.get ('name')] = file_element.text
          if file_element.get ('download') == 'False':
             continue
-         self.download_list = self.download_list + domain + \
-                           file_element.get ('name') + " "
-      HTTPServer.mk_file_sys (self.file_list)
+         self.download_list += self.domain + file_element.get ('name') + " "
 
    class Redirect:
       def __init__ (self, redir_from, redir_to, redir_code):
@@ -112,11 +109,11 @@ class Test:
 
    def set_post (self):
       for files in self.special_comm.findall ('File'):
-         self.meth_files += domain + files.text + " "
+         self.meth_files += self.domain + files.text + " "
 
    def set_put (self):
       for files in self.special_comm.findall ('File'):
-         self.meth_files += domain + files.text + " "
+         self.meth_files += self.domain + files.text + " "
 
    def parse_server_rules (self):
       self.special_conf = defaultdict(list)
@@ -135,7 +132,6 @@ class Test:
             commands_list.get(command) ()
          except TypeError as ae:
             raise TestFailed
-      server.server_conf (self.special_conf)
 
    def get_cmd_line (self, WgetPath):
       cmd_line = WgetPath + " "

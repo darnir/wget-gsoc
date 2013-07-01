@@ -2,7 +2,7 @@
 
 import sys
 import shlex
-from os.path import isfile
+import os.path
 from subprocess import call
 from time import sleep
 from sys import exit
@@ -12,7 +12,7 @@ from TestEnv import *
 # Build the path to local build of Wget
 dirn = os.path.dirname (sys.argv[0])
 absp = os.path.abspath (dirn)
-WgetPath = absp + "/../src/wget"
+WgetPath = os.path.join(absp, "..", "src", "wget")
 
 exit_status = 0
 
@@ -20,7 +20,7 @@ exit_status = 0
 # It is however preferable to run multiple tests through an external module
 # that aggregates the results better.
 for TestCase in sys.argv[1:]:
-   if isfile (TestCase):
+   if os.path.isfile (TestCase):
       try:
          TestObj = Test (TestCase)
       except TestFailed:
@@ -29,11 +29,7 @@ for TestCase in sys.argv[1:]:
          exit_status = 99
          continue
 
-      TestObj.start_server ()
-
-      TestObj.gen_file_list ()
-      TestObj.parse_server_rules ()
-      TestObj.spawn_server ()
+      TestObj.init_server ()
       params = TestObj.get_cmd_line (WgetPath)
       parameters = shlex.split (params)
 

@@ -19,9 +19,11 @@ class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
 
 class StoppableHTTPServer (HTTPServer):
 
-   def server_conf (self, conf_dict):
+   def server_conf (self, filelist, conf_dict):
       global server_configs
       server_configs = conf_dict
+      global fileSys
+      fileSys = filelist
 
    def serve_forever (self, q):
       global queue
@@ -200,10 +202,6 @@ def spawn_server (server):
    q = Queue()
    server_process = Process (target=server.serve_forever, args=(q,))
    server_process.start ()
-
-def mk_file_sys (inputFile):
-   global fileSys
-   fileSys = inputFile
 
 def ret_fileSys ():
    return (q.get (True))
