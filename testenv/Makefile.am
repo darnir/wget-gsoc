@@ -40,6 +40,8 @@ TESTS = Test-stdouterr \
 	Test-Post3 \
 	Test-Put \
 	Test-c-None \
-	Test-c-full
+	Test-c-full \
+	Test-Header \
+	Test-cookie
 XFAIL_TESTS = Test-Post2
 LOG_COMPILER = ./runTest.py

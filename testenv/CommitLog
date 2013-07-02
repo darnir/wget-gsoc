@@ -7,6 +7,11 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-02  Darshit Shah  <darnir@gmail.com>
 
+	* Makefile.am: Add new tests
+	* Test-Header: Add missing ExpectedFile
+
+2013-07-02  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (test_cookies): New method. Test whether the expected
 	cookies are recieved in the request.
 	(send_HEAD): If test_cookies () returns False, send a 400 Bad Request
