@@ -7,6 +7,7 @@ from ColourTerm import printer
 from difflib import unified_diff
 from collections import defaultdict
 from xml.etree.ElementTree import parse, ParseError
+from http import cookies
 
 testdir = ""
 
@@ -74,6 +75,11 @@ class Test:
          self.header_value = value
          self.header_files = filen
 
+   class Cookie:
+      def __init__ (self, value, filen):
+         self.cookie_value = value
+         self.cookie_file = filen
+
    def set_redir (self):
       redir_from_node = self.special_comm.find ('From')
       redir_from = redir_from_node.text
@@ -116,6 +122,15 @@ class Test:
       for files in self.special_comm.findall ('File'):
          self.meth_files += self.domain + files.text + " "
 
+   def set_cookie (self):
+      for sendCookie in self.special_comm.findall ('SendCookie'):
+         self.special_conf['Header'].append (self.Cust_Header ('Set-Cookie', \
+                                          sendCookie.text, sendCookie.get ('file')))
+
+      for expectCookie in self.special_comm.findall ('ExpectCookie'):
+         self.special_conf['Cookie'].append (self.Cookie (expectCookie.text, \
+                                                         expectCookie.get ('file')))
+
    def parse_server_rules (self):
       self.special_conf = defaultdict(list)
       self.meth_files = ""
@@ -125,7 +140,8 @@ class Test:
          "Content Disposition":self.set_cont_disp,
          "Header":self.set_header,
          "POST":self.set_post,
-         "PUT":self.set_put
+         "PUT":self.set_put,
+         "Cookie":self.set_cookie
       }
       for self.special_comm in self.Root.findall ('ServerRule'):
          command = self.special_comm.get ('command')

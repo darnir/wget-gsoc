@@ -151,6 +151,19 @@ class __Handler (StoppableHTTPRequestHandler):
       else:
          return False
 
+   def test_cookies (self, path):
+      cookie_recd = self.headers.get ('Cookie')
+      cookie_exp = None
+      if "Cookie" in server_configs:
+         cookies = server_configs.get ('Cookie')
+         for cookie_obj in cookies:
+            if cookie_obj.cookie_file == path:
+               cookie_exp = cookie_obj.cookie_value
+      if cookie_exp == cookie_recd:
+         return True
+      else:
+         return False
+
    def send_head (self):
       """ Common code for GET and HEAD Commands.
       This method is overriden to use the fileSys dict.
@@ -158,6 +171,11 @@ class __Handler (StoppableHTTPRequestHandler):
       path = self.path[1:]
 
       if self.handle_redirects (path) is True:
+         return (None, None)
+
+      if self.test_cookies (path) is False:
+         self.send_response (400)
+         self.end_headers ()
          return (None, None)
 
       if path in fileSys:

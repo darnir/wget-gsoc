@@ -7,6 +7,17 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-02  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (test_cookies): New method. Test whether the expected
+	cookies are recieved in the request.
+	(send_HEAD): If test_cookies () returns False, send a 400 Bad Request
+	and exit.
+	* TestEnv.py (Cookie): Class for handling expected Cookies.
+	(set_cookie): New Method. Set a custom header for Sending the required
+	Cookie headers. Create a new Cookie object for expected cookies.
+	* Test-cookie: Basic test for checking cookie support.
+
+2013-07-02  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py (Cust_Header): Accept an optional parameter, filen. IF
 	this parameter is set, the header will be sent only when the request
 	path is filen. Else to all requests.
