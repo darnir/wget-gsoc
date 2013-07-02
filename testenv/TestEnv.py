@@ -69,9 +69,10 @@ class Test:
          self.stat_code = redir_code
 
    class Cust_Header:
-      def __init__ (self, header, value):
+      def __init__ (self, header, value, filen=None):
          self.header_name = header
          self.header_value = value
+         self.header_files = filen
 
    def set_redir (self):
       redir_from_node = self.special_comm.find ('From')
@@ -98,14 +99,14 @@ class Test:
       cname = cname_node.text
       cheader = "Content-Disposition"
       cvalue = "Attachment; filename=" + cname
-      self.special_conf['Header'].append (self.Cust_Header(cheader, cvalue))
+      self.special_conf['Header'].append (self.Cust_Header (cheader, cvalue, cfile))
 
    def set_header (self):
       header_node = self.special_comm.find ('Name')
       header = header_node.text
       value_node = self.special_comm.find ('Value')
       value = value_node.text
-      self.special_conf['Header'].append (self.Cust_Header(header, value))
+      self.special_conf['Header'].append (self.Cust_Header (header, value))
 
    def set_post (self):
       for files in self.special_comm.findall ('File'):

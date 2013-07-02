@@ -5,6 +5,16 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-02  Darshit Shah  <darnir@gmail.com>
+
+	* TestEnv.py (Cust_Header): Accept an optional parameter, filen. IF
+	this parameter is set, the header will be sent only when the request
+	path is filen. Else to all requests.
+	(set_header): Formatting changes.
+	(set_cont_disp): Send the filename parameter too.
+	* HTTPServer.py (send_cust_headers): Handle header rules as explained
+	above
+
 2013-07-01  Darshit Shah  <darnir@gmail.com>
 
 	* runTest.py: Place init_server () in try-except block

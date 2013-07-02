@@ -131,7 +131,9 @@ class __Handler (StoppableHTTPRequestHandler):
       if "Header" in server_configs:
          header_obj = server_configs.get ('Header')
          for header in header_obj:
-            self.send_header (header.header_name, header.header_value)
+            if header.header_files == None or \
+             header.header_files == self.path[1:]:
+               self.send_header (header.header_name, header.header_value)
 
    def finish_headers (self):
       self.send_cust_headers ()
