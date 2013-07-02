@@ -24,8 +24,9 @@ for TestCase in sys.argv[1:]:
       try:
          TestObj = Test (TestCase)
          TestObj.init_server ()
-      except TestFailed:
-         printer ("PURPLE", "Error encountered when parsing Test File")
+      except TestFailed as ae:
+         printer ("PURPLE", "Error encountered.")
+         printer ("PURPLE", ae.error)
          exit_status = 99
          continue
 

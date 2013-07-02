@@ -14,7 +14,8 @@ testdir = ""
 """ A custom exception that is raised in the event
 that anything goes wrong while processing the test. """
 class TestFailed (Exception):
-   pass
+   def __init__ (self, error):
+      self.error = error
 
 class Test:
    TestFailed = TestFailed
@@ -23,10 +24,10 @@ class Test:
       try:
          TestTree = parse (TestFile)
       except ParseError as ae:
-         raise TestFailed ()
+         raise TestFailed ("Error when parsing " + TestFile + ": " + ae.__str__ ())
       self.Root = TestTree.getroot ()
       if self.Root.tag != "WgetTest":
-         raise TestFailed ()
+         raise TestFailed ("Not a valid Test File.")
       printer ("BLUE", "Running Test: " + self.Root.get ('name'))
       self.testDir = TestFile + "-test"
       self.resultsNode = self.Root.find ('ExpectedResults')
@@ -148,7 +149,7 @@ class Test:
          try:
             commands_list.get(command) ()
          except TypeError as ae:
-            raise TestFailed
+            raise TestFailed ("Configuration details for Server Rule " + command + " do not exist")
 
    def get_cmd_line (self, WgetPath):
       cmd_line = WgetPath + " "
@@ -172,7 +173,7 @@ class Test:
          printer ("RED", "Expected Exit Code: " + str (expected_return_code))
          printer ("RED", "Actual Exit Code:   " + str (retCode))
          self._test_cleanup ()
-         raise TestFailed ()
+         raise TestFailed ("")
 
    def _gen_expected_files (self):
       expected_files = dict ()
@@ -199,17 +200,17 @@ class Test:
                   print() # Print empty line for formatting purposes
                   file_handler.close ()
                   self._test_cleanup ()
-                  raise TestFailed ()
+                  raise TestFailed ("")
                del expected_files[filename]
             else:
                printer ("RED", "Extra files downloaded by Wget.")
                self._test_cleanup ()
-               raise TestFailed ()
+               raise TestFailed ("")
          if expected_files:
             printer ("RED", "Not all expected files were downloaded.")
             printer ("RED", "Missing files: " + str (list (expected_files.keys ())).strip("[']"))
             self._test_cleanup ()
-            raise TestFailed ()
+            raise TestFailed ("")
 
 
 # vim: set ts=8 sw=3 sts=3 tw=0 et :

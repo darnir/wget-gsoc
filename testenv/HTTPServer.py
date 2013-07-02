@@ -69,7 +69,7 @@ class __Handler (StoppableHTTPRequestHandler):
 
       cLength = self.headers.get ("Content-Length")
       if cLength is None:
-         self.send_response (400)
+         self.send_error (400, "Missing Content-Length")
          self.finish_headers ()
          return None
       else:
@@ -107,7 +107,7 @@ class __Handler (StoppableHTTPRequestHandler):
 
       cLength = self.headers.get ("Content-Length")
       if cLength is None:
-         self.send_response (400)
+         self.send_error (400, "Missing Content-Length")
          self.finish_headers ()
          return None
       else:
@@ -174,8 +174,8 @@ class __Handler (StoppableHTTPRequestHandler):
          return (None, None)
 
       if self.test_cookies (path) is False:
-         self.send_response (400)
-         self.end_headers ()
+         self.send_error (400, "Cookie Mismatch")
+         self.finish_headers ()
          return (None, None)
 
       if path in fileSys:

@@ -7,6 +7,14 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-02  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py: More verbose errors. Send Descriptive messages with
+	400 Response Codes.
+	* TestEnv.py: More verbose errors. Edit TestFailed exception to take
+	an error string.
+	* runTest.py: Print the error string from TestFailed
+
+2013-07-02  Darshit Shah  <darnir@gmail.com>
+
 	* Makefile.am: Add new tests
 	* Test-Header: Add missing ExpectedFile
 
