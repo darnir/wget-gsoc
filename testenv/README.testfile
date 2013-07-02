@@ -32,7 +32,7 @@ Table 1: List of Elements in a Test File
 |     |                | since it returns more details about the test being    |
 |     |                | executed.                                             |
 |-----|----------------|-------------------------------------------------------|
-|  4  | Special        | This Element is used to define Special Rules for the  |
+|  4  | ServerRule     | This Element is used to define Special Rules for the  |
 |     | +              | Server to follow. The exact details vary with commands|
 |* 4a | +-->command    | Mandatory Attribute. Define the Name of the Special   |
 |     |                | Rule being defined below.                             |
@@ -86,6 +86,18 @@ Table 2: List of Special Commands and their sub-elements
 |     |   +--->File    | Set a filename to include in Wget's URL parameters on |
 |     |                | on invokation. This is used when we want to send a    |
 |     |                | PUT Request to a URI that does not exist on server    |
+|-----|----------------|-------------------------------------------------------|
+| 7   | Cookie         | Specify server rules for sending Set-Cookie Headers   |
+|     | +              | and for expected Cookie Headers in requests.          |
+|     | +->SendCookie  | The value of the Cookie that must be sent by the      |
+|     | |    +         | Server. Multiple such elements can be described.      |
+|     | |    +-->File  | The Request URI for which this cookie will be sent in |
+|     | |              | the Response.                                         |
+|     | +->ExpectCookie| Specify the value expected in the Cookie Header.      |
+|     |      +         | This field must exactly match the value sent by Wget  |
+|     |      |         | in the Cookie Header. When there are multiple         |
+|     |      |         | attributes, Wget sends them in sorted order.          |
+|     |      +-->File  | Request URI for which these Cookies are expected.     |
 +=====+================+=======================================================+
 
 *NOTE*: The syntax and working of the Special Commands, PUT and POST may change

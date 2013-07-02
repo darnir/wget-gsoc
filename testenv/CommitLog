@@ -7,6 +7,12 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-02  Darshit Shah  <darnir@gmail.com>
 
+	* README (Writing New Tests): Edit section to reflect changes in
+	parse_server_rules () method.
+	* README.testfile: Document the Cookie command
+
+2013-07-02  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py: More verbose errors. Send Descriptive messages with
 	400 Response Codes.
 	* TestEnv.py: More verbose errors. Edit TestFailed exception to take
