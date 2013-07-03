@@ -28,20 +28,21 @@
 
 AUTOMAKE_OPTIONS = parallel-tests
 AM_TESTS_ENVIRONMENT = MAKE_CHECK=True; export MAKE_CHECK;
-TESTS = Test-stdouterr \
-	Test-O \
-	TestProto \
-	Test-redirect \
-	Test-Head \
-	Test-c-partial \
+TESTS = Test-c-full \
+	Test-c-None \
 	Test-Content-disposition \
+	Test-cookie \
+	Test-c-partial \
+	Test-Head \
+	Test-Header \
+	Test-O \
 	Test-Post \
 	Test-Post2 \
 	Test-Post3 \
+	TestProto \
 	Test-Put \
-	Test-c-None \
-	Test-c-full \
-	Test-Header \
-	Test-cookie
+	Test-redirect \
+	Test-stdouterr
+
 XFAIL_TESTS = Test-Post2
 LOG_COMPILER = ./runTest.py
