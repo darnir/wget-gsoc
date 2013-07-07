@@ -1,0 +1,55 @@
+<WgetTest name="Prototype File">
+
+    <!-- Request URL's File2 and File3. File3 -> File4 -> File1 -->
+
+    <File>
+        <Meta name="File1" no-download="True" />
+        <Content>I am an invisible man.</Content>
+        <ServerRule command="ContentDisposition">
+            <Name>InvisibleMan</Name>
+        </ServerRule>
+        <ServerRule command="Cookie">
+            <Send>sess-id=1234; Max-Age=0</Send>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="File3" />
+        <ServerRule command="Redirect">
+            <To>File4</To>
+            <Code>301</Code>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="File4" no-download="True" />
+        <ServerRule command="Response">
+            <Code>302</Code>
+        </ServerRule>
+        <ServerRule command="Header">
+            <Name>Location</Name>
+            <Value>File1</Value>
+        </ServerRule>
+        <ServerRule command="Cookie">
+            <Send>sess-id=1234; path=/File4</Send>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="File2" />
+        <Content>To be born again, first you have to die</Content>
+        <ServerRule command="Continue">
+            <Bytes>9</Bytes>
+        </ServerRule>
+    </File>
+
+    <Option>-d -c</Option>
+    <Option>-v --content-disposition</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File>File2</File>
+        <File orig="File1">InvisibleMan</File>
+    </ExpectedResults>
+
+</WgetTest>

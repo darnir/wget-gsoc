@@ -5,23 +5,40 @@
      Wesimply set Bytes to an integer greater than the inputfile size.
 -->
 
-    <InputFile name="File1.html"><![CDATA[<html>
-<head>
-</head>
-<body>
-This is a Prototype File.
-</body>
-</html>]]></InputFile>
+    <File>
+        <Meta name="File1.html" />
+        <Content>Mr and Mrs Dursley, of number four, Privet Drive,
+        were proud to say they were perfectly normal, thank you very much.
+        </Content>
+        <ServerRule command="Continue">
+            <Bytes>180</Bytes>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="File2.html" />
+        <Content>Mr and Mrs Dursley, of number four, Privet Drive,
+        were proud to say they were perfectly normal, thank you very much.
+        </Content>
+        <ServerRule command="Continue">
+            <Bytes>10</Bytes>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="File3.html" />
+        <Content>Mr and Mrs Dursley, of number four, Privet Drive,
+        were proud to say they were perfectly normal, thank you very much.
+        </Content>
+    </File>
 
     <Option>-d -c</Option>
-    <ServerRule command="Continue">
-        <File>File1.html</File>
-        <Bytes>180</Bytes>
-    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
         <File>File1.html</File>
+        <File>File2.html</File>
+        <File>File3.html</File>
     </ExpectedResults>
 
 </WgetTest>

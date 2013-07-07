@@ -70,13 +70,14 @@ Following is a list of Exit Status Codes for the runTest Module:
 * 100  Test Failed
 
 Tests are skipped when they are either not supported by the platform,
-or Wget is compiled with support for that feature.
+or Wget is not compiled with support for that feature.
 
-Hard Errors occur when either the Test File could not be found or
-parsed successfully.
+Hard Errors occur when the Test File could not be found or there were
+error while parsing it.
 
-Other errors in the code are currently not caught and may cause
-unhandled exceptions.
+Exceptions arre caught in some some of the common locations, however
+there may occur unhandled exceptions in certain instances. These will
+usually iccur when there are issues with the data in the test file.
 
 Environment Variables:
 =====================================================================
@@ -107,8 +108,8 @@ the parse_special () function and add the Server Rule name in the
 commands_list dictionary. This name is mapped to the name of the
 function which will handle parsing the Test File and adding the
 required rule(s) to the server configuration list. A Class should
-be created to handle the data required and objects of this class
-are to be appended to special_conf[%RuleName].
+be created to handle the data required. The methods should return a
+list with two-element tuples consisting of RuleName and Object
 
 Once a new Test File is created, it must be added to the TESTS
 variable in Makefile.am. This way the Test will be executed on

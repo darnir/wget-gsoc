@@ -4,35 +4,32 @@
     First a 301 then a 302 is sent by the server.
 -->
 
-    <InputFile name="File1.html" download="False"><![CDATA[<html>
-<head>
-</head>
-<body>
-This is a Prototype File.
-</body>
-</html>]]></InputFile>
+    <File>
+        <Meta name="File1.html" no-download="True" />
+        <Content>booyeah!</Content>
+    </File>
 
-    <InputFile name="File2.html"><![CDATA[<html>
-<head>
-</head>
-<body>
-2nd Test File
-</body>
-</html>]]></InputFile>
+    <File>
+        <Meta name="File2.html" />
+        <ServerRule command="Redirect">
+            <To>temp</To>
+            <Code>301</Code>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="temp" no-download="True" />
+        <ServerRule command="Response">
+            <Code>302</Code>
+        </ServerRule>
+        <ServerRule command="Header">
+            <Name>Location</Name>
+            <Value>File1.html</Value>
+        </ServerRule>
+    </File>
 
     <Option>-d -c</Option>
     <Option>-v</Option>
-
-    <ServerRule command="Redirect">
-        <From>File2.html</From>
-        <To>temp</To>
-        <Code>301</Code>
-    </ServerRule>
-    <ServerRule command="Redirect">
-        <From>temp</From>
-        <To>File1.html</To>
-        <Code>302</Code>
-    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

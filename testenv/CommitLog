@@ -5,6 +5,10 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-07  Darshit Shah  <darnir@gmail.com>
+
+	* Major change. File/function level changes are too many to figure.
+
 2013-07-02  Darshit Shah  <darnir@gmail.com>
 
 	* README (Writing New Tests): Edit section to reflect changes in

@@ -3,24 +3,27 @@
      Test if Wget reads the Content-Disposition Header correctly.
 -->
 
-    <InputFile name="File2.html"><![CDATA[<html>
-<head>
-</head>
-<body>
-2nd Test File
-</body>
-</html>]]></InputFile>
+    <File>
+        <Meta name="File2.html" />
+        <Content>All that is gold does not glitter,
+        Not all those who wander are lost;
+        The old that is strong does not wither,
+        Deep roots are not reached by the frost.
+        From the ashes a fire shall be woken,
+        A light from the shadows shall spring;
+        Renewed shall be blade that was broken,
+        The crownless again shall be king.</Content>
+        <ServerRule command="ContentDisposition">
+            <Name>NewFile.xhtml</Name>
+        </ServerRule>
+    </File>
 
     <Option>-d -c</Option>
     <Option>-v --content-disposition</Option>
 
-    <ServerRule command="Content Disposition">
-        <File>File2.html</File>
-        <NameParam>treial</NameParam>
-    </ServerRule>
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
-        <File orig="File2.html">treial</File>
+        <File orig="File2.html">NewFile.xhtml</File>
     </ExpectedResults>
 
 </WgetTest>

@@ -4,13 +4,10 @@
      TODO: Implement a Platform option so this test is skipped on Windows
 -->
 
-    <InputFile name="File1.html"><![CDATA[<html>
-<head>
-</head>
-<body>
-This bowl is full!
-</body>
-</html>]]></InputFile>
+    <File>
+        <Meta name="File1.html" />
+        <Content>YeeeHAww!</Content>
+    </File>
 
     <Option>-O /dev/full</Option>
 

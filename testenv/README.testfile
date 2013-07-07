@@ -12,17 +12,22 @@ Table 1: List of Elements in a Test File
 |* 1  | WgetTest       | MUST be the Root Node of all Test Files.              |
 |* 1a | +-->name       | Attribute. Name of the Test.                          |
 |-----|----------------|-------------------------------------------------------|
-|  2  | InputFile      | Define the files that will reside on the server.      |
-|* 2a | +-->name       | Mandatory Attribute. Set the name of the file.        |
-|  2b | +-->download   | Flag to specify whether the file should be added to   |
-|     |                | the list of URLS passed to Wget on invokation.        |
-|     |                | This attrbute is set to True by default.              |
-|     |                |                                                       |
-|     |                | The content of the files are stated between the       |
-|     |                | InputFile tags.                                       |
-|     |                | *NOTE*: If you use HTML tags in your inputfile,       |
-|     |                | remember to enclose them in CDATA tags. See TestProto |
-|     |                | for and example                                       |
+|  2  | File           | Define the files that will reside on the server.      |
+|* 2a | +>Meta         | Mandatory Element. Describe some metadata for the file|
+|     | | +>name       | Mandatory Attribute stating name of file.             |
+|     | | +>no-download| Flag to specify whether the file should be added to   |
+|     | |              | the list of URLS passed to Wget on invokation.        |
+|     | |              | This attrbute is set to False by default.             |
+|  2b | +>Content      | Define the content of the files.                      |
+|     | |              | *NOTE*: If you use HTML tags in your file content,    |
+|     | |              | remember to enclose them in CDATA tags.               |
+|  2c | +>ServerRule   | This element is used to define Special Rules for the  |
+|     |   +            | Server to follow. The sub-elements vary with commands.|
+|     |   +-->command  | Mandatory Attribute. Define the name of the Server    |
+|     |                | Rule being defined.                                   |
+|     |                | A comprehensive list of various commands supported and|
+|     |                | the respective sub-elements involved is given in      |
+|     |                | Table 2.                                              |
 |-----|----------------|-------------------------------------------------------|
 |  3  | Option         | Specify the command line parameters to pass to Wget   |
 |     |                | at invokation. You can specify multiple parameters    |
@@ -31,14 +36,6 @@ Table 1: List of Elements in a Test File
 |     |                | Usually, passing the --debug parameter is recommended |
 |     |                | since it returns more details about the test being    |
 |     |                | executed.                                             |
-|-----|----------------|-------------------------------------------------------|
-|  4  | ServerRule     | This Element is used to define Special Rules for the  |
-|     | +              | Server to follow. The exact details vary with commands|
-|* 4a | +-->command    | Mandatory Attribute. Define the Name of the Special   |
-|     |                | Rule being defined below.                             |
-|     |                | A comprehensive list of the various commands supported|
-|     |                | and the respective sum-elements involved is given in  |
-|     |                | Table 2.                                              |
 |-----|----------------|-------------------------------------------------------|
 |* 5  | ExpectedResults| This element lists the various objects expected as a  |
 |     | +              | result of a successful run of the Test.               |
@@ -54,13 +51,10 @@ Table 2: List of Special Commands and their sub-elements
 | No  | Element        | Description                                           |
 +=====+================+=======================================================+
 | 1   | Redirect       | Define Redirection rules for the Server.              |
-|     |   +--->From    | The Request URI for which this Rule is invoked.       |
 |     |   +--->To      | The value of the Location Header in the Response.     |
 |     |   +--->Code    | The HTTP Status Code to send in the Response.         |
 |-----|----------------|-------------------------------------------------------|
 | 2   | Continue       | This directs the Test Suite to create a partial file  |
-|     |   +--->File    | File name of the partial file. This must also match a |
-|     |   |            | name in the InputFile elements defined in the file.   |
 |     |   +--->Bytes   | The number of bytes from the beginning of the file    |
 |     |                | that should be copied into the partial file. This is  |
 |     |                | an optional sub-element. Set it to any number         |
@@ -69,40 +63,21 @@ Table 2: List of Special Commands and their sub-elements
 |-----|----------------|-------------------------------------------------------|
 | 3   | Content Disposition                                                    |
 |     |   +            | Send a Content-Disposition Header in the response     |
-|     |   |            | Sends an attachment type Header by default.           |
-|     |   +--->File    | The Request URI for which this headr should be sent   |
-|     |   +-->NameParam| The filename parameter to send in the Header.         |
+|     |   |            | Sends an Attachment type Header by default.           |
+|     |   +-->Name     | The filename parameter to send in the Header.         |
 |-----|----------------|-------------------------------------------------------|
 | 4   | Header         | Send a custom Header with the Responses.              |
 |     |   +--->Name    | Specify the contents of the Name field.               |
 |     |   +--->Value   | Specify the contents of the Value field.              |
 |-----|----------------|-------------------------------------------------------|
-| 5   | POST           | Specify server rules for when it recieves a HTTP POST |
-|     |   +--->File    | Set a filename to include in Wget's URL parameters on |
-|     |                | on invokation. This is used when we want to send a    |
-|     |                | POST Request to a URI that does not exist on server   |
-|-----|----------------|-------------------------------------------------------|
-| 6   | PUT            | Specify server rules for when it recieves a HTTP PUT  |
-|     |   +--->File    | Set a filename to include in Wget's URL parameters on |
-|     |                | on invokation. This is used when we want to send a    |
-|     |                | PUT Request to a URI that does not exist on server    |
-|-----|----------------|-------------------------------------------------------|
 | 7   | Cookie         | Specify server rules for sending Set-Cookie Headers   |
 |     | +              | and for expected Cookie Headers in requests.          |
 |     | +->SendCookie  | The value of the Cookie that must be sent by the      |
-|     | |    +         | Server. Multiple such elements can be described.      |
-|     | |    +-->File  | The Request URI for which this cookie will be sent in |
-|     | |              | the Response.                                         |
+|     | |              | Server. Multiple such elements can be described.      |
 |     | +->ExpectCookie| Specify the value expected in the Cookie Header.      |
-|     |      +         | This field must exactly match the value sent by Wget  |
-|     |      |         | in the Cookie Header. When there are multiple         |
-|     |      |         | attributes, Wget sends them in sorted order.          |
-|     |      +-->File  | Request URI for which these Cookies are expected.     |
+|     |                | This field must exactly match the value sent by Wget  |
+|     |                | in the Cookie Header. When there are multiple         |
+|     |                | attributes, Wget sends them in sorted order.          |
 +=====+================+=======================================================+
-
-*NOTE*: The syntax and working of the Special Commands, PUT and POST may change
-in the future. These changes have a high chance of being backward incompatible.
-However all Test Files written by then will be converted to the new syntax by
-means of a conversion script.
 
 # vim: set tw=80 wm=2 :

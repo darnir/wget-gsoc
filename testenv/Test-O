@@ -3,7 +3,10 @@
      Ensure that Wget writes to the correct filename with -O
 -->
 
-    <InputFile name="Sparta">This is Spartaa!</InputFile>
+    <File>
+        <Meta name="Sparta" />
+        <Content>This is Spartaa!</Content>
+    </File>
 
     <Option>-O Persia</Option>
 

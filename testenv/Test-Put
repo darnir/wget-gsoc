@@ -2,12 +2,11 @@
 <!--
      Test sending a HTTP PUT Request to a non-existant URI
 -->
+    <File>
+        <Meta name="newfile" />
+    </File>
 
     <Option>-d --method=put --body-data="Frodo Baggins!"</Option>
-
-    <ServerRule command="PUT">
-        <File>newfile</File>
-    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

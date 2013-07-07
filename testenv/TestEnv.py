@@ -37,15 +37,15 @@ class Test:
          shutil.rmtree (self.testDir)
          os.mkdir (self.testDir)
       os.chdir (self.testDir)
+      self.download_list = ""
 
    def init_server (self):
       server = HTTPServer.create_server ()
       port = server.server_address[1]
       domain_name = server.server_address[0]
       self.domain = domain_name + ":" + str (port) + "/"
-      self.gen_file_list ()
-      self.parse_server_rules ()
-      server.server_conf (self.file_list, self.special_conf)
+      server_rules = self.parse_files ()
+      server.server_conf (self.file_list, server_rules)
       HTTPServer.spawn_server (server)
 
    """ Send a HTTP QUIT Request to stop the Server """
@@ -55,108 +55,113 @@ class Test:
       self.fileSys = HTTPServer.ret_fileSys()
       conn.getresponse ()
 
-   def gen_file_list (self):
-      self.download_list = ""
-      self.file_list = dict ()
-      for file_element in self.Root.findall ('InputFile'):
-         self.file_list[file_element.get ('name')] = file_element.text
-         if file_element.get ('download') == 'False':
-            continue
-         self.download_list += self.domain + file_element.get ('name') + " "
+   def append_downloads (self, filename):
+      self.download_list += self.domain + filename + " "
 
-   class Redirect:
-      def __init__ (self, redir_from, redir_to, redir_code):
-         self.from_uri = redir_from
-         self.to_uri = redir_to
-         self.stat_code = redir_code
+   def parse_files (self):
+      self.file_list = dict ()
+      server_rules = dict ()
+      for file_node in self.Root.findall ('File'):
+         try:
+            metadata = file_node.find ('Meta')
+            self.filename = metadata.get ('name')
+            toDownload = True if metadata.get ('no-download') is None else False
+            content_node = file_node.find ('Content')
+            if content_node is not None:
+               self.file_list[self.filename] = content_node.text
+            if toDownload is True:
+               self.append_downloads (self.filename)
+         except Exception as ae:
+            raise TestFailed ("An error occurred: " + ae.__str__ ())
+         filerule = self.parse_server_rules (file_node)
+         server_rules[self.filename] = filerule
+      return server_rules
 
    class Cust_Header:
-      def __init__ (self, header, value, filen=None):
+      def __init__ (self, header, value):
          self.header_name = header
          self.header_value = value
-         self.header_files = filen
 
    class Cookie:
-      def __init__ (self, value, filen):
+      def __init__ (self, value):
          self.cookie_value = value
-         self.cookie_file = filen
 
-   def set_redir (self):
-      redir_from_node = self.special_comm.find ('From')
-      redir_from = redir_from_node.text
-      redir_to_node = self.special_comm.find ('To')
-      redir_to = redir_to_node.text
-      redir_code_node = self.special_comm.find ('Code')
-      redir_code = redir_code_node.text
-      self.special_conf['Redirect'].append (self.Redirect(redir_from, redir_to, redir_code))
+   class Resp:
+      def __init__ (self, code):
+         self.response_code = int (code)
+
+   def get_redir (self):
+      redir_to = self.special_comm.find ('To').text
+      redir_code = self.special_comm.find ('Code').text
+      header_obj = self.Cust_Header ("Location", redir_to)
+      response_obj = self.Resp (redir_code)
+      return [("Header", header_obj), ("Response", response_obj)]
 
    def set_cont (self):
-      filename_node = self.special_comm.find ('File')
-      filename = filename_node.text
-      file_handle = open (filename, "w")
+      file_handle = open (self.filename, "w")
       offset_node = self.special_comm.find ('Bytes')
       if offset_node is not None:
          offset = int (offset_node.text)
-         file_handle.write (self.file_list[filename][:offset])
+         file_handle.write (self.file_list[self.filename][:offset])
+      return [(None, None)]
 
-   def set_cont_disp (self):
-      cfile_node = self.special_comm.find ('File')
-      cfile = cfile_node.text
-      cname_node = self.special_comm.find ('NameParam')
-      cname = cname_node.text
+   def get_cont_disp (self):
+      cname = self.special_comm.find ('Name').text
       cheader = "Content-Disposition"
       cvalue = "Attachment; filename=" + cname
-      self.special_conf['Header'].append (self.Cust_Header (cheader, cvalue, cfile))
+      cont_disp_obj = self.Cust_Header (cheader, cvalue)
+      return [("Header", cont_disp_obj)]
 
-   def set_header (self):
+   def get_header (self):
       header_node = self.special_comm.find ('Name')
       header = header_node.text
       value_node = self.special_comm.find ('Value')
       value = value_node.text
-      self.special_conf['Header'].append (self.Cust_Header (header, value))
+      header_obj = self.Cust_Header (header, value)
+      return [("Header", header_obj)]
 
-   def set_post (self):
-      for files in self.special_comm.findall ('File'):
-         self.meth_files += self.domain + files.text + " "
+   def get_cookie (self):
+      cookie_list = list()
+      for sendCookie in self.special_comm.findall ('Send'):
+         send_cookie = self.Cust_Header ('Set-Cookie', sendCookie.text)
+         cookie_list.append (("Header", send_cookie))
+      for expectCookie in self.special_comm.findall ('Expect'):
+         expect_cookie = self.Cookie (expectCookie.text)
+         cookie_list.append (("Cookie", expect_cookie))
+      return cookie_list
 
-   def set_put (self):
-      for files in self.special_comm.findall ('File'):
-         self.meth_files += self.domain + files.text + " "
+   def get_response (self):
+      resp_obj = self.Resp (self.special_comm.find ('Code').text)
+      return [("Response", resp_obj)]
 
-   def set_cookie (self):
-      for sendCookie in self.special_comm.findall ('SendCookie'):
-         self.special_conf['Header'].append (self.Cust_Header ('Set-Cookie', \
-                                          sendCookie.text, sendCookie.get ('file')))
-
-      for expectCookie in self.special_comm.findall ('ExpectCookie'):
-         self.special_conf['Cookie'].append (self.Cookie (expectCookie.text, \
-                                                         expectCookie.get ('file')))
-
-   def parse_server_rules (self):
-      self.special_conf = defaultdict(list)
+   def parse_server_rules (self, file_node):
+      special_conf = defaultdict (list)
       self.meth_files = ""
       commands_list = {
-         "Redirect":self.set_redir,
+         "Redirect":self.get_redir,
          "Continue":self.set_cont,
-         "Content Disposition":self.set_cont_disp,
-         "Header":self.set_header,
-         "POST":self.set_post,
-         "PUT":self.set_put,
-         "Cookie":self.set_cookie
+         "ContentDisposition":self.get_cont_disp,
+         "Header":self.get_header,
+         "Cookie":self.get_cookie,
+         "Response":self.get_response
       }
-      for self.special_comm in self.Root.findall ('ServerRule'):
+      for self.special_comm in file_node.findall ('ServerRule'):
          command = self.special_comm.get ('command')
          try:
-            commands_list.get(command) ()
+            rule_obj = commands_list.get(command) ()
          except TypeError as ae:
             raise TestFailed ("Configuration details for Server Rule " + command + " do not exist")
+         for name, rule in rule_obj:
+            if name is not None:
+               special_conf[name].append (rule)
+      return special_conf
 
    def get_cmd_line (self, WgetPath):
       cmd_line = WgetPath + " "
       for parameter in self.Root.findall('Option'):
          cmd_line += parameter.text + " "
-      cmd_line += self.download_list + " "
-      cmd_line += self.meth_files
+      cmd_line += self.download_list
+      print (cmd_line)
       return cmd_line
 
    def _test_cleanup (self):

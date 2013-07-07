@@ -5,11 +5,11 @@
      server and a response sent with Status Code, 201.
 -->
 
-    <Option>-d --method=post --body-data="One ring to rule them all"</Option>
+    <File>
+        <Meta name="newfile.html" />
+    </File>
 
-    <ServerRule command="POST">
-        <File>newfile.html</File>
-    </ServerRule>
+    <Option>-d --method=post --body-data="Test Data"</Option>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

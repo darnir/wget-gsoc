@@ -8,13 +8,13 @@ import re
 ## Custom Class Definitions. These extend the standard classes
 # so as to add support for stopping them programmatically.
 
-class StoppableHTTPRequestHandler (BaseHTTPRequestHandler):
+class WgetHTTPRequestHandler (BaseHTTPRequestHandler):
 
    protocol_version = 'HTTP/1.1'
    def do_QUIT (self):
       queue.put (fileSys)
       self.send_response (200)
-      self.finish_headers ()
+      self.end_headers ()
       self.server.stop = True
 
 class StoppableHTTPServer (HTTPServer):
@@ -38,7 +38,7 @@ class InvalidRangeHeader (Exception):
 
 ## End Custom Class Declarations
 
-class __Handler (StoppableHTTPRequestHandler):
+class __Handler (WgetHTTPRequestHandler):
    InvalidRangeHeader = InvalidRangeHeader
    # The do_* methods define how each of the HTTP Request Methods are handled by this server.
 
@@ -66,18 +66,15 @@ class __Handler (StoppableHTTPRequestHandler):
 
    def do_POST (self):
       path = self.path[1:]
+      self.rules = server_configs.get (path)
 
-      cLength = self.headers.get ("Content-Length")
-      if cLength is None:
-         self.send_error (400, "Missing Content-Length")
-         self.finish_headers ()
-         return None
-      else:
-         cLength = int (cLength)
-         body_data = self.rfile.read (cLength).decode ('utf-8')
+      if self.custom_response ():
+         return (None, None)
 
-      if self.handle_redirects (path) is True:
-         return None
+      cLength_header = self.headers.get ("Content-Length")
+      cLength = int (cLength_header) if cLength_header is not None else 0
+      body_data = self.rfile.read (cLength).decode ('utf-8')
+
       if path in fileSys:
          self.send_response (200)
          self.send_header ("Content-type", "text/plain")
@@ -104,18 +101,15 @@ class __Handler (StoppableHTTPRequestHandler):
 
    def do_PUT (self):
       path = self.path[1:]
+      self.rules = server_configs.get (path)
 
-      cLength = self.headers.get ("Content-Length")
-      if cLength is None:
-         self.send_error (400, "Missing Content-Length")
-         self.finish_headers ()
-         return None
-      else:
-         cLength = int (cLength)
-         body_data = self.rfile.read (cLength).decode ('utf-8')
+      if self.custom_response ():
+         return (None, None)
 
-      if self.handle_redirects (path) is True:
-         return None
+      cLength_header = self.headers.get ("Content-Length")
+      cLength = int (cLength_header) if cLength_header is not None else 0
+      body_data = self.rfile.read (cLength).decode ('utf-8')
+
       fileSys.pop (path, None)
       fileSys[path] = body_data
       self.send_response (201)
@@ -128,38 +122,40 @@ class __Handler (StoppableHTTPRequestHandler):
          pass
 
    def send_cust_headers (self):
-      if "Header" in server_configs:
-         header_obj = server_configs.get ('Header')
-         for header in header_obj:
-            if header.header_files == None or \
-             header.header_files == self.path[1:]:
-               self.send_header (header.header_name, header.header_value)
+      header_obj = self.rules.get ('Header') if 'Header' in self.rules else list ()
+      for header in header_obj:
+         self.send_header (header.header_name, header.header_value)
 
    def finish_headers (self):
       self.send_cust_headers ()
       self.end_headers ()
 
    def handle_redirects (self, path):
-      if "Redirect" in server_configs:
-         redir_list = server_configs.get ('Redirect')
-         for obj in redir_list:
-            if path == obj.from_uri:
-               self.send_response (int (obj.stat_code))
-               self.send_header ("Location", obj.to_uri)
-               self.finish_headers()
-               return True
+      redir = self.rules.get ('Redirect') if 'Redirect' in self.rules else list ()
+      if redir:
+         self.send_response (redir[0].stat_code)
+         self.send_header ("Location", redir[0].to_uri)
+         self.finish_headers()
+         return True
       else:
          return False
 
-   def test_cookies (self, path):
+   def test_cookies (self):
       cookie_recd = self.headers.get ('Cookie')
-      cookie_exp = None
-      if "Cookie" in server_configs:
-         cookies = server_configs.get ('Cookie')
-         for cookie_obj in cookies:
-            if cookie_obj.cookie_file == path:
-               cookie_exp = cookie_obj.cookie_value
+      cookies = self.rules.get ('Cookie') if 'Cookie' in self.rules else list ()
+      cookie_exp = cookies[0].cookie_value if cookies else None
       if cookie_exp == cookie_recd:
+         return True
+      else:
+         self.send_error (400, "Cookie Mismatch")
+         self.finish_headers ()
+         return False
+
+   def custom_response (self):
+      codes = self.rules.get ('Response') if 'Response' in self.rules else list ()
+      if codes:
+         self.send_response (codes[0].response_code)
+         self.finish_headers ()
          return True
       else:
          return False
@@ -169,13 +165,9 @@ class __Handler (StoppableHTTPRequestHandler):
       This method is overriden to use the fileSys dict.
       """
       path = self.path[1:]
+      self.rules = server_configs.get (path)
 
-      if self.handle_redirects (path) is True:
-         return (None, None)
-
-      if self.test_cookies (path) is False:
-         self.send_error (400, "Cookie Mismatch")
-         self.finish_headers ()
+      if self.custom_response () or not self.test_cookies ():
          return (None, None)
 
       if path in fileSys:

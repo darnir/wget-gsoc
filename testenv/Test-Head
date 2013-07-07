@@ -3,13 +3,10 @@
      Ensure that Wget does not download ANY files when HEAD Requests are sent
 -->
 
-    <InputFile name="File2.html"><![CDATA[<html>
-<head>
-</head>
-<body>
-2nd Test File
-</body>
-</html>]]></InputFile>
+    <File>
+        <Meta name="File2.html" />
+        <Content>You shall not pass!</Content>
+    </File>
 
     <Option>-d --method=HEAD</Option>
 

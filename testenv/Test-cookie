@@ -1,19 +1,27 @@
 <WgetTest name="Test basic cookie functionality">
-    <InputFile name="AnnaKarenina">All happy families are alike;
-    each unhappy family is unhappy in its own way.
-    </InputFile>
-    <InputFile name="1984">It was a bright cold day in April,
+    <File>
+        <Meta name="AnnaKarenina" />
+        <Content>All happy families are alike;
+        each unhappy family is unhappy in its own way.
+        </Content>
+        <ServerRule command="Cookie">
+            <Send>sess-id=0213; path=/</Send>
+            <Send>author=Tolstoy</Send>
+        </ServerRule>
+    </File>
+
+    <File>
+    <Meta name="1984" />
+    <Content>It was a bright cold day in April,
     and the clocks were striking thirteen.
-    </InputFile>
+    </Content>
+    <ServerRule command="Cookie">
+        <Expect>author=Tolstoy; sess-id=0213</Expect>
+    </ServerRule>
+    </File>
 
     <Option>-d</Option>
 
-    <ServerRule command="Cookie">
-        <SendCookie file="AnnaKarenina">sess-id=0213; path=/</SendCookie>
-        <SendCookie file="AnnaKarenina">author=Tolstoy; path=/</SendCookie>
-        <SendCookie file="AnnaKarenina">some=thing; path=/</SendCookie>
-        <ExpectCookie file="1984">author=Tolstoy; sess-id=0213; some=thing</ExpectCookie>
-    </ServerRule>
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
         <File>AnnaKarenina</File>

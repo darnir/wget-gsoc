@@ -3,18 +3,13 @@
      Test for a simple POST Request.
 -->
 
-    <InputFile name="File2.html"><![CDATA[<html>
-<head>
-</head>
-<body>
-2nd Test File
-</body>
-</html>]]></InputFile>
+    <File>
+        <Meta name="File2.html" />
+        <Content>A reader lives a thousand lives before he dies, said Jojen.
+        The man who never reads lives only one.</Content>
+    </File>
 
     <Option>-d --method=post --body-data=Message=Heya</Option>
-
-    <ServerRule command="POST">
-    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>

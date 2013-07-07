@@ -3,20 +3,17 @@
      Ensure that Wget does not download ANY files when HEAD Requests are sent
 -->
 
-    <InputFile name="File2.html"><![CDATA[<html>
-<head>
-</head>
-<body>
-2nd Test File
-</body>
-</html>]]></InputFile>
+    <File>
+        <Meta name="File2.html" />
+        <Content>The man who does not read has no advantage
+                over the man who cannot read.</Content>
+        <ServerRule command="Header">
+            <Name>Content-Length</Name>
+            <Value>44</Value>
+        </ServerRule>
+    </File>
 
     <Option>-d</Option>
-
-    <ServerRule command="Header">
-        <Name>Content-Length</Name>
-        <Value>44</Value>
-    </ServerRule>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
