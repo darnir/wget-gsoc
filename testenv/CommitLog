@@ -5,6 +5,13 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-08  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (handle_redirects): Delete method. This is no longer
+	required since the redirects are implicitly handled as custom response
+	and custom headers.
+	* TestEnv.py: No need to import http.cookies. We do not use it.
+
 2013-07-07  Darshit Shah  <darnir@gmail.com>
 
 	* Major change. File/function level changes are too many to figure.

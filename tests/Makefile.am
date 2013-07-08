@@ -36,11 +36,11 @@ PERLRUN = $(PERL) -I$(srcdir)
 
 LIBS     = @LIBICONV@ @LIBINTL@ @LIBS@ $(LIB_CLOCK_GETTIME)
 
-.PHONY: test run-unit-tests run-px-tests
+.PHONY: test run-unit-tests
 
 check-local: test
 
-test: ../src/wget$(EXEEXT) run-unit-tests run-px-tests
+test: ../src/wget$(EXEEXT) run-unit-tests
 
 ../src/wget$(EXEEXT):
 	cd ../src && $(MAKE) $(AM_MAKEFLAGS)

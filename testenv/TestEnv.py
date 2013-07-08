@@ -7,7 +7,6 @@ from ColourTerm import printer
 from difflib import unified_diff
 from collections import defaultdict
 from xml.etree.ElementTree import parse, ParseError
-from http import cookies
 
 testdir = ""
 

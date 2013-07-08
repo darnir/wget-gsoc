@@ -1,3 +1,7 @@
+2013-06-28  Darshit Shah  <darnir@gmail.com>
+
+	* Makefile.am: Remove run-px-tests
+
 2013-03-12  Darshit Shah <darnir@gmail.com>
 
 	* Makefile.am (EXTRA_DIST): Add Test--post-file.px.

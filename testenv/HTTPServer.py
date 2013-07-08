@@ -130,16 +130,6 @@ class __Handler (WgetHTTPRequestHandler):
       self.send_cust_headers ()
       self.end_headers ()
 
-   def handle_redirects (self, path):
-      redir = self.rules.get ('Redirect') if 'Redirect' in self.rules else list ()
-      if redir:
-         self.send_response (redir[0].stat_code)
-         self.send_header ("Location", redir[0].to_uri)
-         self.finish_headers()
-         return True
-      else:
-         return False
-
    def test_cookies (self):
       cookie_recd = self.headers.get ('Cookie')
       cookies = self.rules.get ('Cookie') if 'Cookie' in self.rules else list ()
