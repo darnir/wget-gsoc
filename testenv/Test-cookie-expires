@@ -1,0 +1,42 @@
+<WgetTest name="Test basic cookie functionality">
+    <File>
+        <Meta name="One.txt" />
+        <Content>Hello World!</Content>
+        <ServerRule command="Cookie">
+            <Send>sess-id=0213; path=/</Send>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="two.txt" />
+        <Content>Ello! You ought to see this.</Content>
+        <ServerRule command="Cookie">
+            <Expect>sess-id=0213</Expect>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="three.txt" />
+        <Content>New file.</Content>
+        <ServerRule command="Cookie">
+            <Send>sess-id=; Expires=Sun, 06 Nov 1994 08:49:37 GMT</Send>
+            <Expect>sess-id=0213</Expect>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="four.txt" />
+        <Content>Should be downloaded.</Content>
+    </File>
+
+    <Option>-d</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File>One.txt</File>
+        <File>two.txt</File>
+        <File>three.txt</File>
+        <File>four.txt</File>
+    </ExpectedResults>
+
+</WgetTest>

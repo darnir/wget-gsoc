@@ -1,0 +1,23 @@
+<WgetTest name="Test basic cookie functionality">
+    <File>
+        <Meta name="one.txt" />
+        <Content>Hello World!</Content>
+        <ServerRule command="Cookie">
+            <Send>sess-id=0213; domain=.example.com</Send>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="two.txt" />
+        <Content>Ello!</Content>
+    </File>
+
+    <Option>-d</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File>one.txt</File>
+        <File>two.txt</File>
+    </ExpectedResults>
+
+</WgetTest>

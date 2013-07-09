@@ -1,0 +1,33 @@
+<WgetTest name="Test basic cookie functionality">
+    <File>
+        <Meta name="AnnaKarenina" />
+        <Content>All happy families are alike;
+        each unhappy family is unhappy in its own way.
+        </Content>
+        <ServerRule command="Cookie">
+            <Send>sess-id=0213; path=/</Send>
+            <Send>author=Tolstoy</Send>
+        </ServerRule>
+        <ServerRule command="Response">
+            <Code>401</Code>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="1984" />
+        <Content>It was a bright cold day in April,
+        and the clocks were striking thirteen.
+        </Content>
+        <ServerRule command="Cookie">
+            <Expect>author=Tolstoy; sess-id=0213</Expect>
+        </ServerRule>
+    </File>
+
+    <Option>-d</Option>
+
+    <ExpectedResults>
+        <ReturnCode>6</ReturnCode>
+        <File>1984</File>
+    </ExpectedResults>
+
+</WgetTest>
