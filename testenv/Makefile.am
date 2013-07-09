@@ -31,6 +31,9 @@ AM_TESTS_ENVIRONMENT = MAKE_CHECK=True; export MAKE_CHECK;
 TESTS = Test-c-full \
 	Test-Content-disposition \
 	Test-cookie \
+	Test-cookie-401 \
+	Test-cookie-domain-mismatch \
+	Test-cookie-expires \
 	Test-Head \
 	Test-Header \
 	Test-O \
