@@ -137,7 +137,7 @@ class __Handler (WgetHTTPRequestHandler):
       if cookie_exp == cookie_recd:
          return True
       else:
-         self.send_error (400, "Cookie Mismatch")
+         self.send_response (400, "Cookie Mismatch")
          self.finish_headers ()
          return False
 

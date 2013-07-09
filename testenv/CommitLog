@@ -5,6 +5,11 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-09  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (check_cookies): Use send_response () instead of
+	send_error (). send_error () closes the connection on its own.
+
 2013-07-08  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (handle_redirects): Delete method. This is no longer
