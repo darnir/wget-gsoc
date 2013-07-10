@@ -4,17 +4,14 @@ import sys
 import shlex
 import os.path
 from subprocess import call
-from time import sleep
-from sys import exit
 from ColourTerm import printer
-from TestEnv import *
+from TestEnv import Test, TestFailed
 
 # Build the path to local build of Wget
-dirn = os.path.dirname (sys.argv[0])
-absp = os.path.abspath (dirn)
-WgetPath = os.path.join(absp, "..", "src", "wget")
+ABS_PATH = os.path.abspath (os.path.dirname (sys.argv[0]))
+WGET_PATH = os.path.join(ABS_PATH, "..", "src", "wget")
 
-exit_status = 0
+EXIT_STATUS = 0
 
 # Check for each TestCase file supplied in the arguments.
 # It is however preferable to run multiple tests through an external module
@@ -27,10 +24,10 @@ for TestCase in sys.argv[1:]:
       except TestFailed as ae:
          printer ("PURPLE", "Error encountered.")
          printer ("PURPLE", ae.error)
-         exit_status = 99
+         EXIT_STATUS = 99
          continue
 
-      params = TestObj.get_cmd_line (WgetPath)
+      params = TestObj.get_cmd_line (WGET_PATH)
       parameters = shlex.split (params)
 
       # Required to so that Wget is not invoked before the Server is initialized
@@ -43,14 +40,14 @@ for TestCase in sys.argv[1:]:
          TestObj.test_downloaded_files ()
       except TestFailed:
          printer ("RED", "Test Failed")
-         exit_status = 100
+         EXIT_STATUS = 100
       else:
          printer ("GREEN", "Test Passed")
          TestObj.endTest ()
 
    else:
       printer ("PURPLE", "The Test Case File: " + TestCase + " does not exist.")
-      exit_status = 99
+      EXIT_STATUS = 99
 
-exit (exit_status)
+sys.exit (EXIT_STATUS)
 # vim: set ts=8 sw=3 tw=0 et :

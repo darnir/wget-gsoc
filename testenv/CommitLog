@@ -5,6 +5,12 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-10  Darshit Shah  <darnir@gmail.com>
+
+	* runTest.py: Remove un-necessary imports. Remove wildcard import on
+	TestEnv.
+	Rename constants according to convention (Uppercase).
+
 2013-07-09  Darshit Shah  <darnir@gmail.com>
 
 	* Test-cookie-401: New Test File. Server returns a 401 Forbidden.
