@@ -124,10 +124,8 @@ class Test:
         return [("Header", cont_disp_obj)]
 
     def get_header (self):
-        header_node = self.special_comm.find ('Name')
-        header = header_node.text
-        value_node = self.special_comm.find ('Value')
-        value = value_node.text
+        header = self.special_comm.find ('Name').text
+        value = self.special_comm.find ('Value').text
         header_obj = self.Cust_Header (header, value)
         return [("Header", header_obj)]
 
@@ -152,6 +150,13 @@ class Test:
         auth_obj = self.Auth (auth_type, auth_user, auth_pass)
         return [("Auth", auth_obj)]
 
+    def get_expect_header (self):
+        header = self.special_comm.find ('Name').text
+        value = self.special_comm.find ('Value').text
+        header_obj = self.Cust_Header (header, value)
+        return [("Expect Header", header_obj)]
+
+
     def parse_server_rules (self, file_node):
         special_conf = defaultdict (list)
         self.meth_files = ""
@@ -162,7 +167,8 @@ class Test:
             "Header": self.get_header,
             "Cookie": self.get_cookie,
             "Response": self.get_response,
-            "Auth": self.get_auth
+            "Auth": self.get_auth,
+            "Expect Header": self.get_expect_header
         }
         for self.special_comm in file_node.findall ('ServerRule'):
             command = self.special_comm.get ('command')

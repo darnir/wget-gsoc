@@ -28,7 +28,11 @@
 
 AUTOMAKE_OPTIONS = parallel-tests
 AM_TESTS_ENVIRONMENT = MAKE_CHECK=True; export MAKE_CHECK;
-TESTS = Test-c-full \
+TESTS = Test-auth-basic \
+	Test-auth-no-challenge \
+	Test-auth-retcode \
+	Test-auth-with-content-disposition \
+	Test-c-full \
 	Test-Content-disposition \
 	Test-cookie \
 	Test-cookie-401 \

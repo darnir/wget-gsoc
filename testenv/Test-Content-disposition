@@ -18,7 +18,7 @@
         </ServerRule>
     </File>
 
-    <Option>-d -c</Option>
+    <Option>-d</Option>
     <Option>-v --content-disposition</Option>
 
     <ExpectedResults>

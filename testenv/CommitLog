@@ -7,6 +7,15 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-11  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (expect_headers): Test if an expected Header line is
+	foud in the Request Headers. Else, return a 400 and exit.
+	(send_head): Call expect_headers.
+	* TestEnv.py (parse_server_rules): Accept "Expected Header" command.
+	(get_expected_header): Generate a expected Header object
+	* Makefile.am: Add new auth based tests
+
+2013-07-11  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py: Import b64encode from base64 module for Simple HTTP
 	Auth.
 	(is_auth): If Auth Rules are set, follow them and check for correct

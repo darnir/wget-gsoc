@@ -174,12 +174,26 @@ class __Handler (WgetHTTPRequestHandler):
                self.send_error (403)
                return False
 
+   def expect_headers (self):
+      header = self.rules.get ('Expect Header') if 'Expect Header' in self.rules else list ()
+      if header:
+         for header_line in header:
+            header_rec = self.headers.get (header_line.header_name)
+            if header_rec is None or header_rec != header_line.header_value:
+               self.send_error (400, 'Expected Header not Found')
+               self.end_headers ()
+               return False
+      return True
+
    def send_head (self):
       """ Common code for GET and HEAD Commands.
       This method is overriden to use the fileSys dict.
       """
       path = self.path[1:]
       self.rules = server_configs.get (path)
+
+      if not self.expect_headers ():
+         return (None, None)
 
       if self.is_auth () is False:
          return (None, None)
