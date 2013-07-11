@@ -94,6 +94,13 @@ class Test:
         def __init__ (self, code):
             self.response_code = int (code)
 
+    class Auth:
+
+        def __init__ (self, a_type, a_user, a_pass):
+            self.auth_type = a_type
+            self.auth_user = a_user
+            self.auth_pass = a_pass
+
     def get_redir (self):
         redir_to = self.special_comm.find ('To').text
         redir_code = self.special_comm.find ('Code').text
@@ -138,6 +145,13 @@ class Test:
         resp_obj = self.Resp (self.special_comm.find ('Code').text)
         return [("Response", resp_obj)]
 
+    def get_auth (self):
+        auth_type = self.special_comm.find ('Type').text
+        auth_user = self.special_comm.find ('Username').text
+        auth_pass = self.special_comm.find ('Password').text
+        auth_obj = self.Auth (auth_type, auth_user, auth_pass)
+        return [("Auth", auth_obj)]
+
     def parse_server_rules (self, file_node):
         special_conf = defaultdict (list)
         self.meth_files = ""
@@ -147,7 +161,8 @@ class Test:
             "ContentDisposition": self.get_cont_disp,
             "Header": self.get_header,
             "Cookie": self.get_cookie,
-            "Response": self.get_response
+            "Response": self.get_response,
+            "Auth": self.get_auth
         }
         for self.special_comm in file_node.findall ('ServerRule'):
             command = self.special_comm.get ('command')

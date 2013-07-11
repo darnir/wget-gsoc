@@ -5,6 +5,16 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-11  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py: Import b64encode from base64 module for Simple HTTP
+	Auth.
+	(is_auth): If Auth Rules are set, follow them and check for correct
+	Authorization Header.
+	* TestEnv.py (Auth): Class for handling Authentication mechanisms.
+	(get_auth): Create Auth objects for Server Rules.
+	(parse_server_rules): Parse server rule command Auth.
+
 2013-07-10  Darshit Shah  <darnir@gmail.com>
 
 	* runTest.py: Remove un-necessary imports. Remove wildcard import on

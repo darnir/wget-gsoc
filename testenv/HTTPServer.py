@@ -2,6 +2,7 @@
 #from socketserver import ThreadingMixIn
 from multiprocessing import Process, Queue
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from base64 import b64encode
 import os
 import re
 
@@ -150,12 +151,38 @@ class __Handler (WgetHTTPRequestHandler):
       else:
          return False
 
+   def is_auth (self):
+      auth = self.rules.get ('Auth') if 'Auth' in self.rules else list ()
+      if auth:
+         auth_type = auth[0].auth_type
+         auth_header = self.headers.get ("Authorization")
+         if auth_type == "Basic" and auth_header is None:
+            self.send_response (401)
+            self.send_header ("WWW-Authenticate", 'Basic realm="Test"')
+            self.end_headers ()
+            return False
+         else:
+            user = auth[0].auth_user
+            passw = auth[0].auth_pass
+            auth_string = user + ":" + passw
+            auth_enc = b64encode (auth_string.encode ('UTF-8')).decode ('UTF-8')
+            auth_header = self.headers.get ("Authorization")
+            auth_header = auth_header.replace ("Basic ", "", 1)
+            if auth_header == auth_enc:
+               return True
+            else:
+               self.send_error (403)
+               return False
+
    def send_head (self):
       """ Common code for GET and HEAD Commands.
       This method is overriden to use the fileSys dict.
       """
       path = self.path[1:]
       self.rules = server_configs.get (path)
+
+      if self.is_auth () is False:
+         return (None, None)
 
       if self.custom_response () or not self.test_cookies ():
          return (None, None)
