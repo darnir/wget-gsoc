@@ -3,6 +3,7 @@
 from multiprocessing import Process, Queue
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from base64 import b64encode
+from random import random
 import os
 import re
 
@@ -166,6 +167,17 @@ class __Handler (WgetHTTPRequestHandler):
          if auth_type == "Basic" and auth_header is None:
             self.send_response (401)
             self.send_header ("WWW-Authenticate", 'Basic realm="Test"')
+            self.end_headers ()
+            return False
+         elif auth_type == "Digest" and auth_header is None:
+            self.send_response (401)
+            nonce = b64encode (str (random()).encode ('utf-8')).decode ('utf-8')
+            opaque = b64encode (str (random()).encode ('utf-8')).decode ('utf-8')
+            digest_string = "Digest "
+            digest_string += 'realm="Test", '
+            digest_string += 'nonce="%s", ' %nonce
+            digest_string += 'opaque="%s", ' %opaque
+            self.send_header ("WWW-Authenticate", digest_string)
             self.end_headers ()
             return False
          else:

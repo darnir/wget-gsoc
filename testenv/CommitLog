@@ -7,6 +7,10 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-12  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (is_auth): Handle RFC 2067 Digest Authentication
+
+2013-07-12  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py (append_downloads): Add User and Pass named parameters
 	for inURL handling.
 	(get_auth): Handle InURL Calls.
