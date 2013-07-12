@@ -7,6 +7,12 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-12  Darshit Shah  <darnir@gmail.com>
 
+	* TestEnv.py (append_downloads): Add User and Pass named parameters
+	for inURL handling.
+	(get_auth): Handle InURL Calls.
+
+2013-07-12  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (is_auth): In case, authentication fails, respond with
 	another 401 and WWW-Authenticate Header, instead of a 403. This
 	matched with RFC 2617

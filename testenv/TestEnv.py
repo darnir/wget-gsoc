@@ -56,8 +56,12 @@ class Test:
         self.fileSys = HTTPServer.ret_fileSys()
         conn.getresponse ()
 
-    def append_downloads (self, filename):
-        self.download_list += self.domain + filename + " "
+    def append_downloads (self, filename, User=None, Pass=None):
+        if User is not None:
+            URL = "http://" + User + ':' + Pass + '@' + self.domain + filename + " "
+        else:
+            URL = self.domain + filename + " "
+        self.download_list += URL
 
     def parse_files (self):
         self.file_list = dict ()
@@ -148,6 +152,8 @@ class Test:
         auth_user = self.special_comm.find ('Username').text
         auth_pass = self.special_comm.find ('Password').text
         auth_obj = self.Auth (auth_type, auth_user, auth_pass)
+        if self.special_comm.find ('InURL') is not None:
+            self.append_downloads (self.filename, User=auth_user, Pass=auth_pass)
         return [("Auth", auth_obj)]
 
     def get_expect_header (self):
