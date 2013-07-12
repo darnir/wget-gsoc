@@ -7,6 +7,12 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-12  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (is_auth): In case, authentication fails, respond with
+	another 401 and WWW-Authenticate Header, instead of a 403. This
+	matched with RFC 2617
+
+2013-07-12  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (WgetHTTPRequestHandler): Create list of tests
 	(custom_response): Negate return value to better match other similar
 	functions

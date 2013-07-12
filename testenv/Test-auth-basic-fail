@@ -1,0 +1,21 @@
+<WgetTest name="Prototype File">
+
+    <!-- Request URL's File2 and File3. File3 -> File4 -> File1 -->
+
+    <File>
+        <Meta name="File1" />
+        <Content>I am an invisible man.</Content>
+        <ServerRule command="Auth">
+            <Type>Basic</Type>
+            <Username>Sauron</Username>
+            <Password>Eye</Password>
+        </ServerRule>
+    </File>
+
+    <Option>-d --user=Sauron --password=TheEye</Option>
+
+    <ExpectedResults>
+        <ReturnCode>6</ReturnCode>
+    </ExpectedResults>
+
+</WgetTest>

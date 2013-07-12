@@ -178,7 +178,9 @@ class __Handler (WgetHTTPRequestHandler):
             if auth_header == auth_enc:
                return True
             else:
-               self.send_error (403)
+               self.send_response (401)
+               self.send_header ("WWW-Authenticate", 'Basic realm="Test"')
+               self.end_headers ()
                return False
       else:
          return True
