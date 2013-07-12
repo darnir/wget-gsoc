@@ -9,7 +9,7 @@ import re
 class InvalidRangeHeader (Exception):
 
     """ Create an Exception for handling of invalid Range Headers. """
-    #Maybe: This exception should be generalized to handle other issues too.
+    # Maybe: This exception should be generalized to handle other issues too.
 
     def __init__ (self, err_message):
         self.err_message = err_message
@@ -89,7 +89,7 @@ class __Handler (WgetHTTPRequestHandler):
     def do_GET (self):
         content, start = self.send_head ()
         if content:
-            if start == None:
+            if start is None:
                 self.wfile.write (content.encode ('utf-8'))
             else:
                 self.wfile.write (content.encode ('utf-8')[start:])
@@ -132,7 +132,7 @@ class __Handler (WgetHTTPRequestHandler):
             return None
         if not header_line.startswith ("bytes="):
             raise InvalidRangeHeader ("Cannot parse header Range: %s" %
-                                    (header_line))
+                                     (header_line))
         regex = re.match (r"^bytes=(\d*)\-$", header_line)
         range_start = int (regex.group (1))
         if range_start >= length:
@@ -175,6 +175,10 @@ class __Handler (WgetHTTPRequestHandler):
         else:
             return True
 
+    def base64 (self, data):
+        string = b64encode (data.encode ('utf-8'))
+        return string.decode ('utf-8')
+
     def is_auth (self):
         auth = self.get_rule_list ('Auth')
         if auth:
@@ -187,12 +191,12 @@ class __Handler (WgetHTTPRequestHandler):
                 return False
             elif auth_type == "Digest" and auth_header is None:
                 self.send_response (401)
-                nonce = b64encode (str (random()).encode ('utf-8')).decode ('utf-8')
-                opaque = b64encode (str (random()).encode ('utf-8')).decode ('utf-8')
+                nonce = self.base64 (str (random ()))
+                opaque = self.base64 (str (random ()))
                 digest_string = "Digest "
                 digest_string += 'realm="Test", '
-                digest_string += 'nonce="%s", ' %nonce
-                digest_string += 'opaque="%s", ' %opaque
+                digest_string += 'nonce="%s", ' % nonce
+                digest_string += 'opaque="%s", ' % opaque
                 self.send_header ("WWW-Authenticate", digest_string)
                 self.end_headers ()
                 return False
@@ -200,7 +204,7 @@ class __Handler (WgetHTTPRequestHandler):
                 user = auth[0].auth_user
                 passw = auth[0].auth_pass
                 auth_string = user + ":" + passw
-                auth_enc = b64encode (auth_string.encode ('UTF-8')).decode ('UTF-8')
+                auth_enc = self.base64 (auth_string)
                 auth_header = self.headers.get ("Authorization")
                 auth_header = auth_header.replace ("Basic ", "", 1)
                 if auth_header == auth_enc:
@@ -217,8 +221,8 @@ class __Handler (WgetHTTPRequestHandler):
         header = self.get_rule_list ('Expect Header')
         if header:
             for header_line in header:
-                header_rec = self.headers.get (header_line.header_name)
-                if header_rec is None or header_rec != header_line.header_value:
+                header_re = self.headers.get (header_line.header_name)
+                if header_re is None or header_re != header_line.header_value:
                     self.send_error (400, 'Expected Header not Found')
                     self.end_headers ()
                     return False
@@ -244,16 +248,16 @@ class __Handler (WgetHTTPRequestHandler):
             content_length = len (content)
             try:
                 self.range_begin = self.parse_range_header (
-                                self.headers.get ("Range"), content_length)
+                    self.headers.get ("Range"), content_length)
             except InvalidRangeHeader as ae:
-                #self.log_error("%s", ae.err_message)
+                # self.log_error("%s", ae.err_message)
                 if ae.err_message == "Range Overflow":
                     self.send_response (416)
                     self.finish_headers ()
                     return (None, None)
                 else:
                     self.range_begin = None
-            if self.range_begin == None:
+            if self.range_begin is None:
                 self.send_response (200)
             else:
                 self.send_response (206)
@@ -276,11 +280,13 @@ def create_server ():
     server = StoppableHTTPServer (("localhost", 0), __Handler)
     return server
 
+
 def spawn_server (server):
     global q
     q = Queue()
     server_process = Process (target=server.serve_forever, args=(q,))
     server_process.start ()
+
 
 def ret_fileSys ():
     return (q.get (True))
