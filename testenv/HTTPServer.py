@@ -11,6 +11,13 @@ import re
 
 class WgetHTTPRequestHandler (BaseHTTPRequestHandler):
 
+   tests = [
+            "expect_headers",
+            "is_auth",
+            "custom_response",
+            "test_cookies"
+   ]
+
    protocol_version = 'HTTP/1.1'
    def do_QUIT (self):
       queue.put (fileSys)
@@ -69,7 +76,7 @@ class __Handler (WgetHTTPRequestHandler):
       path = self.path[1:]
       self.rules = server_configs.get (path)
 
-      if self.custom_response ():
+      if not self.custom_response ():
          return (None, None)
 
       cLength_header = self.headers.get ("Content-Length")
@@ -104,7 +111,7 @@ class __Handler (WgetHTTPRequestHandler):
       path = self.path[1:]
       self.rules = server_configs.get (path)
 
-      if self.custom_response ():
+      if not self.custom_response ():
          return (None, None)
 
       cLength_header = self.headers.get ("Content-Length")
@@ -147,9 +154,9 @@ class __Handler (WgetHTTPRequestHandler):
       if codes:
          self.send_response (codes[0].response_code)
          self.finish_headers ()
-         return True
-      else:
          return False
+      else:
+         return True
 
    def is_auth (self):
       auth = self.rules.get ('Auth') if 'Auth' in self.rules else list ()
@@ -173,6 +180,8 @@ class __Handler (WgetHTTPRequestHandler):
             else:
                self.send_error (403)
                return False
+      else:
+         return True
 
    def expect_headers (self):
       header = self.rules.get ('Expect Header') if 'Expect Header' in self.rules else list ()
@@ -192,14 +201,13 @@ class __Handler (WgetHTTPRequestHandler):
       path = self.path[1:]
       self.rules = server_configs.get (path)
 
-      if not self.expect_headers ():
-         return (None, None)
-
-      if self.is_auth () is False:
-         return (None, None)
-
-      if self.custom_response () or not self.test_cookies ():
-         return (None, None)
+      testPassed = True
+      for check in self.tests:
+         if testPassed is True:
+            assert hasattr (self, check)
+            testPassed = getattr (self, check) ()
+         else:
+            return (None, None)
 
       if path in fileSys:
          content = fileSys.get (path)

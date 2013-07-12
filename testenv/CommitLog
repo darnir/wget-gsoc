@@ -5,6 +5,15 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-12  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (WgetHTTPRequestHandler): Create list of tests
+	(custom_response): Negate return value to better match other similar
+	functions
+	(do_POST): Edit test on custom_response to account for negated return
+	(do_PUT): Same
+	(send_head): Dynamically call all tests in self.tests
+
 2013-07-11  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (expect_headers): Test if an expected Header line is
