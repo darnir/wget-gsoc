@@ -52,6 +52,17 @@ class WgetHTTPRequestHandler (BaseHTTPRequestHandler):
         "test_cookies"
     ]
 
+    def test_cookies (self):
+        cookie_recd = self.headers.get ('Cookie')
+        cookies = self.get_rule_list ('Cookie')
+        cookie_exp = cookies[0].cookie_value if cookies else None
+        if cookie_exp == cookie_recd:
+            return True
+        else:
+            self.send_response (400, "Cookie Mismatch")
+            self.finish_headers ()
+            return False
+
     def get_rule_list (self, name):
         r_list = self.rules.get (name) if name in self.rules else list ()
         return r_list
@@ -70,16 +81,7 @@ class __Handler (WgetHTTPRequestHandler):
     InvalidRangeHeader = InvalidRangeHeader
     protocol_version = 'HTTP/1.1'
 
-    def parse_range_header (self, header_line, length):
-        if header_line is None or header_line == "":
-            return None
-        if not header_line.startswith ("bytes="):
-            raise InvalidRangeHeader ("Cannot parse header Range: %s" %(header_line))
-        regex = re.match (r"^bytes=(\d*)\-$", header_line)
-        range_start = int (regex.group (1))
-        if range_start >= length:
-            raise InvalidRangeHeader ("Range Overflow")
-        return range_start
+    """ Define functions for various HTTP Requests. """
 
     def do_HEAD (self):
         self.send_head ()
@@ -95,19 +97,13 @@ class __Handler (WgetHTTPRequestHandler):
     def do_POST (self):
         path = self.path[1:]
         self.rules = server_configs.get (path)
-
         if not self.custom_response ():
             return (None, None)
-
-        cLength_header = self.headers.get ("Content-Length")
-        cLength = int (cLength_header) if cLength_header is not None else 0
-        body_data = self.rfile.read (cLength).decode ('utf-8')
-
         if path in fileSys:
+            body_data = self.get_body_data ()
             self.send_response (200)
             self.send_header ("Content-type", "text/plain")
-            content = fileSys.pop (path)
-            content += "\n" + body_data
+            content = fileSys.pop (path) + "\n" + body_data
             total_length = len (content)
             fileSys[path] = content
             self.send_header ("Content-Length", total_length)
@@ -117,33 +113,45 @@ class __Handler (WgetHTTPRequestHandler):
             except Exception:
                 pass
         else:
-            self.send_response (201)
-            fileSys[path] = body_data
-            self.send_header ("Content-type", "text/plain")
-            self.send_header ("Content-length", cLength)
-            self.finish_headers ()
-            try:
-                self.wfile.write (body_data.encode ('utf-8'))
-            except Exception:
-                pass
+            self.send_put (path)
 
     def do_PUT (self):
         path = self.path[1:]
         self.rules = server_configs.get (path)
-
         if not self.custom_response ():
             return (None, None)
+        fileSys.pop (path, None)
+        self.send_put (path)
 
+    """ End of HTTP Request Method Handlers. """
+
+    """ Helper functions for the Handlers. """
+
+    def parse_range_header (self, header_line, length):
+        if header_line is None:
+            return None
+        if not header_line.startswith ("bytes="):
+            raise InvalidRangeHeader ("Cannot parse header Range: %s" %
+                                    (header_line))
+        regex = re.match (r"^bytes=(\d*)\-$", header_line)
+        range_start = int (regex.group (1))
+        if range_start >= length:
+            raise InvalidRangeHeader ("Range Overflow")
+        return range_start
+
+    def get_body_data (self):
         cLength_header = self.headers.get ("Content-Length")
         cLength = int (cLength_header) if cLength_header is not None else 0
         body_data = self.rfile.read (cLength).decode ('utf-8')
+        return body_data
 
-        fileSys.pop (path, None)
-        fileSys[path] = body_data
+    def send_put (self, path):
+        body_data = self.get_body_data ()
         self.send_response (201)
+        fileSys[path] = body_data
         self.send_header ("Content-type", "text/plain")
-        self.send_header ("Content-length", cLength)
-        self.finish_headers()
+        self.send_header ("Content-Length", len (body_data))
+        self.finish_headers ()
         try:
             self.wfile.write (body_data.encode ('utf-8'))
         except Exception:
@@ -157,17 +165,6 @@ class __Handler (WgetHTTPRequestHandler):
     def finish_headers (self):
         self.send_cust_headers ()
         self.end_headers ()
-
-    def test_cookies (self):
-        cookie_recd = self.headers.get ('Cookie')
-        cookies = self.get_rule_list ('Cookie')
-        cookie_exp = cookies[0].cookie_value if cookies else None
-        if cookie_exp == cookie_recd:
-            return True
-        else:
-            self.send_response (400, "Cookie Mismatch")
-            self.finish_headers ()
-            return False
 
     def custom_response (self):
         codes = self.get_rule_list ('Response')
@@ -246,8 +243,8 @@ class __Handler (WgetHTTPRequestHandler):
             content = fileSys.get (path)
             content_length = len (content)
             try:
-                self.range_begin = self.parse_range_header (self.headers.get ("Range"), \
-                                                                         content_length)
+                self.range_begin = self.parse_range_header (
+                                self.headers.get ("Range"), content_length)
             except InvalidRangeHeader as ae:
                 #self.log_error("%s", ae.err_message)
                 if ae.err_message == "Range Overflow":
