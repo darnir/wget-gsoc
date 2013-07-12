@@ -5,6 +5,16 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-13  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (get_rule_list): Return a list of the file-level
+	rules.
+	(send_cust_headers): Use get_rule_list instead of calling directly
+	(test_cookies): Same
+	(custom_response): Same
+	(is_auth): Same
+	(expect_headers): Same
+
 2013-07-12  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (is_auth): Handle RFC 2067 Digest Authentication

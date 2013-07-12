@@ -52,6 +52,10 @@ class WgetHTTPRequestHandler (BaseHTTPRequestHandler):
         "test_cookies"
     ]
 
+    def get_rule_list (self, name):
+        r_list = self.rules.get (name) if name in self.rules else list ()
+        return r_list
+
     def do_QUIT (self):
         queue.put (fileSys)
         self.send_response (200)
@@ -146,7 +150,7 @@ class __Handler (WgetHTTPRequestHandler):
             pass
 
     def send_cust_headers (self):
-        header_obj = self.rules.get ('Header') if 'Header' in self.rules else list ()
+        header_obj = self.get_rule_list ('Header')
         for header in header_obj:
             self.send_header (header.header_name, header.header_value)
 
@@ -156,7 +160,7 @@ class __Handler (WgetHTTPRequestHandler):
 
     def test_cookies (self):
         cookie_recd = self.headers.get ('Cookie')
-        cookies = self.rules.get ('Cookie') if 'Cookie' in self.rules else list ()
+        cookies = self.get_rule_list ('Cookie')
         cookie_exp = cookies[0].cookie_value if cookies else None
         if cookie_exp == cookie_recd:
             return True
@@ -166,7 +170,7 @@ class __Handler (WgetHTTPRequestHandler):
             return False
 
     def custom_response (self):
-        codes = self.rules.get ('Response') if 'Response' in self.rules else list ()
+        codes = self.get_rule_list ('Response')
         if codes:
             self.send_response (codes[0].response_code)
             self.finish_headers ()
@@ -175,7 +179,7 @@ class __Handler (WgetHTTPRequestHandler):
             return True
 
     def is_auth (self):
-        auth = self.rules.get ('Auth') if 'Auth' in self.rules else list ()
+        auth = self.get_rule_list ('Auth')
         if auth:
             auth_type = auth[0].auth_type
             auth_header = self.headers.get ("Authorization")
@@ -213,7 +217,7 @@ class __Handler (WgetHTTPRequestHandler):
             return True
 
     def expect_headers (self):
-        header = self.rules.get ('Expect Header') if 'Expect Header' in self.rules else list ()
+        header = self.get_rule_list ('Expect Header')
         if header:
             for header_line in header:
                 header_rec = self.headers.get (header_line.header_name)
@@ -284,4 +288,4 @@ def spawn_server (server):
 def ret_fileSys ():
     return (q.get (True))
 
-# vim: set ts=8 sts=3 sw=3 tw=0 et :
+# vim: set ts=8 sts=4 sw=3 tw=0 et :
