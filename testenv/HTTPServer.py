@@ -200,7 +200,7 @@ class __Handler (WgetHTTPRequestHandler):
         else:
             self.user = auth_rule.auth_user
             self.passw = auth_rule.auth_pass
-            auth_str = "Basic " + self.base64 (user + ":" + passw)
+            auth_str = "Basic " + self.base64 (self.user + ":" + self.passw)
             return True if auth_str == auth_header else False
 
     def parse_auth_header (self, auth_header):

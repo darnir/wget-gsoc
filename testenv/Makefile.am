@@ -30,6 +30,7 @@ AUTOMAKE_OPTIONS = parallel-tests
 AM_TESTS_ENVIRONMENT = MAKE_CHECK=True; export MAKE_CHECK;
 TESTS = Test-auth-basic \
 	Test-auth-basic-fail \
+	Test-auth-digest \
 	Test-auth-no-challenge \
 	Test-auth-no-challenge-url \
 	Test-auth-retcode \
