@@ -186,7 +186,8 @@ class __Handler (WgetHTTPRequestHandler):
         elif auth_type == "Digest":
             self.nonce = md5 (str (random ()).encode ('utf-8')).hexdigest ()
             self.opaque = md5 (str (random ()).encode ('utf-8')).hexdigest ()
-            challenge_str = 'Digest realm="Test", nonce="%s", opaque="%s"' %(
+            challenge_str = 'Digest realm="Test", nonce="%s", opaque="%s", \
+                                                                qop=auth' %(
                                                                    self.nonce,
                                                                    self.opaque)
         self.send_response (401)
@@ -223,8 +224,16 @@ class __Handler (WgetHTTPRequestHandler):
         return "%s:%s" % (self.command, params["uri"])
 
     def check_response (self, params):
-        resp = self.KD (self.H (self.A1 ()),
-                             params['nonce'] + ":" + self.H (self.A2 (params)))
+        if "qop" in params:
+            data_str = params['nonce'] \
+                        + ":" + params['nc'] \
+                        + ":" + params['cnonce'] \
+                        + ":" + params['qop'] \
+                        + ":" + self.H (self.A2 (params))
+        else:
+            data_str = params['nonce'] + ":" + self.H (self.A2 (params))
+        resp = self.KD (self.H (self.A1 ()), data_str)
+
         return True if resp == params['response'] else False
 
     def authorize_Digest (self, auth_header, auth_rule):

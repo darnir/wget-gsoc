@@ -3,6 +3,7 @@
 import sys
 import shlex
 import os.path
+from time import sleep
 from subprocess import call
 from ColourTerm import printer
 from TestEnv import Test, TestFailed
@@ -32,6 +33,7 @@ for TestCase in sys.argv[1:]:
 
         # Required to so that Wget is not invoked before the Server is initialized
         # sleep (2)
+        sleep (10000)
         retCode = call(parameters)
         TestObj.stop_server()
 
