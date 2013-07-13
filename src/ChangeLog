@@ -1,3 +1,57 @@
+2013-07-13  Giuseppe Scrivano  <gscrivano@gnu.org>
+
+	* http.c (digest_authentication_encode): Fix a crash when the algorithm
+	is not specified in the server response.  Free dynamic memory used by
+	the function when the function exits.
+	Reported by: Tim Ruehsen  <tim.ruehsen@gmx.de>.
+
+2013-07-13  Steven M. Schweda <sms@antinode.info>
+
+	* warc.c (warc_tempfile): Fix a portability issue on VMS.
+
+2013-07-10  Giuseppe Scrivano  <gscrivano@gnu.org>
+
+	* http.c (read_response_body) [ALLOW_CLOBBER]: Move definition to..
+	* options.h (struct options): Make `backups' an int.
+	* url.h [ALLOW_CLOBBER]: .. Here.  Do not clobber when backups are used.
+	* url.c (url_file_name): Use the ALLOW_CLOBBER macro instead of
+	repeating the code.
+
+2013-07-08  Steven M. Schweda <sms@antinode.info>
+
+	* retr.c (rotate_backups): Support for VMS files.
+
+2013-07-12  Giuseppe Scrivano  <gscrivano@gnu.org>
+
+	* http.c (digest_authentication_encode): Set default value of
+	`algorithm' to "MD5".  Check if `qop' is not-NULL before access it.
+
+2013-07-11  Karsten Hopp  <karsten@redhat.com>
+
+	* openssl.c (struct openssl_read_args, struct scwt_context): New struct.
+	(openssl_read, ssl_connect_with_timeout_callback): New function.
+	(ssl_connect_wget): respect connect timeout.
+
+2013-07-11  Tim Ruehsen  <tim.ruehsen@gmx.de>
+
+        * gnutls.c (ssl_connect_wget): respect connect timeout.
+
+2013-07-11  Tomas Hozza  <thozza@redhat.com>
+
+	* ftp.c (ftp_loop): Use ftp_retrieve_glob() also in case
+	--preserve-permissions was specified.
+
+2013-03-20  Tomas Hozza  <thozza@redhat.com>
+
+	* http.c (gethttp): Set "sock" to -1 if it's not and we have no
+	persistent connection
+
+2013-04-26  Tomas Hozza  <thozza@redhat.com> (tiny change)
+
+	* log.c (redirect_output): Use DEFAULT_LOGFILE in diagnostic message
+	when `logfile' is NULL.
+	* utils.c (unique_create): Ensure `logfile' has always a value.
+
 2013-07-12  Giuseppe Scrivano  <gscrivano@gnu.org>
 
 	* http.c (digest_authentication_encode): Set default value of

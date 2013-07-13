@@ -1641,12 +1641,6 @@ read_response_body (struct http_stat *hs, int sock, FILE *fp, wgint contlen,
 } while (0)
 #endif /* def __VMS [else] */
 
-/* The flags that allow clobbering the file (opening with "wb").
-   Defined here to avoid repetition later.  #### This will require
-   rework.  */
-#define ALLOW_CLOBBER (opt.noclobber || opt.always_rest || opt.timestamping \
-                       || opt.dirstruct || opt.output_document)
-
 /* Retrieve a document through HTTP protocol.  It recognizes status
    code, and correctly handles redirections.  It closes the network
    socket.  If it receives an error from the functions below it, it
@@ -3703,8 +3697,7 @@ digest_authentication_encode (const char *au, const char *user,
   param_token name, value;
 
 
-  realm = opaque = nonce = qop = NULL;
-  algorithm = "MD5";
+  realm = opaque = nonce = algorithm = qop = NULL;
 
   au += 6;                      /* skip over `Digest' */
   while (extract_param (&au, &name, &value, ','))
@@ -3761,7 +3754,7 @@ digest_authentication_encode (const char *au, const char *user,
 
     dump_hash (a1buf, hash);
 
-    if (! strcmp (algorithm, "MD5-sess"))
+    if (algorithm && !strcmp (algorithm, "MD5-sess"))
       {
         /* A1BUF = H( H(user ":" realm ":" password) ":" nonce ":" cnonce ) */
         snprintf (cnonce, sizeof (cnonce), "%08x", random_number(INT_MAX));
@@ -3861,6 +3854,13 @@ digest_authentication_encode (const char *au, const char *user,
         snprintf(res + res_len, res_size - res_len, ", algorithm=\"%s\"", algorithm);
       }
   }
+
+  xfree_null (realm);
+  xfree_null (opaque);
+  xfree_null (nonce);
+  xfree_null (qop);
+  xfree_null (algorithm);
+
   return res;
 }
 #endif /* ENABLE_DIGEST */
