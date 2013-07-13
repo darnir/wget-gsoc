@@ -2,6 +2,7 @@ from multiprocessing import Process, Queue
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from base64 import b64encode
 from random import random
+from hashlib import md5
 import os
 import re
 
@@ -47,7 +48,7 @@ class WgetHTTPRequestHandler (BaseHTTPRequestHandler):
     # List of Checks that are run on the Server-side.
     tests = [
         "expect_headers",
-        "is_auth",
+        "is_authorized",
         "custom_response",
         "test_cookies"
     ]
@@ -179,43 +180,83 @@ class __Handler (WgetHTTPRequestHandler):
         string = b64encode (data.encode ('utf-8'))
         return string.decode ('utf-8')
 
-    def is_auth (self):
-        auth = self.get_rule_list ('Auth')
-        if auth:
-            auth_type = auth[0].auth_type
-            auth_header = self.headers.get ("Authorization")
-            if auth_type == "Basic" and auth_header is None:
-                self.send_response (401)
-                self.send_header ("WWW-Authenticate", 'Basic realm="Test"')
-                self.end_headers ()
-                return False
-            elif auth_type == "Digest" and auth_header is None:
-                self.send_response (401)
-                nonce = self.base64 (str (random ()))
-                opaque = self.base64 (str (random ()))
-                digest_string = "Digest "
-                digest_string += 'realm="Test", '
-                digest_string += 'nonce="%s", ' % nonce
-                digest_string += 'opaque="%s", ' % opaque
-                self.send_header ("WWW-Authenticate", digest_string)
-                self.end_headers ()
-                return False
-            else:
-                user = auth[0].auth_user
-                passw = auth[0].auth_pass
-                auth_string = user + ":" + passw
-                auth_enc = self.base64 (auth_string)
-                auth_header = self.headers.get ("Authorization")
-                auth_header = auth_header.replace ("Basic ", "", 1)
-                if auth_header == auth_enc:
-                    return True
-                else:
-                    self.send_response (401)
-                    self.send_header ("WWW-Authenticate", 'Basic realm="Test"')
-                    self.end_headers ()
-                    return False
+    def send_challenge (self, auth_type):
+        if auth_type == "Basic":
+            challenge_str = 'Basic realm="Wget-Test"'
+        elif auth_type == "Digest":
+            self.nonce = md5 (str (random ()).encode ('utf-8')).hexdigest ()
+            self.opaque = md5 (str (random ()).encode ('utf-8')).hexdigest ()
+            challenge_str = 'Digest realm="Test", nonce="%s", opaque="%s"' %(
+                                                                   self.nonce,
+                                                                   self.opaque)
+        self.send_response (401)
+        self.send_header ("WWW-Authenticate", challenge_str)
+        self.finish_headers ()
+
+    def authorize_Basic (self, auth_header, auth_rule):
+        if auth_header is None:
+            return False
         else:
-            return True
+            self.user = auth_rule.auth_user
+            self.passw = auth_rule.auth_pass
+            auth_str = "Basic " + self.base64 (user + ":" + passw)
+            return True if auth_str == auth_header else False
+
+    def parse_auth_header (self, auth_header):
+        n = len("Digest ")
+        auth_header = auth_header[n:].strip()
+        items = auth_header.split(", ")
+        key_values = [i.split("=", 1) for i in items]
+        key_values = [(k.strip(), v.strip().replace('"', '')) for k, v in key_values]
+        return dict(key_values)
+
+    def KD (self, secret, data):
+        return self.H (secret + ":" + data)
+
+    def H (self, data):
+        return md5 (data.encode ('utf-8')).hexdigest ()
+
+    def A1 (self):
+        return "%s:%s:%s" % (self.user, "Test", self.passw)
+
+    def A2 (self, params):
+        return "%s:%s" % (self.command, params["uri"])
+
+    def check_response (self, params):
+        resp = self.KD (self.H (self.A1 ()),
+                             params['nonce'] + ":" + self.H (self.A2 (params)))
+        return True if resp == params['response'] else False
+
+    def authorize_Digest (self, auth_header, auth_rule):
+        if auth_header is None:
+            return False
+        else:
+            self.user = auth_rule.auth_user
+            self.passw = auth_rule.auth_pass
+            params = self.parse_auth_header (auth_header)
+            pass_auth = True
+            if self.user != params['username'] or \
+              self.nonce != params['nonce'] or self.opaque != params['opaque']:
+                pass_auth = False
+            req_attribs = ['username', 'realm', 'nonce', 'uri', 'response']
+            for attrib in req_attribs:
+                if not attrib in params:
+                    pass_auth = False
+            if not self.check_response (params):
+                pass_auth = False
+            return pass_auth
+
+    def is_authorized (self):
+        is_auth = True
+        auth_rule = self.get_rule_list ('Auth')
+        if auth_rule:
+            auth_type = auth_rule[0].auth_type
+            auth_header = self.headers.get ("Authorization")
+            assert hasattr (self, "authorize_" + auth_type)
+            is_auth = getattr (self, "authorize_" + auth_type) (auth_header, auth_rule[0])
+            if is_auth is False:
+                self.send_challenge (auth_type)
+        return is_auth
 
     def expect_headers (self):
         header = self.get_rule_list ('Expect Header')

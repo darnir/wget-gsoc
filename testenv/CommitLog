@@ -7,6 +7,21 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-13  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py: Import method md5 from hashlib for Digest Auth.
+	(is_auth): Method deleted. Refactored into is_authorized
+	(send_challenge): Send a www-Authenticate Challenge to the client
+	(authorize_Basic): Handle Basic Authentication.
+	(parse_auth_header): Parse the authorization header for Digest Auth.
+	(KD): Apply Digest Algorithm to data with secret.
+	(H): Apply checksum algorithm to data.
+	(A1): username:realm:password
+	(A2): method:uri
+	(check_response): Check if response attribute in Digest Auth matches.
+	(authorize_Digest): Handle Digest Access Authentication
+	(is_authorized): Handle HTTP Auth.
+
+2013-07-13  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (get_rule_list): Return a list of the file-level
 	rules.
 	(send_cust_headers): Use get_rule_list instead of calling directly
