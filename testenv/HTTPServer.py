@@ -186,10 +186,10 @@ class __Handler (WgetHTTPRequestHandler):
         elif auth_type == "Digest":
             self.nonce = md5 (str (random ()).encode ('utf-8')).hexdigest ()
             self.opaque = md5 (str (random ()).encode ('utf-8')).hexdigest ()
-            challenge_str = 'Digest realm="Test", nonce="%s", opaque="%s", \
-                                                                qop=auth' %(
+            challenge_str = 'Digest realm="Test", nonce="%s", opaque="%s"' %(
                                                                    self.nonce,
                                                                    self.opaque)
+            challenge_str += ', qop="auth"'
         self.send_response (401)
         self.send_header ("WWW-Authenticate", challenge_str)
         self.finish_headers ()

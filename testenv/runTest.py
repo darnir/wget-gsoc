@@ -32,7 +32,7 @@ for TestCase in sys.argv[1:]:
         parameters = shlex.split(params)
 
         # Required to so that Wget is not invoked before the Server is initialized
-        # sleep (10000)
+        #sleep (10000)
         retCode = call(parameters)
         TestObj.stop_server()
 

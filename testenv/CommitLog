@@ -5,6 +5,11 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-14  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (send_challenge): Split generation of challenge string
+	to two lines.
+
 2013-07-13  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py: Import method md5 from hashlib for Digest Auth.
