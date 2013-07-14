@@ -7,6 +7,16 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-14  Darshit Shah  <darnir@gmail.com>
 
+	* runTest.py: Use argparse to parse commandline arguments.
+	Two new un-documented arguments. only-server will spawn the server
+	with the specified rules and sleep for 10,000 seconds allowing one to
+	access the server separately for debugging  purposes.
+	external allows to specify the path to an external executable of Wget
+	* Test-auth-basic: Ensure that Wget registers the authorization and
+	does not re-negotiate it.
+
+2013-07-14  Darshit Shah  <darnir@gmail.com>
+
 	* HTTPServer.py (send_challenge): Split generation of challenge string
 	to two lines.
 

@@ -12,11 +12,21 @@
         </ServerRule>
     </File>
 
+    <File>
+        <Meta name="File2" />
+        <Content>Auto-auth download File.</Content>
+        <ServerRule command="Expect Header">
+            <Name>Authorization</Name>
+            <Value>Basic U2F1cm9uOlRoZUV5ZQ==</Value>
+        </ServerRule>
+    </File>
+
     <Option>-d --user=Sauron --password=TheEye</Option>
 
     <ExpectedResults>
         <ReturnCode>0</ReturnCode>
         <File>File1</File>
+        <File>File2</File>
     </ExpectedResults>
 
 </WgetTest>
