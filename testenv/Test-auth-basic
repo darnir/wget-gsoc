@@ -1,4 +1,4 @@
-<WgetTest name="Prototype File">
+<WgetTest name="Prototype File" server="HTTP">
 
     <!-- Request URL's File2 and File3. File3 -> File4 -> File1 -->
 

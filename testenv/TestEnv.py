@@ -1,8 +1,10 @@
 import HTTPServer
+import FTPServer
 import http.client
 import os
 import shutil
 import sys
+import FTPServer as FTP
 from ColourTerm import printer
 from difflib import unified_diff
 from collections import defaultdict
@@ -44,24 +46,54 @@ class Test:
         self.download_list = ""
 
     def init_server (self):
+        s_type = self.Root.get ('server')
+        self.server_type = "HTTP" if s_type is None else s_type
+        server_func = "init_" + self.server_type + "_server"
+        assert hasattr (self, server_func)
+        getattr (self, server_func) ()
+
+    def init_HTTP_server (self):
         server = HTTPServer.create_server ()
-        port = server.server_address[1]
-        domain_name = server.server_address[0]
-        self.domain = domain_name + ":" + str (port) + "/"
+        self.gen_domain_name (server.server_address)
         server_rules = self.parse_files ()
         server.server_conf (self.file_list, server_rules)
         HTTPServer.spawn_server (server)
 
-    """ Send a HTTP QUIT Request to stop the Server """
+    def init_FTP_server (self):
+       # FTPServer.init_server ()
+        self.server = FTP.FTPd ()
+        self.server.start ()
+        self.gen_domain_name ([self.server.host, self.server.port])
+        server_rules = self.parse_files ()
+        FTPServer.mk_file_sys (self.file_list)
+
+    def gen_domain_name (self, addr):
+        port = addr[1]
+        domain_name = addr[0]
+        self.domain = domain_name + ":" + str (port) + "/"
+
     def stop_server (self):
+        func = "stop_" + self.server_type + "_server"
+        assert hasattr (self, func)
+        getattr (self, func) ()
+
+    """ Send a HTTP QUIT Request to stop the Server """
+
+    def stop_HTTP_server (self):
         conn = http.client.HTTPConnection (self.domain.strip ('/'))
         conn.request ("QUIT", "/")
         self.fileSys = HTTPServer.ret_fileSys()
         conn.getresponse ()
 
+    def stop_FTP_server (self):
+        self.server.stop ()
+        self.fileSys = FTPServer.filesys ()
+
     def append_downloads (self, filename, User=None, Pass=None):
         prep = "" if User is None else User + ":" + Pass + "@"
         URL = prep + self.domain + filename + " "
+        URL = self.server_type.lower () + "://" + URL
+        print (URL)
         self.download_list += URL
 
     def parse_files (self):

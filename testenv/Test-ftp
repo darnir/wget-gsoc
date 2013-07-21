@@ -1,0 +1,18 @@
+<WgetTest name="Test -O Option" server="FTP">
+<!--
+     Ensure that Wget writes to the correct filename with -O
+-->
+
+    <File>
+        <Meta name="Sparta" />
+        <Content>This is Spartaa!</Content>
+    </File>
+
+    <Option>-O Persia</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File orig="Sparta">Persia</File>
+    </ExpectedResults>
+
+</WgetTest>

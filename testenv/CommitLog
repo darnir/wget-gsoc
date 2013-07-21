@@ -5,6 +5,25 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-21  Darshit Shah  <darnir@gmail.com>
+
+	* FTPServer.py: (newfile)
+	This file handles connecting to a pyftpd server and other related
+	tasks.
+	(FTPd): A threaded FTP Server.
+	* TestEnv.py: Import FTPServer and FTP (FTPServer) into namespace.
+	(init_server): Call the respective protocols init method.
+	(stop_server): Call the respective protocols stop method.
+	(init_HTTP_server): domain names are generated in a separate function.
+	(init_FTP_server): Make a connection to the FTP Server and intialize
+	the directory structure.
+	(stop_HTTP_server): Kill the HTTP Server.
+	(stop_FTP_server): Stop the FTP Server.
+	(append_downloads): Add the protocol in front of the URL.
+	(gen_domain_name): Generate the domain name given the address tuple.
+	* Test-ftp: New test for basic FTP connectivity.
+	* Test-auth-basic: Add attribute server to WgetTest Element.
+
 2013-07-18  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (server_conf): Change server_configs to be an object
