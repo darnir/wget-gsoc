@@ -5,6 +5,25 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-18  Darshit Shah  <darnir@gmail.com>
+
+	* HTTPServer.py (server_conf): Change server_configs to be an object
+	variable instead of a global variable.
+	(do_POST): server_configs is now an object variable of the server.
+	(do_PUT): Same
+	(send_head): Same
+	* TestEnv.py (Test.__init__): Split print statement to two lines to
+	prevent exceeding 80 char lines.
+	(parse_files): Same
+	(parse_server_rules): Same
+	(_gen_expected_files): Same
+	(test_return_code): Rename expected_return_code to expected_ret_code
+	(get_auth): Split statement to two lines
+	(append_downloads): Use a ternary conditional instead of if-else.
+	(test_downloaded_file): Inly test a file if it is in the parent
+	directory.
+	* runTest.py: Add docstrings and comments
+
 2013-07-14  Darshit Shah  <darnir@gmail.com>
 
 	* runTest.py: Use argparse to parse commandline arguments.

@@ -12,6 +12,8 @@ testdir = ""
 
 """ A custom exception that is raised in the event
 that anything goes wrong while processing the test. """
+
+
 class TestFailed (Exception):
 
     def __init__ (self, error):
@@ -25,7 +27,8 @@ class Test:
         try:
             TestTree = parse (TestFile)
         except ParseError as ae:
-            raise TestFailed ("Error when parsing " + TestFile + ": " + ae.__str__ ())
+            e_str = "Error when parsing " + TestFile + ": " + ae.__str__ ()
+            raise TestFailed (e_str)
         self.Root = TestTree.getroot ()
         if self.Root.tag != "WgetTest":
             raise TestFailed ("Not a valid Test File.")
@@ -57,10 +60,8 @@ class Test:
         conn.getresponse ()
 
     def append_downloads (self, filename, User=None, Pass=None):
-        if User is not None:
-            URL = "http://" + User + ':' + Pass + '@' + self.domain + filename + " "
-        else:
-            URL = self.domain + filename + " "
+        prep = "" if User is None else User + ":" + Pass + "@"
+        URL = prep + self.domain + filename + " "
         self.download_list += URL
 
     def parse_files (self):
@@ -70,7 +71,8 @@ class Test:
             try:
                 metadata = file_node.find ('Meta')
                 self.filename = metadata.get ('name')
-                toDownload = True if metadata.get ('no-download') is None else False
+                no_download = metadata.get ('no-download')
+                toDownload = True if no_download is None else False
                 content_node = file_node.find ('Content')
                 if content_node is not None:
                     self.file_list[self.filename] = content_node.text
@@ -153,7 +155,8 @@ class Test:
         auth_pass = self.special_comm.find ('Password').text
         auth_obj = self.Auth (auth_type, auth_user, auth_pass)
         if self.special_comm.find ('InURL') is not None:
-            self.append_downloads (self.filename, User=auth_user, Pass=auth_pass)
+            self.append_downloads (
+                self.filename, User=auth_user, Pass=auth_pass)
         return [("Auth", auth_obj)]
 
     def get_expect_header (self):
@@ -161,7 +164,6 @@ class Test:
         value = self.special_comm.find ('Value').text
         header_obj = self.Cust_Header (header, value)
         return [("Expect Header", header_obj)]
-
 
     def parse_server_rules (self, file_node):
         special_conf = defaultdict (list)
@@ -181,7 +183,8 @@ class Test:
             try:
                 rule_obj = commands_list.get(command) ()
             except TypeError as ae:
-                raise TestFailed ("Configuration details for Server Rule " + command + " do not exist")
+                e_str = "Config details for Rule: " + command + " do not exist"
+                raise TestFailed (e_str)
             for name, rule in rule_obj:
                 if name is not None:
                     special_conf[name].append (rule)
@@ -204,9 +207,9 @@ class Test:
         self._test_cleanup()
 
     def test_return_code (self, retCode):
-        expected_return_code = int (self.resultsNode.find ('ReturnCode').text)
-        if retCode != expected_return_code:
-            printer ("RED", "Expected Exit Code: " + str (expected_return_code))
+        expected_ret_code = int (self.resultsNode.find ('ReturnCode').text)
+        if retCode != expected_ret_code:
+            printer ("RED", "Expected Exit Code: " + str (expected_ret_code))
             printer ("RED", "Actual Exit Code:   " + str (retCode))
             self._test_cleanup ()
             raise TestFailed ("")
@@ -214,9 +217,9 @@ class Test:
     def _gen_expected_files (self):
         expected_files = dict ()
         for expectedFile in self.resultsNode.findall ('File'):
-            origName = expectedFile.get ('orig') if expectedFile.get ('orig') \
-                else expectedFile.text
-            expected_files[expectedFile.text] = origName
+            orig_file = expectedFile.get ('orig')
+            orig_name = expectedFile.text if orig_file is None else orig_file
+            expected_files[expectedFile.text] = orig_name
         return expected_files
 
     def test_downloaded_files (self):
@@ -224,12 +227,15 @@ class Test:
         # Go through all files in PWD, which is the test directory
         for parent, dirs, files in os.walk ("."):
             for filename in files:
+                if parent != ".":
+                    continue
                 if filename in expected_files:
                     file_handler = open (filename, "r")
                     file_content = file_handler.read()
                     real_contents = self.fileSys.get (expected_files[filename])
                     if real_contents != file_content:
-                        printer ("RED", "Contents of " + filename + " do not match")
+                        e_str = "Contents of " + filename + " do not match"
+                        printer ("RED", e_str)
                         for line in unified_diff (real_contents, file_content,
                                                   fromfile="Original", tofile="Actual"):
                             sys.stderr.write (line)
@@ -243,8 +249,9 @@ class Test:
                     self._test_cleanup ()
                     raise TestFailed ("")
             if expected_files:
+                missing = str (list (expected_files.keys ())).strip ("[']")
                 printer ("RED", "Not all expected files were downloaded.")
-                printer ("RED", "Missing files: " + str (list (expected_files.keys ())).strip("[']"))
+                printer ("RED", "Missing files: " + missing)
                 self._test_cleanup ()
                 raise TestFailed ("")
 

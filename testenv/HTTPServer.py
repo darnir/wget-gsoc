@@ -27,8 +27,7 @@ class StoppableHTTPServer (HTTPServer):
         process. This is because of how the system-level fork() call works.
 
         """
-        global server_configs
-        server_configs = conf_dict
+        self.server_configs = conf_dict
         global fileSys
         fileSys = filelist
 
@@ -97,7 +96,7 @@ class __Handler (WgetHTTPRequestHandler):
 
     def do_POST (self):
         path = self.path[1:]
-        self.rules = server_configs.get (path)
+        self.rules = self.server.server_configs.get (path)
         if not self.custom_response ():
             return (None, None)
         if path in fileSys:
@@ -118,7 +117,7 @@ class __Handler (WgetHTTPRequestHandler):
 
     def do_PUT (self):
         path = self.path[1:]
-        self.rules = server_configs.get (path)
+        self.rules = self.server.server_configs.get (path)
         if not self.custom_response ():
             return (None, None)
         fileSys.pop (path, None)
@@ -283,7 +282,7 @@ class __Handler (WgetHTTPRequestHandler):
         This method is overriden to use the fileSys dict.
         """
         path = self.path[1:]
-        self.rules = server_configs.get (path)
+        self.rules = self.server.server_configs.get (path)
 
         testPassed = True
         for check in self.tests:

@@ -9,14 +9,25 @@ from subprocess import call
 from ColourTerm import printer
 from TestEnv import Test, TestFailed
 
-parser = argparse.ArgumentParser (description="Runner script for Wget Test Environment")
-parser.add_argument ("Files", help="Names of the Test File(s) to execute", nargs='+')
-parser.add_argument ("-s", "--only-server",
-        help="Only spawn Server with given Test configs.", action="store_true")
+
+""" Initialize Argument Parser. """
+
+parser = argparse.ArgumentParser (
+    description="Runner script for Wget Test Environment")
+
+""" Add list of Optional and Positional Parameters. """
+
+# Positional Parameter
+files_help = "Names of the Test File(s) to execute"
+parser.add_argument ("Files", help=files_help, nargs='+')
+# Optional Parameters
+s_help = "Only spawn Server with given Test configs."
+parser.add_argument ("-s", "--only-server", help=s_help, action="store_true")
 parser.add_argument ("-e", "--external", help="Specify path to executable")
+
 args = parser.parse_args ()
 
-# Build the path to Wget Executable
+""" Build the path to Wget Executable. """
 if args.external:
     WGET_PATH = args.external
 else:
@@ -25,9 +36,13 @@ else:
 
 EXIT_STATUS = 0
 
-# Check for each TestCase file supplied in the arguments.
-# It is however preferable to run multiple tests through an external module
-# that aggregates the results better.
+""" Check for each TestCase file supplied in the arguments.
+
+It is however preferable to run multiple tests through an external module that
+aggregates the results better.
+
+"""
+
 for TestCase in args.Files:
     if os.path.isfile(TestCase):
         try:
@@ -60,9 +75,10 @@ for TestCase in args.Files:
             TestObj.endTest()
 
     else:
-        printer("PURPLE", "The Test Case File: " +
-                TestCase + " does not exist.")
+        p_str = "The Test Case File: " + TestCase + " does not exist."
+        printer("PURPLE", p_str)
         EXIT_STATUS = 99
 
 sys.exit(EXIT_STATUS)
+
 # vim: set ts=8 sw=3 tw=0 et :
