@@ -93,7 +93,6 @@ class Test:
         prep = "" if User is None else User + ":" + Pass + "@"
         URL = prep + self.domain + filename + " "
         URL = self.server_type.lower () + "://" + URL
-        print (URL)
         self.download_list += URL
 
     def parse_files (self):
