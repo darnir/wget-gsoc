@@ -5,11 +5,15 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-23  Darshit Shah  <darnir@gmail.com>
+
+	* TestEnv.py: Fix regression that caused certain redirects to fail.
+
 2013-07-22  Darshit Shah  <darnir@gmail.com>
 
 
 	* HTTPServer.py (send_head): Fix regression that prevented the 404
-	Status from being returned correctly. 
+	Status from being returned correctly.
 
 2013-07-21  Darshit Shah  <darnir@gmail.com>
 

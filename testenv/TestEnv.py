@@ -107,6 +107,8 @@ class Test:
                 content_node = file_node.find ('Content')
                 if content_node is not None:
                     self.file_list[self.filename] = content_node.text
+                else:
+                    self.file_list[self.filename] = ""
                 if toDownload is True:
                     self.append_downloads (self.filename)
             except Exception as ae:
