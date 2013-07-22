@@ -282,17 +282,18 @@ class __Handler (WgetHTTPRequestHandler):
         This method is overriden to use the fileSys dict.
         """
         path = self.path[1:]
-        self.rules = self.server.server_configs.get (path)
-
-        testPassed = True
-        for check in self.tests:
-            if testPassed is True:
-                assert hasattr (self, check)
-                testPassed = getattr (self, check) ()
-            else:
-                return (None, None)
 
         if path in fileSys:
+            self.rules = self.server.server_configs.get (path)
+
+            testPassed = True
+            for check in self.tests:
+                if testPassed is True:
+                    assert hasattr (self, check)
+                    testPassed = getattr (self, check) ()
+                else:
+                    return (None, None)
+
             content = fileSys.get (path)
             content_length = len (content)
             try:
