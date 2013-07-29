@@ -65,6 +65,7 @@ class Test:
         self.server.start ()
         self.gen_domain_name ([self.server.host, self.server.port])
         server_rules = self.parse_files ()
+        self.server.set_global_rules (self.parse_global_rules ())
         FTPServer.mk_file_sys (self.file_list)
 
     def gen_domain_name (self, addr):
@@ -198,6 +199,9 @@ class Test:
         header_obj = self.Cust_Header (header, value)
         return [("Expect Header", header_obj)]
 
+    def set_bad_list (self):
+        return [("Bad List", True)]
+
     def parse_server_rules (self, file_node):
         special_conf = defaultdict (list)
         self.meth_files = ""
@@ -223,10 +227,28 @@ class Test:
                     special_conf[name].append (rule)
         return special_conf
 
+    def parse_global_rules (self):
+        global_conf = defaultdict (list)
+        commands_list = {
+            "Bad List": self.set_bad_list,
+        }
+        for self.special_comm in self.Root.findall ('GlobalRule'):
+            command = self.special_comm.get ('command')
+            try:
+                rule_obj = commands_list.get (command) ()
+            except TypeError as ae:
+                e_str = "Config details for Rule: " + command + " do not exist"
+                raise TestFailed (e_str)
+            for name, rule in rule_obj:
+                if name is not None:
+                    global_conf[name].append (rule)
+            return global_conf
+
     def get_cmd_line (self, WgetPath):
         cmd_line = WgetPath + " "
         for parameter in self.Root.findall('Option'):
             cmd_line += parameter.text + " "
+        True if self.download_list else self.append_downloads ("")
         cmd_line += self.download_list
         print (cmd_line)
         return cmd_line

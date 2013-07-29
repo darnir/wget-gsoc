@@ -1,0 +1,32 @@
+<WgetTest name="Test Bad Lists" server="FTP">
+<!--
+     Ensure that Wget writes to the correct filename with -O
+-->
+
+    <File>
+        <Meta name="one.txt" no-download="True" />
+        <Content>This is one file.</Content>
+        <ServerRule command="Continue">
+            <Bytes>17</Bytes>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="two.txt" no-download="True" />
+        <Content>This is another file.</Content>
+        <ServerRule command="Continue">
+            <Bytes>21</Bytes>
+        </ServerRule>
+    </File>
+
+    <GlobalRule command="Bad List" />
+
+    <Option>-nH -Nc -r</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File>one.txt</File>
+        <File>two.txt</File>
+    </ExpectedResults>
+
+</WgetTest>

@@ -5,6 +5,26 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-29  Darshit Shah  <darnir@gmail.com>
+
+	* FTPServer.py: Import pyftpdlib.handlers completely into the
+	namespace. We will override the required functions.
+	(FTPDHandler): Inherits FTPHandler. Contains the overriden methods for
+	handling the Test Server.
+	(ftp_LIST): Override method to handle case when a global server rule
+	to send a bad list is set.
+	(FTPDServer): Inherits FTPServer, contains a method for setting the
+	server rules.
+	(FTPd.__init__): Change directory in time for the TestEnv to set up
+	its structure
+	(mk_file_sys): chdir to server since we added a chdir .. earlier.
+	* TestEnv.py (init_server): Parse global server rules too.
+	(set_bad_list): Return object to set the bad-List flag
+	(parse_global_rules): Parse global rules, much like the file-level
+	rules
+	(get_cmd_file): In case no file is set for downloading, add
+	localhost:port/ as the default URL
+
 2013-07-23  Darshit Shah  <darnir@gmail.com>
 
 	* TestEnv.py: Fix regression that caused certain redirects to fail.
