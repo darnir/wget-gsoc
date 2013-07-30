@@ -180,21 +180,25 @@ class __Handler (WgetHTTPRequestHandler):
         return string.decode ('utf-8')
 
     def send_challenge (self, auth_type):
+        if auth_type == "Both":
+            self.send_challenge ("Digest")
+            self.send_challenge ("Basic")
+            return
         if auth_type == "Basic":
             challenge_str = 'Basic realm="Wget-Test"'
-        elif auth_type == "Digest":
+        elif auth_type == "Digest" or auth_type == "Both_inline":
             self.nonce = md5 (str (random ()).encode ('utf-8')).hexdigest ()
             self.opaque = md5 (str (random ()).encode ('utf-8')).hexdigest ()
             challenge_str = 'Digest realm="Test", nonce="%s", opaque="%s"' %(
                                                                    self.nonce,
                                                                    self.opaque)
             challenge_str += ', qop="auth"'
-        self.send_response (401)
+            if auth_type == "Both_inline":
+                challenge_str = 'Basic realm="Wget-Test", ' + challenge_str
         self.send_header ("WWW-Authenticate", challenge_str)
-        self.finish_headers ()
 
     def authorize_Basic (self, auth_header, auth_rule):
-        if auth_header is None:
+        if auth_header is None or auth_header.split(' ')[0] != 'Basic':
             return False
         else:
             self.user = auth_rule.auth_user
@@ -236,7 +240,7 @@ class __Handler (WgetHTTPRequestHandler):
         return True if resp == params['response'] else False
 
     def authorize_Digest (self, auth_header, auth_rule):
-        if auth_header is None:
+        if auth_header is None or auth_header.split(' ')[0] != 'Digest':
             return False
         else:
             self.user = auth_rule.auth_user
@@ -254,16 +258,28 @@ class __Handler (WgetHTTPRequestHandler):
                 pass_auth = False
             return pass_auth
 
+    def authorize_Both (self, auth_header, auth_rule):
+        return False
+
+    def authorize_Both_inline (self, auth_header, auth_rule):
+        return False
+
     def is_authorized (self):
         is_auth = True
         auth_rule = self.get_rule_list ('Auth')
+        req_auth = auth_rule[0].auth_type
         if auth_rule:
-            auth_type = auth_rule[0].auth_type
             auth_header = self.headers.get ("Authorization")
+            if req_auth == "Both" or req_auth == "Both_inline":
+                auth_type = auth_header.split(' ')[0] if auth_header else req_auth
+            else:
+                auth_type = req_auth
             assert hasattr (self, "authorize_" + auth_type)
             is_auth = getattr (self, "authorize_" + auth_type) (auth_header, auth_rule[0])
             if is_auth is False:
+                self.send_response (401)
                 self.send_challenge (auth_type)
+                self.finish_headers ()
         return is_auth
 
     def expect_headers (self):

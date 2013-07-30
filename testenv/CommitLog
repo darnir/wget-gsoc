@@ -7,6 +7,20 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-07-30  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (send_challenge): Handle sending multiple challenges
+	as Both and Both_inline. Both will send two WWW-Authentication Headers
+	while Both_inline will send one header with two challenges.
+	(authorize_Basic): Do not accept if the required authorization was not
+	Basic.
+	(authorize_Digest): Same, but for Digest
+	(authorize_Both): Simply return False to send a challenge
+	(authorize_Both_inline): same
+	(is_authorized): Handle Both and Both_inline methods of sending
+	challenges
+
+
+2013-07-30  Darshit Shah  <darnir@gmail.com>
+
 	* TestEnv.py (parse_files): Read new metadata value, exists. This not
 	only creates the file locally, but instructs Wget not to download it.
 	Optimized reading content and storing in dict.

@@ -1,0 +1,46 @@
+<WgetTest name="Prototype File">
+
+    <!-- Request URL's File2 and File3. File3 -> File4 -> File1 -->
+
+    <File>
+        <Meta name="File1" />
+        <Content>I am an invisible man.</Content>
+        <ServerRule command="Auth">
+            <Type>Both</Type>
+            <Username>Sauron</Username>
+            <Password>TheEye</Password>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="File2" />
+        <Content>I am too an invisible man.</Content>
+        <ServerRule command="Auth">
+            <Type>Both_inline</Type>
+            <Username>Sauron</Username>
+            <Password>TheEye</Password>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="File3" />
+        <Content>I am a very invisible man.</Content>
+        <ServerRule command="Auth">
+            <Type>Digest</Type>
+            <Username>Sauron</Username>
+            <Password>TheEye</Password>
+        </ServerRule>
+    </File>
+
+
+
+    <Option>-d --user=Sauron --password=TheEye</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File>File1</File>
+        <File>File2</File>
+        <File>File3</File>
+    </ExpectedResults>
+
+</WgetTest>
