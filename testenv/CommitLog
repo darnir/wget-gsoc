@@ -5,6 +5,16 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-07-30  Darshit Shah  <darnir@gmail.com>
+
+	* TestEnv.py (parse_files): Read new metadata value, exists. This not
+	only creates the file locally, but instructs Wget not to download it.
+	Optimized reading content and storing in dict.
+	(parse_server_rules): Improve visual formatting of dict.
+	(test_downloaded_files): More verbose errors
+	* Test-ftp-bad-list): Use metadata exists instead of crude continue
+	hack
+
 2013-07-29  Darshit Shah  <darnir@gmail.com>
 
 	* FTPServer.py: Import pyftpdlib.handlers completely into the

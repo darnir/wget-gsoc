@@ -4,7 +4,7 @@
 -->
 
     <File>
-        <Meta name="one.txt" no-download="True" />
+        <Meta name="one.txt" exists="True" />
         <Content>This is one file.</Content>
         <ServerRule command="Continue">
             <Bytes>17</Bytes>
@@ -12,11 +12,8 @@
     </File>
 
     <File>
-        <Meta name="two.txt" no-download="True" />
+        <Meta name="two.txt" exists="True" />
         <Content>This is another file.</Content>
-        <ServerRule command="Continue">
-            <Bytes>21</Bytes>
-        </ServerRule>
     </File>
 
     <GlobalRule command="Bad List" />

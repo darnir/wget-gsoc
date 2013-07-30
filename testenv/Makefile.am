@@ -37,6 +37,7 @@ TESTS = Test-auth-basic 			\
 	Test-auth-with-content-disposition 	\
 	Test-c-full 				\
 	Test-Content-disposition 		\
+	Test-Content-disposition-2		\
 	Test-cookie 				\
 	Test-cookie-401 			\
 	Test-cookie-domain-mismatch 		\

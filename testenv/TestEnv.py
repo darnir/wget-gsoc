@@ -104,12 +104,15 @@ class Test:
                 metadata = file_node.find ('Meta')
                 self.filename = metadata.get ('name')
                 no_download = metadata.get ('no-download')
+                exists = metadata.get ('exists')
                 toDownload = True if no_download is None else False
                 content_node = file_node.find ('Content')
-                if content_node is not None:
-                    self.file_list[self.filename] = content_node.text
-                else:
-                    self.file_list[self.filename] = ""
+                content = content_node.text if content_node is not None else ""
+                self.file_list[self.filename] = content
+                if exists == "True":
+                    file_handle = open (self.filename, 'w')
+                    file_handle.write (content)
+                    toDownload = False
                 if toDownload is True:
                     self.append_downloads (self.filename)
             except Exception as ae:
@@ -206,14 +209,14 @@ class Test:
         special_conf = defaultdict (list)
         self.meth_files = ""
         commands_list = {
-            "Redirect": self.get_redir,
-            "Continue": self.set_cont,
+            "Redirect"          : self.get_redir,
+            "Continue"          : self.set_cont,
             "ContentDisposition": self.get_cont_disp,
-            "Header": self.get_header,
-            "Cookie": self.get_cookie,
-            "Response": self.get_response,
-            "Auth": self.get_auth,
-            "Expect Header": self.get_expect_header
+            "Header"            : self.get_header,
+            "Cookie"            : self.get_cookie,
+            "Response"          : self.get_response,
+            "Auth"              : self.get_auth,
+            "Expect Header"     : self.get_expect_header
         }
         for self.special_comm in file_node.findall ('ServerRule'):
             command = self.special_comm.get ('command')
@@ -300,7 +303,7 @@ class Test:
                         raise TestFailed ("")
                     del expected_files[filename]
                 else:
-                    printer ("RED", "Extra files downloaded by Wget.")
+                    printer ("RED", "Extra file " + filename + " downloaded by Wget.")
                     self._test_cleanup ()
                     raise TestFailed ("")
             if expected_files:

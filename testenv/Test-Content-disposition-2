@@ -1,0 +1,28 @@
+<WgetTest name="Test Content-Disposition when filename exists">
+<!--
+     Test if Wget reads the Content-Disposition Header correctly.
+-->
+
+    <File>
+        <Meta name="File2.html" />
+        <Content>Do I care?</Content>
+        <ServerRule command="ContentDisposition">
+            <Name>TestFile.txt</Name>
+        </ServerRule>
+    </File>
+
+    <File>
+        <Meta name="TestFile.txt" exists="True" />
+        <Content>Do we care?</Content>
+    </File>
+
+    <Option>-d</Option>
+    <Option>-v --content-disposition</Option>
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File orig="File2.html">TestFile.txt.1</File>
+        <File>TestFile.txt</File>
+    </ExpectedResults>
+
+</WgetTest>
