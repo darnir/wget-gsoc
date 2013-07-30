@@ -28,28 +28,30 @@
 
 AUTOMAKE_OPTIONS = parallel-tests
 AM_TESTS_ENVIRONMENT = MAKE_CHECK=True; export MAKE_CHECK;
-TESTS = Test-auth-basic \
-	Test-auth-basic-fail \
-	Test-auth-digest \
-	Test-auth-no-challenge \
-	Test-auth-no-challenge-url \
-	Test-auth-retcode \
-	Test-auth-with-content-disposition \
-	Test-c-full \
-	Test-Content-disposition \
-	Test-cookie \
-	Test-cookie-401 \
-	Test-cookie-domain-mismatch \
-	Test-cookie-expires \
-	Test-Head \
-	Test-Header \
-	Test-O \
-	Test-Post \
-	Test-Post2 \
-	Test-Post3 \
-	Test-Proto2 \
-	Test-Put \
-	Test-redirect \
+TESTS = Test-auth-basic 			\
+	Test-auth-basic-fail 			\
+	Test-auth-digest 			\
+	Test-auth-no-challenge 			\
+	Test-auth-no-challenge-url 		\
+	Test-auth-retcode 			\
+	Test-auth-with-content-disposition 	\
+	Test-c-full 				\
+	Test-Content-disposition 		\
+	Test-cookie 				\
+	Test-cookie-401 			\
+	Test-cookie-domain-mismatch 		\
+	Test-cookie-expires 			\
+	Test-ftp 				\
+	Test-ftp-bad-list 			\
+	Test-Head 				\
+	Test-Header 				\
+	Test-O 					\
+	Test-Post 				\
+	Test-Post2 				\
+	Test-Post3 				\
+	Test-Proto2 				\
+	Test-Put 				\
+	Test-redirect 				\
 	Test-stdouterr
 
 XFAIL_TESTS =
