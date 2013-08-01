@@ -267,9 +267,9 @@ class __Handler (WgetHTTPRequestHandler):
     def is_authorized (self):
         is_auth = True
         auth_rule = self.get_rule_list ('Auth')
-        req_auth = auth_rule[0].auth_type
         if auth_rule:
             auth_header = self.headers.get ("Authorization")
+            req_auth = auth_rule[0].auth_type
             if req_auth == "Both" or req_auth == "Both_inline":
                 auth_type = auth_header.split(' ')[0] if auth_header else req_auth
             else:

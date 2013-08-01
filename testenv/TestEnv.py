@@ -249,7 +249,7 @@ class Test:
             for name, rule in rule_obj:
                 if name is not None:
                     global_conf[name].append (rule)
-            return global_conf
+        return global_conf
 
     def get_cmd_line (self, WgetPath):
         cmd_line = WgetPath + " "

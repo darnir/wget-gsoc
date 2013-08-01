@@ -7,6 +7,13 @@ The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
 2013-08-01  Darshit Shah  <darnir@gmail.com>
 
+	* HTTPServer.py (is_authorized): Fix bug where req_auth should only be
+	set if there exists authorization rules
+	* TestEnv.py (parse_global_rules): Fix stupid error where return
+	should be outside scoe of for loop.
+
+2013-08-01  Darshit Shah  <darnir@gmail.com>
+
 	* FTPServer.py (FTPDHandler.isRule): New method to handle if a certain
 	global rule is set nor not.
 	(ftp_LIST): Overridden method. Make use of isRule method
