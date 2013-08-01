@@ -30,6 +30,7 @@ AUTOMAKE_OPTIONS = parallel-tests
 AM_TESTS_ENVIRONMENT = MAKE_CHECK=True; export MAKE_CHECK;
 TESTS = Test-auth-basic 			\
 	Test-auth-basic-fail 			\
+	Test-auth-both				\
 	Test-auth-digest 			\
 	Test-auth-no-challenge 			\
 	Test-auth-no-challenge-url 		\
@@ -44,6 +45,7 @@ TESTS = Test-auth-basic 			\
 	Test-cookie-expires 			\
 	Test-ftp 				\
 	Test-ftp-bad-list 			\
+	Test-ftp-pasv				\
 	Test-Head 				\
 	Test-Header 				\
 	Test-O 					\

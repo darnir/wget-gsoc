@@ -1,0 +1,20 @@
+<WgetTest name="Test -O Option" server="FTP">
+<!--
+     Ensure that Wget writes to the correct filename with -O
+-->
+
+    <File>
+        <Meta name="Sparta" />
+        <Content>This is Spartaa!</Content>
+    </File>
+
+    <Option>-S</Option>
+
+    <GlobalRule command="Fail PASV" />
+
+    <ExpectedResults>
+        <ReturnCode>0</ReturnCode>
+        <File>Sparta</File>
+    </ExpectedResults>
+
+</WgetTest>

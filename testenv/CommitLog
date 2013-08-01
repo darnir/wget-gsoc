@@ -5,6 +5,17 @@ into the release commits.
 
 The CommitLog file will follow the same conventions as the GNU ChangeLog files.
 
+2013-08-01  Darshit Shah  <darnir@gmail.com>
+
+	* FTPServer.py (FTPDHandler.isRule): New method to handle if a certain
+	global rule is set nor not.
+	(ftp_LIST): Overridden method. Make use of isRule method
+	(ftp_PASV): Overridden method. Handle Global Rule for failing on PASV
+	* TestEnv.py (set_fail_pasv): Return an object for the rule
+	(parse_server_rules): Handle new rule, Fail PASV
+	(get_cmd_line): Handle scenario where Option tags have no data between
+	them
+
 2013-07-30  Darshit Shah  <darnir@gmail.com>
 
 	* HTTPServer.py (send_challenge): Handle sending multiple challenges

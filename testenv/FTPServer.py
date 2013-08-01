@@ -19,7 +19,7 @@ class FTPDHandler (Handle.FTPHandler):
             why = _strerror (err)
             self.respond ('550 %s. ' % why)
         else:
-            if self.server.global_rules["Bad List"][0] is True:
+            if self.isRule ("Bad List") is True:
                 iter_list = list ()
                 for flist in iterator:
                     line = re.compile (r'(\s+)').split (flist.decode ('utf-8'))
@@ -30,6 +30,19 @@ class FTPDHandler (Handle.FTPHandler):
             producer = Handle.BufferedIteratorProducer (iterator)
             self.push_dtp_data (producer, isproducer=True, cmd="LIST")
             return path
+
+    def ftp_PASV (self, line):
+        if self._epsvall:
+            self.respond ("501 PASV not allowed after EPSV ALL.")
+            return
+        self._make_epasv(extmode=False)
+        if self.isRule ("FailPASV") is True:
+            del self.server.global_rules["FailPASV"]
+            self.socket.close ()
+
+    def isRule (self, rule):
+        rule_obj = self.server.global_rules[rule]
+        return False if not rule_obj else rule_obj[0]
 
 class FTPDServer (FTPServer):
 

@@ -205,6 +205,9 @@ class Test:
     def set_bad_list (self):
         return [("Bad List", True)]
 
+    def set_fail_pasv (self):
+        return [("FailPASV", True)]
+
     def parse_server_rules (self, file_node):
         special_conf = defaultdict (list)
         self.meth_files = ""
@@ -234,6 +237,7 @@ class Test:
         global_conf = defaultdict (list)
         commands_list = {
             "Bad List": self.set_bad_list,
+            "Fail PASV": self.set_fail_pasv
         }
         for self.special_comm in self.Root.findall ('GlobalRule'):
             command = self.special_comm.get ('command')
@@ -250,7 +254,8 @@ class Test:
     def get_cmd_line (self, WgetPath):
         cmd_line = WgetPath + " "
         for parameter in self.Root.findall('Option'):
-            cmd_line += parameter.text + " "
+            param = parameter.text if parameter.text is not None else ""
+            cmd_line +=  param + " "
         True if self.download_list else self.append_downloads ("")
         cmd_line += self.download_list
         print (cmd_line)
