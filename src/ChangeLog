@@ -1,3 +1,8 @@
+2013-09-11  Darshit Shah  <darnir@gmail.com>
+
+	* wget.h (struct range): Use wgint instead of int for byte storing
+	variables.
+
 2013-09-10  Giuseppe Scrivano  <gscrivano@gnu.org>
 
 	* http.c (REGISTER_PERSISTENT_CONNECTION): Close connection if not
