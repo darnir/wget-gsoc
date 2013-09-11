@@ -1,3 +1,10 @@
+2013-09-10  Giuseppe Scrivano  <gscrivano@gnu.org>
+
+	* http.c (REGISTER_PERSISTENT_CONNECTION): Close connection if not
+	persistent
+	(gethttp): Register persistent connection if keep-alive, else Close
+	connection instead of simply closing connection
+
 2013-09-06  Darshit Shah  <darnir@gmail.com>
 
 	* main.c (option_data[]): Change option to metalink-file in accordance
